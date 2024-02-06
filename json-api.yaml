@@ -1,0 +1,270 @@
+openapi: 3.1.0
+info:
+  title: XRP Ledger Public API
+  description: A JSON RPC API used to query rippled.
+  version: 1.0.0
+
+servers:
+	# Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
+	- url: https://s1.ripple.com:51234
+    description: Mainnet Public API server
+	# Should testnet / devnet / xahau / etc. be on this list?
+  - url: wss://s.altnet.rippletest.net:51234/
+		description: Testnet (not for production usage)
+
+paths:
+	# We use OpenAPI's discriminator field with the `method` name to delineate between the options
+	/:
+    post:
+      summary: Send JSON-RPC request to server
+      requestBody:
+        description: JSON-RPC request object
+        content:
+          application/json:
+            schema:
+							$ref: "#/components/schemas/RequestType"
+        required: true
+      operationId: "POST"
+      responses:
+        "200":
+          description: JSON-RPC response object
+          content:
+            application/json:
+              schema:
+								discriminator:
+									propertyName: method
+									mapping:
+										account_channels: "#/components/schemas/AccountChannelsResponse"
+                		# TODO: Add the rest of the JSON RPC responses here
+
+									anyOf:
+										$ref: "#/components/schemas/AccountChannelsResponse"
+                		# TODO: Add the rest of the JSON RPC responses here
+
+        # TODO: Verify my understanding of what error responses look like for rippled:
+        "400":
+          description: JSON-RPC error response object
+          content:
+            application/json:
+              schema:
+								$ref: "#/components/schemas/JsonRpcError"
+
+				# TODO: Add the rest of the JSON RPC responses here
+
+				# TODO: Add error responses
+				# TODO: Add JsonRpcResponse / Request
+
+components:
+  schemas:
+		JsonRpcRequest:
+      type: object
+      properties:
+        jsonrpc:
+          type: string
+          enum: ["2.0"] # TODO: allow for different versions of the apis
+          example: "2.0"
+        id:
+          type: integer
+					description: A unique identifier for this request.
+          example: 1
+        method:
+          $ref: "#/components/schemas/TransactionType"
+        params:
+          $ref: "#/components/schemas/TransactionParams"
+      required:
+        - id
+        - method
+
+    # TODO: Finish deriving this from ErrorResponse type in xrpl.js + type discrimination in the request section + adding the additional fields which show up in responses that are like requests! (e.g. ledger_index)
+    JsonRpcError:
+      type: object
+      properties:
+        result:
+          type: object
+          error: ledgerIndexMalformed # TODO: Make this error tie to the type of request below (which tells you the possible errors)
+          request:
+            allOf:
+              $ref: "#/components/schemas/RequestType"
+              # TODO: Add the "Response only" fields which are included in the `request` section of responses. These fields are in lowercase & not part of the request type like `ledger_index`.
+              # In xrpl.js I believe
+        status: error
+
+    RequestType:
+      discriminator:
+        propertyName: method
+        mapping:
+          account_channels: "#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
+          # TODO: Add the rest of the JSON RPC requests here
+        anyOf:
+          - $ref: "#/components/schemas/AccountChannelsRequest"
+          # TODO: Add the rest of the JSON RPC requests here
+
+		BaseRequest:
+      type: object
+      description: Includes the basic information all JSON RPC methods contain.
+      required:
+        - method
+      properties:
+        api_version:
+          type: number
+          description: The API version to use. If omitted, use version 1.
+        method:
+          type: string
+          description: The name of the API method.
+        id:
+          type: string
+          description: A unique value to identify this request. The response to this request uses the same id field. This way, even if responses arrive out of order, you know which request prompted which response.
+
+		LookupByLedgerRequest:
+      type: object
+      properties:
+        ledger_hash:
+          type: string
+          description: A 20-byte hex string for the ledger version to use.
+        ledger_index:
+          type: string
+          description: The ledger index of the ledger to use, or a shortcut string.
+
+		Channel:
+      type: object
+      required:
+        - Account
+        - Amount
+        - Balance
+        - Destination
+        - LedgerEntryType
+        - OwnerNode
+        - PreviousTxnID
+        - PreviousTxnLgrSeq
+        - PublicKey
+        - SettleDelay
+      properties:
+        Account:
+          type: string
+          description: The source address that owns this payment channel.
+        Amount:
+          type: string
+          description: Total XRP, in drops, that has been allocated to this channel.
+        Balance:
+          type: string
+          description: Total XRP, in drops, already paid out by the channel.
+        CancelAfter:
+          type: number
+          description: The immutable expiration time for this payment channel, in seconds since the Ripple Epoch.
+        Destination:
+          type: string
+          description: The destination address for this payment channel.
+        DestinationTag:
+          type: number
+          description: An arbitrary tag to further specify the destination for this payment channel.
+        DestinationNode:
+          type: string
+          description: A hint indicating which page of the destination's owner directory links to this entry.
+        Expiration:
+          type: number
+          description: The mutable expiration time for this payment channel, in seconds since the Ripple Epoch.
+        LedgerEntryType:
+          type: string
+          description: The value 0x0078, mapped to the string PayChannel, indicating that this is a payment channel entry.
+        OwnerNode:
+          type: string
+          description: A hint indicating which page of the source address's owner directory links to this entry.
+        PreviousTxnID:
+          type: string
+          description: The identifying hash of the transaction that most recently modified this entry.
+        PreviousTxnLgrSeq:
+          type: number
+          description: The index of the ledger that contains the transaction that most recently modified this entry.
+        PublicKey:
+          type: string
+          description: Public key, in hexadecimal, of the key pair that can be used to sign claims against this channel.
+        SettleDelay:
+          type: number
+          description: Number of seconds the source address must wait to close the channel if it still has any XRP in it.
+        SourceTag:
+          type: number
+          description: An arbitrary tag to further specify the source for this payment channel.
+
+    AccountChannelsRequest:
+      type: object
+			description: The account_channels method returns information about an account's Payment Channels. This includes only channels where the specified account is the channel's source, not the destination. (A channel's "source" and "owner" are the same.) All information retrieved is relative to a particular version of the ledger. Returns an AccountChannelsResponse.
+			allOf:
+				- $ref: '#/components/schemas/BaseRequest'
+				- $ref: '#/components/schemas/LookupByLedgerRequest'
+      properties:
+        method:
+          type: string
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - account_channels
+        account:
+          type: string
+          description: "The unique identifier of an account, typically the account's address."
+        destination_account:
+          type: string
+          description: "The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account."
+        limit:
+          type: number
+          minimum: 10
+          maximum: 400
+          description: "Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200."
+        marker:
+          type: any
+          description: "Value from a previous paginated response. Resume retrieving data where that response left off."
+      required:
+        - method
+        - account
+
+    AccountChannelsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            account:
+              type: string
+              description: "The address of the source/owner of the payment channels. This corresponds to the account field of the request."
+            channels:
+              type: array
+              items:
+                $ref: '#/components/schemas/Channel'
+              description: "Payment channels owned by this account."
+            ledger_hash:
+              type: string
+              description: "The identifying hash of the ledger version used to generate this response."
+            ledger_index:
+              type: integer
+              description: "The ledger index of the ledger version used to generate this response."
+            validated:
+              type: boolean
+              description: "If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change."
+            limit:
+              type: number
+              description: "The limit to how many channel objects were actually returned by this request."
+            marker:
+              type: any
+              description: "Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one."
+
+		JsonRPCErrorResponse:
+			required:
+	      - result
+			result:
+        type: object
+        description: Object containing the response to the query.
+        properties:
+          error:
+            type: string
+            description: A unique code for the type of error that occurred.
+          request:
+            type: object
+            description: "A copy of the request that prompted this error, in JSON format. Caution: If the request contained any account secrets, they are copied here! Note: The request is re-formatted in WebSocket format, regardless of the request made."
+          status:
+            type: string
+            description: '"error" if the request caused an error.'
+
+
+		AccountChannelsErrorResponse:
+			result:
+
+
+security:
+  - apiKey: []  # Example security scheme, customize as needed
