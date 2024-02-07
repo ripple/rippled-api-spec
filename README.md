@@ -19,3 +19,58 @@ In situations where there are multiple equivalent ways to write this spec, this 
  2. In order to specify the request / response type for JSON RPC, we need to use a generic path (`/`) and a [`discriminator`](https://redocly.com/docs/resources/discriminator/) which allows us to derive the “type” of an object from the value in a specific parameter in the request. (In the case of the JSON RPC API, the `method` field tells us the type of request, which corresponds exactly with 1 or 2 response types)
     - The one case where this isn’t enough information is when a request has a `binary` option - in which case there are 2 possible response structures.
  3. Error responses in the "path" section represent HTTP response / errors. `rippled` or `clio` errors are treated as valid responses, and should be documented as `oneOf` the possible representations for each individual request response. Although rippled errors share a similar shape, ultimately we want to be very clear on what the specific error codes that are possible from each request.
+
+ ### Adding a new request
+
+To add a new request, there are three schemas you have to add, and a couple places you need to update.
+
+1. Create a new file with the name of the request in camelCase (ex. `accountChannel.yaml`)
+2. Create the Request schema (e.g. `AccountChannelsRequest`).
+    - This should include `allOf BaseRequest`
+    - It should also follow the xrpl.org documentation for the request. (These types are also mirrored in client libraries) ChatGPT can be a handy tool to convert from the plaintext on xrpl.org or the interface descriptions in xrpl.js to OpenAPI compliant schemas with the same documentation for each field.
+3. Create the Response schema (note that by our convention, error responses from rippled must be defined in the corresponding Response schema NOT in the `paths` or as a separate schema)
+    - All responses should be `oneOf` the normal response and the error response from rippled.
+    - For the normal response
+        - Include `allOf BaseResponse`
+        - # TODO: Jackson
+4. Include a reference to the Response in `json_api.yaml` under the `RequestType` schema in the `components` section.
+    - Add a discriminator mapping (ex. `account_channels: $ref: 'accountChannels.yaml#/AccountChannelRequest'`)
+        - Example syntax to reference a schema in another file: `$ref: '../document.yaml#/myElement'` [More details](https://swagger.io/docs/specification/using-ref/)
+    - Add the ref to the pool of options (in the `anyOf` section below the discriminator mapping)
+
+    Here's what the code you should update here looks like:
+    ```
+    RequestType:
+      discriminator:
+        propertyName: method
+        mapping:
+          account_channels: "#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
+          # TODO: Add the rest of the JSON RPC requests here
+        anyOf:
+          - $ref: "#/components/schemas/AccountChannelsRequest"
+          # TODO: Add the rest of the JSON RPC requests here
+    ```
+
+5. Include a reference to the Response in `json_api.yaml` under the `paths` section in the 200 area.
+    - Add a discriminator mapping (ex. `account_channels: $ref: 'accountChannels.yaml#/AccountChannelResponse'`)
+        - Example syntax to reference a schema in another file: `$ref: '../document.yaml#/myElement'` [More details](https://swagger.io/docs/specification/using-ref/)
+    - Add the ref to the pool of options (in the `anyOf` section below the discriminator mapping)
+
+    Here's what the code you should update here looks like:
+    ```
+    responses:
+        "200":
+          description: JSON-RPC response object
+          content:
+            application/json:
+              schema:
+                discriminator:
+                    propertyName: method
+                    mapping:
+                        account_channels: "#/components/schemas/AccountChannelsResponse"
+                		# TODO: Add the rest of the JSON RPC responses here
+
+                    anyOf:
+                        $ref: "#/components/schemas/AccountChannelsResponse"
+                		# TODO: Add the rest of the JSON RPC responses here
+    ```
