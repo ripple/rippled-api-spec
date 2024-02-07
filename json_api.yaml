@@ -34,11 +34,11 @@ paths:
 								discriminator:
 									propertyName: method
 									mapping:
-										account_channels: "#/components/schemas/AccountChannelsResponse"
+										account_channels: "account_channels.yaml#/components/schemas/AccountChannelsResponse"
                 		# TODO: Add the rest of the JSON RPC responses here
 
 									anyOf:
-										$ref: "#/components/schemas/AccountChannelsResponse"
+										$ref: "account_channels.yaml#/components/schemas/AccountChannelsResponse"
                 		# TODO: Add the rest of the JSON RPC responses here
 
         # TODO: Verify my understanding of what error responses look like for rippled:
@@ -93,148 +93,11 @@ components:
       discriminator:
         propertyName: method
         mapping:
-          account_channels: "#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
+          account_channels: "account_channels.yaml#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
           # TODO: Add the rest of the JSON RPC requests here
         anyOf:
-          - $ref: "#/components/schemas/AccountChannelsRequest"
+          - $ref: "account_channels.yaml#/components/schemas/AccountChannelsRequest"
           # TODO: Add the rest of the JSON RPC requests here
-
-		LookupByLedgerRequest:
-      type: object
-      properties:
-        ledger_hash:
-          type: string
-          description: A 20-byte hex string for the ledger version to use.
-        ledger_index:
-          type: string
-          description: The ledger index of the ledger to use, or a shortcut string.
-
-    Channel:
-      type: object
-      required:
-        - account
-        - amount
-        - balance
-        - channel_id
-        - destination_account
-        - settle_delay
-      properties:
-        account:
-          type: string
-          description: The owner of the channel, as an Address.
-        amount:
-          type: string
-          description: The total amount of XRP, in drops allocated to this channel.
-        balance:
-          type: string
-          description: >
-            The total amount of XRP, in drops, paid out from this channel, as of the ledger version used.
-            (You can calculate the amount of XRP left in the channel by subtracting balance from amount.)
-        cancel_after:
-          type: integer
-          description: >
-            Time, in seconds since the Ripple Epoch, of this channel's immutable expiration,
-            if one was specified at channel creation. If this is before the close time of the
-            most recent validated ledger, the channel is expired.
-        channel_id:
-          type: string
-          description: >
-            A unique ID for this channel, as a 64-character hexadecimal string.
-            This is also the ID of the channel object in the ledger's state data.
-        destination_account:
-          type: string
-          description: The destination account of the channel, as an Address. Only this account can receive the XRP in the channel while it is open.
-        destination_tag:
-          type: integer
-          description: >
-            A 32-bit unsigned integer to use as a destination tag for payments through this channel,
-            if one was specified at channel creation. This indicates the payment channel's beneficiary
-            or other purpose at the destination account.
-        expiration:
-          type: integer
-          description: >
-            Time, in seconds since the Ripple Epoch, when this channel is set to expire.
-            This expiration date is mutable. If this is before the close time of the most recent
-            validated ledger, the channel is expired.
-        public_key:
-          type: string
-          description: >
-            The public key for the payment channel in the XRP Ledger's base58 format.
-            Signed claims against this channel must be redeemed with the matching key pair.
-        public_key_hex:
-          type: string
-          description: >
-            The public key for the payment channel in hexadecimal format, if one was specified at channel creation.
-            Signed claims against this channel must be redeemed with the matching key pair.
-        settle_delay:
-          type: integer
-          description: >
-            The number of seconds the payment channel must stay open after the owner of the channel requests to close it.
-        source_tag:
-          type: integer
-          description: >
-            A 32-bit unsigned integer to use as a source tag for payments through this payment channel,
-            if one was specified at channel creation. This indicates the payment channel's originator or
-            other purpose at the source account.
-
-    AccountChannelsRequest:
-      type: object
-			description: The account_channels method returns information about an account's Payment Channels. This includes only channels where the specified account is the channel's source, not the destination. (A channel's "source" and "owner" are the same.) All information retrieved is relative to a particular version of the ledger. Returns an AccountChannelsResponse.
-			allOf:
-				- $ref: '#/components/schemas/BaseRequest'
-				- $ref: '#/components/schemas/LookupByLedgerRequest'
-      properties:
-        method:
-          type: string
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-            - account_channels
-        account:
-          type: string
-          description: "The unique identifier of an account, typically the account's address."
-        destination_account:
-          type: string
-          description: "The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account."
-        limit:
-          type: number
-          minimum: 10
-          maximum: 400
-          description: "Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200."
-        marker:
-          type: any
-          description: "Value from a previous paginated response. Resume retrieving data where that response left off."
-      required:
-        - method
-        - account
-
-    AccountChannelsResponse:
-      type: object
-      properties:
-        result:
-          type: object
-          properties:
-            account:
-              type: string
-              description: "The address of the source/owner of the payment channels. This corresponds to the account field of the request."
-            channels:
-              type: array
-              items:
-                $ref: '#/components/schemas/Channel'
-              description: "Payment channels owned by this account."
-            ledger_hash:
-              type: string
-              description: "The identifying hash of the ledger version used to generate this response."
-            ledger_index:
-              type: integer
-              description: "The ledger index of the ledger version used to generate this response."
-            validated:
-              type: boolean
-              description: "If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change."
-            limit:
-              type: number
-              description: "The limit to how many channel objects were actually returned by this request."
-            marker:
-              type: any
-              description: "Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one."
 
 		JsonRPCErrorResponse:
 			required:
@@ -252,11 +115,6 @@ components:
           status:
             type: string
             description: '"error" if the request caused an error.'
-
-
-		AccountChannelsErrorResponse:
-			result:
-
 
 security:
   - apiKey: []  # Example security scheme, customize as needed

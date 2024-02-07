@@ -1,0 +1,74 @@
+components:
+  schemas:
+    BaseRequest:
+      type: object
+      description: Includes the basic information all JSON RPC methods contain.
+      properties:
+        api_version:
+          type: number
+          description: The API version to use. If omitted, use version 1.
+        method:
+          type: string
+          description: The name of the API method.
+        id:
+          type: string
+          description: A unique value to identify this request. The response to this request uses the same id field. This way, even if responses arrive out of order, you know which request prompted which response.
+      required:
+        - method
+
+      ResponseWarning:
+        type: object
+        properties:
+          details:
+            type: object
+            additionalProperties:
+              type: string
+            description: Additional information about this warning. The contents vary depending on the type of warning.
+          id:
+            type: integer
+            description: A unique numeric code for this warning message.
+          message:
+            type: string
+            description: > 
+              A human-readable string describing the cause of this message.
+              Do not write software that relies the contents of this message;
+              use the id (and details, if applicable) to identify the warning instead.
+        required:
+          - id
+          - message
+
+      BaseSuccessResponse:
+        type: object
+        properties:
+          api_version:
+            type: number
+            format: float
+            description: The API version used for the response.
+          forwarded:
+            type: boolean
+            description: Indicates whether the request was forwarded.
+          id:
+            type: string
+            description: The ID of the response.
+          result:
+            description: The result of the response.
+            type: object
+            additionalProperties: true
+          status:
+            type: string
+            description: The status of the response (e.g., 'success').
+          type:
+            type: string
+            description: The type of the response (e.g., 'response').
+          warning:
+            type: string
+            description: A specific warning type (e.g., 'load').
+          warnings:
+            type: array
+            items:
+              $ref: '#/components/schemas/ResponseWarning'
+            description: An array of response warnings.
+        required:
+          - id
+          - type
+          - result
