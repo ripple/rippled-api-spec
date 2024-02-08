@@ -1,0 +1,49 @@
+classDiagram
+  class TxRequest {
+    - type: object
+    - description: string
+  }
+
+  class BaseRequest {
+    - type: object
+  }
+
+  class LookupByLedgerRequest {
+    - type: object
+  }
+
+  class TxResponse {
+    + result: TxSuccessResponse | TxErrorResponse
+    - type: object
+  }
+
+  class TxSuccessResponse {
+    - type: object
+  }
+
+  class BaseSuccessResponse {
+    - type: object
+  }
+
+  class TxErrorResponse {
+    + error: string
+    + status: string
+    + request: TxRequest
+    - type: object
+  }
+
+  class UniversalErrorResponseCodes {
+    - type: object
+  }
+
+  class TxErrorResponseCodes {
+    - type: object
+  }
+
+  TxRequest --|> BaseRequest
+  TxRequest --|> LookupByLedgerRequest
+  TxResponse --|> TxSuccessResponse
+  TxResponse --|> TxErrorResponse
+  TxErrorResponse --|> UniversalErrorResponseCodes
+  TxErrorResponse --|> TxErrorResponseCodes
+  TxSuccessResponse --|> BaseSuccessResponse
