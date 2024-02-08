@@ -20,6 +20,12 @@ In situations where there are multiple equivalent ways to write this spec, this 
     - The one case where this isn’t enough information is when a request has a `binary` option - in which case there are 2 possible response structures.
  3. Error responses in the "path" section represent HTTP response / errors. `rippled` or `clio` errors are treated as valid responses, and should be documented as `oneOf` the possible representations for each individual request response. Although rippled errors share a similar shape, ultimately we want to be very clear on what the specific error codes that are possible from each request.
 
+ ### Things to investigate
+ - It seems that discriminator might be useless in OpenAPI 3.1?
+    - https://github.com/OAI/OpenAPI-Specification/issues/2141 - Person who saw that no js spec validators checked `discriminator`
+    - https://github.com/OAI/OpenAPI-Specification/issues/2143 - Bigger push to simply remove it in favor of inferring from JSON Schema
+    - We may find it personally useful if we're customizing code generators for ourselves and need that specificity in terms of "errors" vs "successful" responses (although we could also just use naming conventions to figure it out)
+
  ### Adding a new request
 
 To add a new request, there are three schemas you have to add, and a couple places you need to update.

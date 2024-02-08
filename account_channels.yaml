@@ -69,22 +69,16 @@ components:
         - destination_account
         - settle_delay
 
-    LookupByLedgerRequest:
-        type: object
-        properties:
-          ledger_hash:
-            type: string
-            description: A 20-byte hex string for the ledger version to use.
-          ledger_index:
-            type: string
-            description: The ledger index of the ledger to use, or a shortcut string.
-
       AccountChannelsRequest:
         type: object
-        description: The account_channels method returns information about an account's Payment Channels. This includes only channels where the specified account is the channel's source, not the destination. (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. Returns an AccountChannelsResponse.
+        description: >
+          The account_channels method returns information about an account's Payment Channels. 
+          This includes only channels where the specified account is the channel's source, not the destination. 
+          (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
+          Returns an AccountChannelsResponse.
         allOf:
           - $ref: 'requests.yaml#/components/schemas/BaseRequest'
-          - $ref: '#/components/schemas/LookupByLedgerRequest'
+          - $ref: 'requests.yaml#/components/schemas/LookupByLedgerRequest'
         properties:
           method:
             type: string
@@ -127,8 +121,10 @@ components:
               ledger_hash:
                 type: string
                 description: The identifying hash of the ledger version used to generate this response.
-              ledger_index:
-                type: integer
+              ledger_index:                  
+                oneOf:
+                  - type: string
+                  - type: integer
                 description: The ledger index of the ledger version used to generate this response.
               validated:
                 type: boolean
@@ -140,12 +136,18 @@ components:
                 type: any
                 description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
             required:
-              # TODO:
+              - account
+      
+      AccountChannelsErrorResponse:
+        type: object
+        properties:
+        # TODO: Implement this after creating the generic error object
+
 
       AccountChannelsResponse:
         type: object
         properties:
           oneOf:
             - $ref: '#schemas/AccountChannelsSuccessResponse'
-            - $ref: '#schemas/AccountChannelsErrorResponse' # TODO:
+            - $ref: '#schemas/AccountChannelsErrorResponse' # TODO: See if you can use result > status to discriminate between these somehow
       

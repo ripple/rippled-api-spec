@@ -37,6 +37,18 @@ components:
           - id
           - message
 
+      LookupByLedgerRequest:
+        type: object
+        properties:
+          ledger_hash:
+            type: string
+            description: A 20-byte hex string for the ledger version to use.
+          ledger_index:
+            oneOf:
+              - type: string
+              - type: integer
+            description: The ledger index of the ledger to use, or a shortcut string.
+
       BaseSuccessResponse:
         type: object
         properties:
@@ -72,3 +84,27 @@ components:
           - id
           - type
           - result
+
+      # BaseErrorResponse:
+      #   type: object
+      #   properties:
+      #     id:
+      #       type: any
+      #       description: ID provided in the Web Socket request that prompted this response
+      #     status:
+      #       type: string
+      #       enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+      #         - error
+      #       description: Indicates that this response is an error.
+
+#   TODO: Migrate this to the above
+#   export interface ErrorResponse {
+#   id: number | string
+#   status: 'error'
+#   type: 'response' | string
+#   error: string
+#   error_code?: string
+#   error_message?: string
+#   request: Request
+#   api_version?: number
+# }
