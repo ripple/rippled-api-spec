@@ -37,7 +37,7 @@ At a high level, you'll be adding a Request and Response (which can be either a 
 
 <img src="example_request_diagram.png">
 
-*Image generated via a mermaid diagram from the specification in `example_request_diagram.mermaid`*
+*Image generated via a mermaid diagram from the specification in [`example_request_diagram.mermaid`](./example_request_diagram.mermaid)*
 
 The rest of these steps will use [`accountChannels.yaml`](./account_channels.yaml) as an example you can follow when adding other requests.
 
