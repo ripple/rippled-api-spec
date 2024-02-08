@@ -108,15 +108,21 @@ components:
         result:
           type: object
           properties:
-            discriminator:
-              propertyName: status
-              mapping:
-                - success: "#/components/schemas/AccountChannelsSuccessResponse"
-                - error: "#/components/schemas/AccountChannelsErrorResponse"
+            result:
+              type: object
+              properties:
+                discriminator:
+                  propertyName: status
+                  mapping:
+                    - success: "#/components/schemas/AccountChannelsSuccessResponse"
+                    - error: "#/components/schemas/AccountChannelsErrorResponse"
 
-              oneOf:
-                - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
-                - $ref: '#/components/schemas/AccountChannelsErrorResponse'
+                  oneOf:
+                    - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
+                    - $ref: '#/components/schemas/AccountChannelsErrorResponse'
+          required:
+            - result
+            
 
     AccountChannelsSuccessResponse:
       type: object

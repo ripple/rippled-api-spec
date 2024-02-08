@@ -8,10 +8,10 @@ info:
 # TODO: Add a prettier or prettier equivalent!
 
 servers:
-	# Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
+	# TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
 	- url: https://s1.ripple.com:51234
     description: Mainnet Public API server
-	# Should testnet / devnet / xahau / etc. be on this list?
+	# TODO: Should testnet / devnet / xahau / etc. be on this list?
   - url: wss://s.altnet.rippletest.net:51234/
 		description: Testnet (not for production usage)
 
@@ -25,7 +25,14 @@ paths:
         content:
           application/json:
             schema:
-							$ref: "#/components/schemas/RequestType"
+              discriminator:
+                propertyName: method
+                mapping:
+                  account_channels: "account_channels.yaml#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
+                  # TODO: Add the rest of the JSON RPC requests here
+                anyOf:
+                  - $ref: "account_channels.yaml#/components/schemas/AccountChannelsRequest"
+                  # TODO: Add the rest of the JSON RPC requests here              
         required: true
       operationId: "POST"
       responses:
@@ -34,29 +41,36 @@ paths:
           content:
             application/json:
               schema:
-								discriminator:
-									propertyName: method
-									mapping:
-										account_channels: "account_channels.yaml#/components/schemas/AccountChannelsResponse"
-                		# TODO: Add the rest of the JSON RPC responses here
+                # TODO: Map the input request types to these output responses. 
+                # They do not have a consistent field which is available on all of them which tells you which request was sent.
+                # Errors have `result.request.method`, but success responses
+                oneOf:
+                  $ref: "account_channels.yaml#/components/schemas/AccountChannelsResponse"
+                  # TODO: Add the rest of the JSON RPC responses here
 
-									anyOf:
-										$ref: "account_channels.yaml#/components/schemas/AccountChannelsResponse"
-                		# TODO: Add the rest of the JSON RPC responses here
-
-        # TODO: Verify my understanding of what error responses look like for rippled:
-        "400":
-          description: JSON-RPC error response object
+        "4XX":
+          description: JSON-RPC http error. The response is a plain-text explanation with the http error code and description in the response body.
           content:
-            application/json:
+            text/plain:
               schema:
-								$ref: "#/components/schemas/JsonRpcError"
+                type: string
+        
+        "5XX":
+          description: JSON-RPC http error. The response is a plain-text explanation with the http error code and description in the response body.
+          content:
+            text/plain:
+              schema:
+                type: string
 
-				# TODO: Add the rest of the JSON RPC responses here
-
-				# TODO: Add error responses
-				# TODO: Add JsonRpcResponse / Request
-
+        "503":
+          description: An error for when the client is over the server's rate limit.
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum: 
+                  - "503 Service Unavailable\n\nServer is overloaded" # TODO: Validate that this is the right string, it's unclear whether 503 is included in the response: https://xrpl.org/rate-limiting.html#json-rpc-rate-limited-error
+        
 components:
   schemas:
 		JsonRpcRequest:
@@ -78,46 +92,8 @@ components:
         - id
         - method
 
-    # TODO: Finish deriving this from ErrorResponse type in xrpl.js + type discrimination in the request section + adding the additional fields which show up in responses that are like requests! (e.g. ledger_index)
-    JsonRpcError:
-      type: object
-      properties:
-        result:
-          type: object
-          error: ledgerIndexMalformed # TODO: Make this error tie to the type of request below (which tells you the possible errors)
-          request:
-            allOf:
-              $ref: "#/components/schemas/RequestType"
-              # TODO: Add the "Response only" fields which are included in the `request` section of responses. These fields are in lowercase & not part of the request type like `ledger_index`.
-              # In xrpl.js I believe
-        status: error
-
     RequestType:
-      discriminator:
-        propertyName: method
-        mapping:
-          account_channels: "account_channels.yaml#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
-          # TODO: Add the rest of the JSON RPC requests here
-        anyOf:
-          - $ref: "account_channels.yaml#/components/schemas/AccountChannelsRequest"
-          # TODO: Add the rest of the JSON RPC requests here
-
-		JsonRPCErrorResponse:
-			required:
-	      - result
-			result:
-        type: object
-        description: Object containing the response to the query.
-        properties:
-          error:
-            type: string
-            description: A unique code for the type of error that occurred.
-          request:
-            type: object
-            description: "A copy of the request that prompted this error, in JSON format. Caution: If the request contained any account secrets, they are copied here! Note: The request is re-formatted in WebSocket format, regardless of the request made."
-          status:
-            type: string
-            description: '"error" if the request caused an error.'
+      
 
 security:
   - apiKey: []  # Example security scheme, customize as needed

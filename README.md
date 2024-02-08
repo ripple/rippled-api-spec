@@ -78,15 +78,20 @@ The rest of these steps will use [`accountChannels.yaml`](./account_channels.yam
         result:
           type: object
           properties:
-            discriminator:
-              propertyName: status
-              mapping:
-                - success: "#/components/schemas/AccountChannelsSuccessResponse"
-                - error: "#/components/schemas/AccountChannelsErrorResponse"
+            result:
+              type: object
+              properties:
+                discriminator:
+                  propertyName: status
+                  mapping:
+                    - success: "#/components/schemas/AccountChannelsSuccessResponse"
+                    - error: "#/components/schemas/AccountChannelsErrorResponse"
 
-              oneOf:
-                - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
-                - $ref: '#/components/schemas/AccountChannelsErrorResponse'
+                  oneOf:
+                    - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
+                    - $ref: '#/components/schemas/AccountChannelsErrorResponse'
+          required:
+            - result
     ```
 4. Create the `SuccessResponse` schema
   - Include the `BaseSuccessResponse` schema
