@@ -69,85 +69,111 @@ components:
         - destination_account
         - settle_delay
 
-      AccountChannelsRequest:
-        type: object
-        description: >
-          The account_channels method returns information about an account's Payment Channels. 
-          This includes only channels where the specified account is the channel's source, not the destination. 
-          (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
-          Returns an AccountChannelsResponse.
-        allOf:
-          - $ref: 'requests.yaml#/components/schemas/BaseRequest'
-          - $ref: 'requests.yaml#/components/schemas/LookupByLedgerRequest'
-        properties:
-          method:
-            type: string
-            enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-              - account_channels
-          account:
-            type: string
-            description: The unique identifier of an account, typically the account's address.
-          destination_account:
-            type: string
-            description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
-          limit:
-            type: number
-            minimum: 10
-            maximum: 400
-            description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
-          marker:
-            type: any
-            description: Value from a previous paginated response. Resume retrieving data where that response left off.
-        required:
-          - method
-          - account
+    AccountChannelsRequest:
+      type: object
+      description: >
+        The account_channels method returns information about an account's Payment Channels. 
+        This includes only channels where the specified account is the channel's source, not the destination. 
+        (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
+        Returns an AccountChannelsResponse.
+      allOf:
+        - $ref: 'requests.yaml#/components/schemas/BaseRequest'
+        - $ref: 'requests.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        method:
+          type: string
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - account_channels
+        account:
+          type: string
+          description: The unique identifier of an account, typically the account's address.
+        destination_account:
+          type: string
+          description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
+        limit:
+          type: number
+          minimum: 10
+          maximum: 400
+          description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
+        marker:
+          type: any
+          description: Value from a previous paginated response. Resume retrieving data where that response left off.
+      required:
+        - method
+        - account
+    
+    AccountChannelsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            discriminator:
+              propertyName: status
+              mapping:
+                - success: "#/components/schemas/AccountChannelsSuccessResponse"
+                - error: "#/components/schemas/AccountChannelsErrorResponse"
 
-      AccountChannelsSuccessResponse:
-        type: object
-        allOf:
-          - $ref: 'requests.yaml#/components/schemas/BaseSuccessResponse'
-        properties:          
-          result:
-            type: object
-            properties:
-              account:
-                type: string
-                description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
-              channels:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Channel'
-                description: Payment channels owned by this account.
-              ledger_hash:
-                type: string
-                description: The identifying hash of the ledger version used to generate this response.
-              ledger_index:                  
-                oneOf:
-                  - type: string
-                  - type: integer
-                description: The ledger index of the ledger version used to generate this response.
-              validated:
-                type: boolean
-                description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
-              limit:
-                type: number
-                description: The limit to how many channel objects were actually returned by this request.
-              marker:
-                type: any
-                description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
-            required:
-              - account
-      
-      AccountChannelsErrorResponse:
-        type: object
-        properties:
-        # TODO: Implement this after creating the generic error object
+              oneOf:
+                - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
+                - $ref: '#/components/schemas/AccountChannelsErrorResponse'
 
-
-      AccountChannelsResponse:
-        type: object
-        properties:
+    AccountChannelsSuccessResponse:
+      type: object
+      allOf:
+        - $ref: 'requests.yaml#/components/schemas/BaseSuccessResponse'
+      properties:          
+        account:
+          type: string
+          description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+          description: Payment channels owned by this account.
+        ledger_hash:
+          type: string
+          description: The identifying hash of the ledger version used to generate this response.
+        ledger_index:                  
           oneOf:
-            - $ref: '#schemas/AccountChannelsSuccessResponse'
-            - $ref: '#schemas/AccountChannelsErrorResponse' # TODO: See if you can use result > status to discriminate between these somehow
+            - type: string
+            - type: integer
+          description: The ledger index of the ledger version used to generate this response.
+        validated:
+          type: boolean
+          description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
+        limit:
+          type: number
+          description: The limit to how many channel objects were actually returned by this request.
+        marker:
+          type: any
+          description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
+      required:
+        - account
+      
+    AccountChannelsErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: "requests.yaml#/components/schemas/UniversalErrorResponseCodes"
+            - enum:
+              - invalidParams
+              - actNotFound
+              - lgrNotFound
+            description: >
+              * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+              * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
+              * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
+        status:
+          enum:
+            - error
+        request:
+          - $ref: "#/components/schemas/AccountChannelsRequest"
+      required:
+        - error
+        - status
+        - request
+
       

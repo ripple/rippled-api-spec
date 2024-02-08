@@ -4,6 +4,9 @@ info:
   description: A JSON RPC API used to query rippled.
   version: 1.0.0
 
+# TODO: Include backticks in descriptions across the board!
+# TODO: Add a prettier or prettier equivalent!
+
 servers:
 	# Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
 	- url: https://s1.ripple.com:51234
