@@ -176,11 +176,11 @@ The rest of these steps will use [`accountChannels.yaml`](./account_channels.yam
                     propertyName: method
                     mapping:
                         account_channels: "#/components/schemas/AccountChannelsResponse"
-                		# TODO: Add the rest of the JSON RPC responses here
+                    # TODO: Add the rest of the JSON RPC responses here
 
                     anyOf:
                         $ref: "#/components/schemas/AccountChannelsResponse"
-                		# TODO: Add the rest of the JSON RPC responses here
+                    # TODO: Add the rest of the JSON RPC responses here
     ```
 8. With that, you've successfully added a new request! 
 

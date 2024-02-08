@@ -8,16 +8,16 @@ info:
 # TODO: Add a prettier or prettier equivalent!
 
 servers:
-	# TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
-	- url: https://s1.ripple.com:51234
+  # TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
+  - url: https://s1.ripple.com:51234
     description: Mainnet Public API server
-	# TODO: Should testnet / devnet / xahau / etc. be on this list?
+  # TODO: Should testnet / devnet / xahau / etc. be on this list?
   - url: wss://s.altnet.rippletest.net:51234/
-		description: Testnet (not for production usage)
+    description: Testnet (not for production usage)
 
 paths:
-	# We use OpenAPI's discriminator field with the `method` name to delineate between the options
-	/:
+  # We use OpenAPI's discriminator field with the `method` name to delineate between the options
+  /:
     post:
       summary: Send JSON-RPC request to server
       requestBody:
@@ -73,7 +73,7 @@ paths:
         
 components:
   schemas:
-		JsonRpcRequest:
+    JsonRpcRequest:
       type: object
       properties:
         jsonrpc:
@@ -82,7 +82,7 @@ components:
           example: "2.0"
         id:
           type: integer
-					description: A unique identifier for this request.
+          description: A unique identifier for this request.
           example: 1
         method:
           $ref: "#/components/schemas/TransactionType"
