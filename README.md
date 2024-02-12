@@ -18,7 +18,7 @@ The Websocket API will be written using [AsyncAPI] which better matches the ways
 
  1. Install `redocly cli` - https://redocly.com/docs/cli/installation/
  2. Run `redocly lint json_api.yaml` (Docs on their lint command: https://redocly.com/docs/cli/commands/lint/)
-   - Resolve any errors that appear
+   - Resolve any errors that appear by looking up error codes here: https://redocly.com/docs/cli/rules/recommended/ 
  3. Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
    - Modify the spec / configuration as needed so those generate properly (TODO: Untested as of now!) 
 
