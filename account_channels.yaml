@@ -77,8 +77,8 @@ components:
         (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
         Returns an AccountChannelsResponse.
       allOf:
-        - $ref: 'requests.yaml#/components/schemas/BaseRequest'
-        - $ref: 'requests.yaml#/components/schemas/LookupByLedgerRequest'
+        - $ref: 'base.yaml#/components/schemas/BaseRequest'
+        - $ref: 'base.yaml#/components/schemas/LookupByLedgerRequest'
       properties:
         method:
           type: string
@@ -127,7 +127,7 @@ components:
     AccountChannelsSuccessResponse:
       type: object
       allOf:
-        - $ref: 'requests.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: 'base.yaml#/components/schemas/BaseSuccessResponse'
       properties:          
         account:
           type: string
@@ -163,7 +163,7 @@ components:
         error:
           type: string
           oneOf:
-            - $ref: "requests.yaml#/components/schemas/UniversalErrorResponseCodes"
+            - $ref: "base.yaml#/components/schemas/UniversalErrorResponseCodes"
             - enum:
               - invalidParams
               - actNotFound

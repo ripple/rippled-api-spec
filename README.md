@@ -33,7 +33,7 @@ In situations where there are multiple equivalent ways to write this spec, this 
 
 To add a new request, there are three schemas you have to add, and a couple places you need to update.
 
-At a high level, you'll be adding a Request and Response (which can be either a SuccessResponse or an ErrorResponse). These requests / responses have shared traits which can be included from the `requests.yaml` types. See below for a diagram showing how the schemas for an example `tx` request connect. (Each arrow indicates an object including the fields from the ones it points to)
+At a high level, you'll be adding a Request and Response (which can be either a SuccessResponse or an ErrorResponse). These requests / responses have shared traits which can be included from the `base.yaml` types. See below for a diagram showing how the schemas for an example `tx` request connect. (Each arrow indicates an object including the fields from the ones it points to)
 
 <img src="example_request_diagram.png">
 
@@ -58,7 +58,7 @@ The rest of these steps will use [`accountChannels.yaml`](./account_channels.yam
         (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
         Returns an AccountChannelsResponse.
       allOf:
-        - $ref: 'requests.yaml#/components/schemas/BaseRequest'
+        - $ref: 'base.yaml#/components/schemas/BaseRequest'
       properties:
         method:
           type: string
@@ -100,7 +100,7 @@ The rest of these steps will use [`accountChannels.yaml`](./account_channels.yam
     AccountChannelsSuccessResponse:
       type: object
       allOf:
-        - $ref: 'requests.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: 'base.yaml#/components/schemas/BaseSuccessResponse'
       properties:          
         account:
           type: string
@@ -123,7 +123,7 @@ The rest of these steps will use [`accountChannels.yaml`](./account_channels.yam
       error:
         type: string
         oneOf:
-          - $ref: "requests.yaml#/components/schemas/UniversalErrorResponseCodes"
+          - $ref: "base.yaml#/components/schemas/UniversalErrorResponseCodes"
           - enum:
             - invalidParams
             - actNotFound
