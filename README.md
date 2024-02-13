@@ -22,7 +22,11 @@ _If you're new to **AsyncAPI**, you should read through [this tutorial](https://
 
 - Resolve any errors that appear by looking up error codes here: https://redocly.com/docs/cli/rules/recommended/
 
-3.  Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
+3.  Log in if you have Redocly credentials to use the premium version (the community version also works, but does not have the ["Try It"](https://redocly.com/docs/api-reference-docs/guides/try-it-console/) feature)
+
+- To Log in run `redocly login` (then follow the instructions)
+
+4.  Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
 
 - Modify the spec / configuration as needed so those generate properly (TODO: Untested as of now!)
 
