@@ -1,21 +1,5 @@
 components:
   schemas:
-    BaseRequest:
-      type: object
-      description: Includes the basic information all JSON RPC methods contain.
-      properties:
-        api_version:
-          type: number
-          description: The API version to use. If omitted, use version 1.
-        method:
-          type: string
-          description: The name of the API method.
-        id:
-          type: string
-          description: A unique value to identify this request. The response to this request uses the same id field. This way, even if responses arrive out of order, you know which request prompted which response.
-      required:
-        - method
-
     ResponseWarning:
       type: object
       description: Used to share rate-limiting warnings or other potential issues with a request.
@@ -37,19 +21,6 @@ components:
       required:
         - id
         - message
-
-    LookupByLedgerRequest:
-      type: object
-      description: Additional information shared in requests which search for specific ledger data.
-      properties:
-        ledger_hash:
-          type: string
-          description: A 20-byte hex string for the ledger version to use.
-        ledger_index:
-          oneOf:
-            - type: string
-            - type: integer
-          description: The ledger index of the ledger to use, or a shortcut string.
 
     BaseSuccessResponse:
       type: object

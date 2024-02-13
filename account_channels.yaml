@@ -75,31 +75,34 @@ components:
         This includes only channels where the specified account is the channel's source, not the destination. 
         (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
         Returns an AccountChannelsResponse.
-      allOf:
-        - $ref: 'base.yaml#/components/schemas/BaseRequest'
-        - $ref: 'base.yaml#/components/schemas/LookupByLedgerRequest'
-          properties:
-            method:
-              type: string
-              enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-                - account_channels
-            account:
-              type: string
-              description: The unique identifier of an account, typically the account's address.
-            destination_account:
-              type: string
-              description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
-            limit:
-              type: number
-              minimum: 10
-              maximum: 400
-              description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
-            marker:
-              # Not specifying a type is how we express "any" value is acceptable
-              description: Value from a previous paginated response. Resume retrieving data where that response left off.
-          required:
-            - method
-            - account
+      properties:
+        method:
+          type: string
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - account_channels
+        params:
+          type: array
+          items:
+            type: object
+            properties:
+              account:
+                type: string
+                description: The unique identifier of an account, typically the account's address.
+              destination_account:
+                type: string
+                description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
+              limit:
+                type: number
+                minimum: 10
+                maximum: 400
+                description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
+              marker:
+                # Not specifying a type is how we express "any" value is acceptable
+                description: Value from a previous paginated response. Resume retrieving data where that response left off.
+            required:
+              - account
+      required:
+        - method
 
     AccountChannelsResponse:
       type: object
