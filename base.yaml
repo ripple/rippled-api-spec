@@ -30,7 +30,7 @@ components:
           description: A unique numeric code for this warning message.
         message:
           type: string
-          description: > 
+          description: >
             A human-readable string describing the cause of this message.
             Do not write software that relies the contents of this message;
             use the id (and details, if applicable) to identify the warning instead.

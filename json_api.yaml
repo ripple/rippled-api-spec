@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: XRP Ledger Public API
   description: A JSON RPC API used to query rippled.
-  license: 
+  license:
     name: MIT License
     identifier: mit
     url: https://opensource.org/license/mit/
@@ -32,48 +32,48 @@ paths:
               discriminator:
                 propertyName: method
                 mapping:
-                  account_channels: "account_channels.yaml#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
+                  account_channels: 'account_channels.yaml#/components/schemas/AccountChannelsRequest' # TODO: Verify this is the correct syntax
                   # TODO: Add the rest of the JSON RPC requests here
               anyOf:
-                - $ref: "account_channels.yaml#/components/schemas/AccountChannelsRequest"
-                # TODO: Add the rest of the JSON RPC requests here              
+                - $ref: 'account_channels.yaml#/components/schemas/AccountChannelsRequest'
+                # TODO: Add the rest of the JSON RPC requests here
         required: true
-      operationId: "POST"
+      operationId: 'POST'
       responses:
-        "200":
+        '200':
           description: JSON-RPC response object
           content:
             application/json:
               schema:
-                # TODO: Map the input request types to these output responses. 
+                # TODO: Map the input request types to these output responses.
                 # They do not have a consistent field which is available on all of them which tells you which request was sent.
                 # Errors have `result.request.method`, but success responses
                 oneOf:
-                  - $ref: "account_channels.yaml#/components/schemas/AccountChannelsResponse"
+                  - $ref: 'account_channels.yaml#/components/schemas/AccountChannelsResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
-        "4XX":
-          description: JSON-RPC http error. The response is a plain-text explanation with the http error code and description in the response body.
-          content:
-            text/plain:
-              schema:
-                type: string
-        
-        "5XX":
+        '4XX':
           description: JSON-RPC http error. The response is a plain-text explanation with the http error code and description in the response body.
           content:
             text/plain:
               schema:
                 type: string
 
-        "503":
+        '5XX':
+          description: JSON-RPC http error. The response is a plain-text explanation with the http error code and description in the response body.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+        '503':
           description: An error for when the client is over the server's rate limit.
           content:
             text/plain:
               schema:
                 type: string
-                enum: 
-                  - "503 Service Unavailable\n\nServer is overloaded" # TODO: Validate that this is the right string, it's unclear whether 503 is included in the response: https://xrpl.org/rate-limiting.html#json-rpc-rate-limited-error      
+                enum:
+                  - "503 Service Unavailable\n\nServer is overloaded" # TODO: Validate that this is the right string, it's unclear whether 503 is included in the response: https://xrpl.org/rate-limiting.html#json-rpc-rate-limited-error
 
 components:
   securitySchemes:
