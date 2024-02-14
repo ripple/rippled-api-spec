@@ -74,5 +74,3 @@ paths:
                 type: string
                 enum:
                   - "503 Service Unavailable\n\nServer is overloaded" # TODO: Validate that this is the right string, it's unclear whether 503 is included in the response: https://xrpl.org/rate-limiting.html#json-rpc-rate-limited-error
-
-# TODO: Verify that basic http is the right security method for JSON RPC (xrpl-py uses JSON RPC so may be a useful resource!)
