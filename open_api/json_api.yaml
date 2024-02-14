@@ -74,3 +74,5 @@ paths:
                 type: string
                 enum:
                   - "503 Service Unavailable\n\nServer is overloaded" # TODO: Validate that this is the right string, it's unclear whether 503 is included in the response: https://xrpl.org/rate-limiting.html#json-rpc-rate-limited-error
+
+security: []

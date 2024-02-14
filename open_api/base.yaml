@@ -54,6 +54,19 @@ components:
         - id
         - type
 
+    LookupByLedgerRequest:
+      type: object
+      description: Additional information shared in requests which search for specific ledger data.
+      properties:
+        ledger_hash:
+          type: string
+          description: A 20-byte hex string for the ledger version to use.
+        ledger_index:
+          oneOf:
+            - type: string
+            - type: integer
+          description: The ledger index of the ledger to use, or a shortcut string.
+
     UniversalErrorResponseCodes:
       enum:
         - amendmentBlocked
