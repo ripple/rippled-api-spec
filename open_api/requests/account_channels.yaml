@@ -123,7 +123,7 @@ components:
     AccountChannelsSuccessResponse:
       type: object
       allOf:
-        - $ref: 'base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
       properties:
         account:
           type: string
@@ -159,7 +159,7 @@ components:
         error:
           type: string
           oneOf:
-            - $ref: 'base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
             - enum:
                 - invalidParams
                 - actNotFound
