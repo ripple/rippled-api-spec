@@ -4,6 +4,14 @@ Instructions for testing and extending this OpenAPI specification for the JSON R
 
 _If you're new to OpenAPI, you should read through [this tutorial](https://learn.openapis.org/specification/) and use [these reference docs](https://spec.openapis.org/oas/v3.1.0) to look up any terms you see that are unfamiliar_
 
+## Table of Contents
+
+- [Testing your specification](#testing-your-specification)
+- [Preferences](#preferences)
+   * [Things to investigate](#things-to-investigate)
+- [How to add a new Request](#how-to-add-a-new-request)
+
+
 ## Testing your specification
 
 1.  Install `redocly cli` - https://redocly.com/docs/cli/installation/
