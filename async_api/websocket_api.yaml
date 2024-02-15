@@ -1,0 +1,12 @@
+# TODO:
+# 1. Get a template starter here
+# 2. Create a big file with account_channels and the proper high-level shared fields (like base, but for websockets)
+# 3. Get account_channels request squared away
+# 4. Get account_channels response
+# 5. Do account_channels error response
+# 6. Look into how to test AsyncAPI (since I don't know if redocly does - maybe it does!)
+
+# Conceptually unique things to prototype
+# Requests / responses
+# Subscriptions
+# Submit request (As it will have transaction types as a requirement)

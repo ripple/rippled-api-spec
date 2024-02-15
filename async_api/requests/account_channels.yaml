@@ -1,0 +1,3 @@
+# Notes:
+# The `Channel` object seems re-usable between the two
+# The response structure is NOT re-usable, so that's one challenge
