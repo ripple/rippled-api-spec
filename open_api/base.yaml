@@ -26,22 +26,14 @@ components:
       type: object
       description: Information which is included in every successful response from a request sent to rippled.
       properties:
-        api_version:
-          type: number
-          format: float
-          description: The API version used for the response.
         forwarded:
           type: boolean
           description: Indicates whether the request was forwarded.
-        id:
-          type: string
-          description: The ID of the response.
         status:
-          type: string # TODO: Should this be "success" instead of a string since this is only for the 'success' case?
-          description: The status of the response (e.g., 'success').
-        type:
           type: string
-          description: The type of the response (e.g., 'response').
+          description: The status of the response (e.g., 'success').
+          enum:
+            - success
         warning:
           type: string
           description: A specific warning type (e.g., 'load').
@@ -51,8 +43,7 @@ components:
             $ref: '#/components/schemas/ResponseWarning'
           description: An array of response warnings.
       required:
-        - id
-        - type
+        - status
 
     LookupByLedgerRequest:
       type: object
