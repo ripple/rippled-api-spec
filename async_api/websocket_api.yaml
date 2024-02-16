@@ -1,12 +1,50 @@
 # TODO:
-# 1. Get a template starter here
-# 2. Create a big file with account_channels and the proper high-level shared fields (like base, but for websockets)
-# 3. Get account_channels request squared away
-# 4. Get account_channels response
-# 5. Do account_channels error response
-# 6. Look into how to test AsyncAPI (since I don't know if redocly does - maybe it does!)
+# Simplify this repo to re-use specifications
+# Most of the two api's are identical, they just need slightly different formats / keywords in:
+# - This file in particular
+# - And in the response types
 
 # Conceptually unique things to prototype
 # Requests / responses
 # Subscriptions
 # Submit request (As it will have transaction types as a requirement)
+
+asyncapi: 3.0.0
+info:
+  title: XRP Ledger Public API
+  description: A Websocket API used to query rippled.
+  license:
+    name: MIT License
+    identifier: mit
+    url: https://opensource.org/license/mit/
+  version: 1.0.0
+
+servers:
+  # TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
+  - url: wss://s1.ripple.com:51233
+    description: Mainnet Public API server
+  # TODO: Should testnet / devnet / xahau / etc. be on this list?
+  - url: wss://s.altnet.rippletest.net:51233
+    description: Testnet (not for production usage)
+
+channels:
+  root:
+    address: /
+    messages:
+      AccountChannelsRequest:
+        $ref: './requests/account_channels.yaml#components/schemas/AccountChannelRequest'
+      # TODO: Add additional request types here.
+
+operations:
+  AccountChannelsResponse:
+    action: 'receive'
+    summary: 'Rippled will process the given request based on the command field and other parameters.'
+    channel:
+      $ref: '#channels/root'
+    # This ties the output to the input message - this solves a problem the OpenAPI version has, where it can't tell what input produced the output.
+    messages:
+      $ref: '#/channels/root/messages/AccountChannelsRequest'
+
+  # TODO: Add additional response types for individual requests here
+
+security: []

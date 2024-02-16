@@ -1,1 +1,81 @@
 # This should contain shared structural elements like the request format for websocket requests
+components:
+  schemas:
+    ResponseWarning:
+      type: object
+      description: Used to share rate-limiting warnings or other potential issues with a request.
+      properties:
+        details:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional information about this warning. The contents vary depending on the type of warning.
+        id:
+          type: integer
+          description: A unique numeric code for this warning message.
+        message:
+          type: string
+          description: >
+            A human-readable string describing the cause of this message.
+            Do not write software that relies the contents of this message;
+            use the id (and details, if applicable) to identify the warning instead.
+      required:
+        - id
+        - message
+
+    # TODO: This is the only one that changed between the two base.yaml files - we should re-use most of this code.
+    BaseSuccessResponse:
+      type: object
+      description: Information which is included in every successful response from a request sent to rippled.
+      properties:
+        forwarded:
+          type: boolean
+          description: Indicates whether the request was forwarded.
+        status:
+          type: string
+          description: The status of the response (e.g., 'success').
+          enum:
+            - success
+        warning:
+          type: string
+          description: A specific warning type (e.g., 'load').
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseWarning'
+          description: An array of response warnings.
+      required:
+        - status
+
+    LookupByLedgerRequest:
+      type: object
+      description: Additional information shared in requests which search for specific ledger data.
+      properties:
+        ledger_hash:
+          type: string
+          description: A 20-byte hex string for the ledger version to use.
+        ledger_index:
+          oneOf:
+            - type: string
+            - type: integer
+          description: The ledger index of the ledger to use, or a shortcut string.
+
+    UniversalErrorResponseCodes:
+      enum:
+        - amendmentBlocked
+        - failedToForward
+        - invalid_API_version
+        - noClosed
+        - noCurrent
+        - noNetwork
+        - tooBusy
+        - unknownCmd
+      description: >
+        * `amendmentBlocked` - The server is amendment blocked and needs to be updated to the latest version to stay synced with the XRP Ledger network.
+        * `failedToForward` - (Reporting Mode servers only) The server tried to forward this request to a P2P Mode server, but the connection failed.
+        * `invalid_API_version` - The server does not support the API version number from the request.
+        * `noClosed` - The server does not have a closed ledger, typically because it has not finished starting up.
+        * `noCurrent` - The server does not know what the current ledger is, due to high load, network problems, validator failures, incorrect configuration, or some other problem.
+        * `noNetwork` - The server is having trouble connecting to the rest of the XRP Ledger peer-to-peer network (and is not running in stand-alone mode).
+        * `tooBusy` - The server is under too much load to do this command right now. Generally not returned if you are connected as an admin.
+        * `unknownCmd` - The request does not contain a command that the rippled server recognizes.
