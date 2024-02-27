@@ -9,42 +9,41 @@
 # Subscriptions
 # Submit request (As it will have transaction types as a requirement)
 
-asyncapi: 3.0.0
+asyncapi: 2.6.0
 info:
   title: XRP Ledger Public API
   description: A Websocket API used to query rippled.
   license:
     name: MIT License
-    identifier: mit
     url: https://opensource.org/license/mit/
   version: 1.0.0
 
 servers:
   # TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
-  - url: wss://s1.ripple.com:51233
+  mainnet:
+    url: wss://s1.ripple.com:51233
+    protocol: wss
     description: Mainnet Public API server
   # TODO: Should testnet / devnet / xahau / etc. be on this list?
-  - url: wss://s.altnet.rippletest.net:51233
+  testnet:
+    url: wss://s.altnet.rippletest.net:51233
+    protocol: wss
     description: Testnet (not for production usage)
 
 channels:
-  root:
-    address: /
-    messages:
-      AccountChannelsRequest:
-        $ref: './requests/account_channels.yaml#components/schemas/AccountChannelRequest'
-      # TODO: Add additional request types here.
+  /:
+    # In AsyncAPI 2.x 'subscribe' is from the api's perspective - so an end user sends a request to
+    # a channel where the api is 'subscribed'. This is changed in 3.0.0.
+    subscribe:
+      message:
+        messageId: 'AccountChannelRequest'
+        payload:
+          $ref: './requests/account_channels.yaml#components/schemas/AccountChannelRequest'
+      # TODO: Add additional request types for individual requests here via "oneOf"
 
-operations:
-  AccountChannelsResponse:
-    action: 'receive'
-    summary: 'Rippled will process the given request based on the command field and other parameters.'
-    channel:
-      $ref: '#channels/root'
-    # This ties the output to the input message - this solves a problem the OpenAPI version has, where it can't tell what input produced the output.
-    messages:
-      $ref: '#/channels/root/messages/AccountChannelsRequest'
-
-  # TODO: Add additional response types for individual requests here
-
-security: []
+    publish:
+      message:
+        messageId: 'AccountChannelsResponse'
+        payload:
+          $ref: './requests/account_channels.yaml#components/schemas/AccountChannelsResponse'
+      # TODO: Add additional response types for individual requests here via "oneOf"
