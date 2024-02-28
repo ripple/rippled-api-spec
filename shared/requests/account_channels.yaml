@@ -5,6 +5,74 @@
 # Request types. (JSON RPC has the params as an object in an array, but the core attributes of that object are shared)
 components:
   schemas:
+    Channel:
+      type: object
+      properties:
+        account:
+          type: string
+          description: The owner of the channel, as an Address.
+        amount:
+          type: string
+          description: The total amount of XRP, in drops allocated to this channel.
+        balance:
+          type: string
+          description: >
+            The total amount of XRP, in drops, paid out from this channel, as of the ledger version used.
+            (You can calculate the amount of XRP left in the channel by subtracting balance from amount.)
+        cancel_after:
+          type: integer
+          description: >
+            Time, in seconds since the Ripple Epoch, of this channel's immutable expiration,
+            if one was specified at channel creation. If this is before the close time of the
+            most recent validated ledger, the channel is expired.
+        channel_id:
+          type: string
+          description: >
+            A unique ID for this channel, as a 64-character hexadecimal string.
+            This is also the ID of the channel object in the ledger's state data.
+        destination_account:
+          type: string
+          description: The destination account of the channel, as an Address. Only this account can receive the XRP in the channel while it is open.
+        destination_tag:
+          type: integer
+          description: >
+            A 32-bit unsigned integer to use as a destination tag for payments through this channel,
+            if one was specified at channel creation. This indicates the payment channel's beneficiary
+            or other purpose at the destination account.
+        expiration:
+          type: integer
+          description: >
+            Time, in seconds since the Ripple Epoch, when this channel is set to expire.
+            This expiration date is mutable. If this is before the close time of the most recent
+            validated ledger, the channel is expired.
+        public_key:
+          type: string
+          description: >
+            The public key for the payment channel in the XRP Ledger's base58 format.
+            Signed claims against this channel must be redeemed with the matching key pair.
+        public_key_hex:
+          type: string
+          description: >
+            The public key for the payment channel in hexadecimal format, if one was specified at channel creation.
+            Signed claims against this channel must be redeemed with the matching key pair.
+        settle_delay:
+          type: integer
+          description: >
+            The number of seconds the payment channel must stay open after the owner of the channel requests to close it.
+        source_tag:
+          type: integer
+          description: >
+            A 32-bit unsigned integer to use as a source tag for payments through this payment channel,
+            if one was specified at channel creation. This indicates the payment channel's originator or
+            other purpose at the source account.
+      required:
+        - account
+        - amount
+        - balance
+        - channel_id
+        - destination_account
+        - settle_delay
+
     AccountChannelsRequest:
       summary: >
         The account_channels method returns information about an account's Payment Channels. 
@@ -99,7 +167,7 @@ components:
             channels:
               type: array
               items:
-                $ref: '../../shared/requests/account_channels.yaml#/components/schemas/Channel'
+                $ref: '#/components/schemas/Channel'
               description: Payment channels owned by this account.
             ledger_hash:
               type: string
