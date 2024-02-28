@@ -8,9 +8,8 @@ _If you're new to OpenAPI, you should read through [this tutorial](https://learn
 
 - [Testing your specification](#testing-your-specification)
 - [Preferences](#preferences)
-   * [Things to investigate](#things-to-investigate)
+  - [Things to investigate](#things-to-investigate)
 - [How to add a new Request](#how-to-add-a-new-request)
-
 
 ## Testing your specification
 
@@ -54,7 +53,7 @@ At a high level, you'll be adding a Request and Response (which can be either a 
 
 _Image generated via a mermaid diagram from the specification in [`example_request_diagram.mermaid`](./example_request_diagram.mermaid)_
 
-The rest of these steps will use [`accountChannels.yaml`](./account_channels.yaml) as an example you can follow when adding other requests.
+The rest of these steps will use [`accountChannels.yaml`](./requests/account_channels.yaml) as an example you can follow when adding other requests.
 
 > Note: Examples may contain [...] - this just means parts of the file were omitted to make it easier to read. (Often they are used to skip over most of the properties in an example schema)
 
