@@ -73,151 +73,33 @@ components:
         - destination_account
         - settle_delay
 
-    AccountChannelsRequest:
-      summary: >
-        The account_channels method returns information about an account's Payment Channels. 
-        This includes only channels where the specified account is the channel's source, not the destination. 
-        (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
-        Returns an AccountChannelsResponse.
-      type: object
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        method:
-          type: string
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-            - account_channels
-        account:
-          type: string
-          description: The unique identifier of an account, typically the account's address.
-        destination_account:
-          type: string
-          description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
-        limit:
-          type: number
-          minimum: 10
-          maximum: 400
-          description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
-        marker:
-          # Not specifying a type is how we express "any" value is acceptable
-          description: Value from a previous paginated response. Resume retrieving data where that response left off.
-      required:
-        - method
-        - account
-      example:
-        method: 'account_channels'
-        params:
-          - account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
-            destination_account: 'ra5nK24KXen9AHvsdFTKHSANinZseWnPcX'
-            ledger_index": 'validated'
-
-    AccountChannelsResponse:
-      type: object
-      discriminator:
-        propertyName: status
-        mapping:
-          success: '#/components/schemas/AccountChannelsSuccessResponse'
-          error: '#/components/schemas/AccountChannelsErrorResponse'
-      oneOf:
-        - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
-        - $ref: '#/components/schemas/AccountChannelsErrorResponse'
-      properties:
-        # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
-        id:
-          # Not specifying a type is how we express "any" value is acceptable
-          description: 'A unique identifier for the request.'
-        type:
-          type: string
-          description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-            - response
-      required:
-        - id
-        - type
-      example:
-        id: 1
-        result:
-          account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
-          channels:
-            - account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
-              amount: '1000'
-              balance: '0'
-              channel_id: C7F634794B79DB40E87179A9D1BF05D05797AE7E92DF8E93FD6656E8C4BE3AE7
-              destination_account: ra5nK24KXen9AHvsdFTKHSANinZseWnPcX
-              public_key: aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw
-              public_key_hex: 03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2
-              settle_delay: 60
-          ledger_hash: 27F530E5C93ED5C13994812787C1ED073C822BAEC7597964608F2C049C2ACD2D
-          ledger_index: 71766343
-          validated: true
-        status: success
-        type: response
-
     AccountChannelsSuccessResponse:
       type: object
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse' #TODO: (This should include the "warnings" and such)
       properties:
-        result:
-          type: object
-          properties:
-            account:
-              type: string
-              description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
-            channels:
-              type: array
-              items:
-                $ref: '#/components/schemas/Channel'
-              description: Payment channels owned by this account.
-            ledger_hash:
-              type: string
-              description: The identifying hash of the ledger version used to generate this response.
-            ledger_index:
-              oneOf:
-                - type: string
-                - type: integer
-              description: The ledger index of the ledger version used to generate this response.
-            validated:
-              type: boolean
-              description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
-            limit:
-              type: number
-              description: The limit to how many channel objects were actually returned by this request.
-            marker:
-              # Not specifying a type is how we express "any" value is acceptable
-              description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
-          required:
-            - account
-        required:
-          - result
-
-    AccountChannelsErrorResponse:
-      type: object
-      properties:
-        error:
+        account:
           type: string
+          description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+          description: Payment channels owned by this account.
+        ledger_hash:
+          type: string
+          description: The identifying hash of the ledger version used to generate this response.
+        ledger_index:
           oneOf:
-            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
-            - enum:
-                - invalidParams
-                - actNotFound
-                - lgrNotFound
-          description: >
-            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
-            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
-        # TODO: These two (status and api_version) can go to a "BaseErrorResponse" as they're always like this in all error messages
-        status:
-          type: string
-          description: Whether this request resulted in a rippled error ('error') or was successful ('success').
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-            - error
-        api_version:
-          type: integer
-          description: The api_version specified in the request, if any.
-        request:
-          $ref: '#/components/schemas/AccountChannelsRequest'
-        required:
-          - status
-          - error
-          - request
+            - type: string
+            - type: integer
+          description: The ledger index of the ledger version used to generate this response.
+        validated:
+          type: boolean
+          description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
+        limit:
+          type: number
+          description: The limit to how many channel objects were actually returned by this request.
+        marker:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
+      required:
+        - account

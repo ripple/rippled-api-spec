@@ -88,38 +88,12 @@ components:
     AccountChannelsSuccessResponse:
       type: object
       allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse' #TODO: (This should include the "warnings" and such)
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
       properties:
         result:
           type: object
           properties:
-            account:
-              type: string
-              description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
-            channels:
-              type: array
-              items:
-                $ref: '../../shared/requests/account_channels.yaml#/components/schemas/Channel'
-              description: Payment channels owned by this account.
-            ledger_hash:
-              type: string
-              description: The identifying hash of the ledger version used to generate this response.
-            ledger_index:
-              oneOf:
-                - type: string
-                - type: integer
-              description: The ledger index of the ledger version used to generate this response.
-            validated:
-              type: boolean
-              description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
-            limit:
-              type: number
-              description: The limit to how many channel objects were actually returned by this request.
-            marker:
-              # Not specifying a type is how we express "any" value is acceptable
-              description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
-          required:
-            - account
+            - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
         required:
           - result
 
