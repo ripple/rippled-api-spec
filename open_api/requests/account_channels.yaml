@@ -15,26 +15,7 @@ components:
         params:
           type: array
           items:
-            type: object
-            allOf:
-              - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-            properties:
-              account:
-                type: string
-                description: The unique identifier of an account, typically the account's address.
-              destination_account:
-                type: string
-                description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
-              limit:
-                type: number
-                minimum: 10
-                maximum: 400
-                description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
-              marker:
-                # Not specifying a type is how we express "any" value is acceptable
-                description: Value from a previous paginated response. Resume retrieving data where that response left off.
-          required:
-            - account
+            $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsRequest'
       required:
         - method
       example:
@@ -53,10 +34,10 @@ components:
             propertyName: status
             mapping:
               success: '#/components/schemas/AccountChannelsSuccessResponse'
-              error: '#/components/schemas/AccountChannelsErrorResponse'
+              error: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsErrorResponse'
           oneOf:
             - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
-            - $ref: '#/components/schemas/AccountChannelsErrorResponse'
+            - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsErrorResponse'
       required:
         - result
       example:
@@ -79,31 +60,5 @@ components:
     AccountChannelsSuccessResponse:
       type: object
       allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
         - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
-
-    AccountChannelsErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          oneOf:
-            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
-            - enum:
-                - invalidParams
-                - actNotFound
-                - lgrNotFound
-          description: >
-            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
-            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
-        status:
-          type: string
-          enum:
-            - error
-        request:
-          $ref: '#/components/schemas/AccountChannelsRequest'
-      required:
-        - error
-        - status
-        - request

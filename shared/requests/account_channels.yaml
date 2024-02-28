@@ -73,6 +73,34 @@ components:
         - destination_account
         - settle_delay
 
+    AccountChannelsRequest:
+      summary: >
+        The account_channels method returns information about an account's Payment Channels. 
+        This includes only channels where the specified account is the channel's source, not the destination. 
+        (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
+        Returns an AccountChannelsResponse.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        account:
+          type: string
+          description: The unique identifier of an account, typically the account's address.
+        destination_account:
+          type: string
+          description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
+        limit:
+          type: number
+          minimum: 10
+          maximum: 400
+          description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
+        marker:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: Value from a previous paginated response. Resume retrieving data where that response left off.
+      required:
+        - method
+        - account
+
     AccountChannelsSuccessResponse:
       type: object
       properties:
@@ -103,3 +131,29 @@ components:
           description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
       required:
         - account
+
+    AccountChannelsErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AccountChannelsRequest'
+      required:
+        - status
+        - error
+        - request

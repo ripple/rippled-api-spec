@@ -58,6 +58,11 @@ components:
             - type: integer
           description: The ledger index of the ledger to use, or a shortcut string.
 
+    WebsocketErrorFields:
+      api_version:
+        type: integer
+        description: The api_version specified in the request, if any.
+
     UniversalErrorResponseCodes:
       enum:
         - amendmentBlocked

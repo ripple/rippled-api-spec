@@ -217,3 +217,7 @@ responses:
 8. With that, you've successfully added a new request!
 
 TODO: Add steps to validate that this schema is correct using an OpenAPI validation tool.
+
+TODO: Add steps for testing the "Try It" feature locally with Redocly using the following command to run chrome in a lower security mode (risky beyond immediate dev use) to get around the CORS error that would normally occur: `open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`
+
+TODO: Update the steps now that we're using a shared folder for parts that are re-used across OpenAPI and AsyncAPI
