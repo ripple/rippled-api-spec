@@ -1,0 +1,6 @@
+- group: rippled APIs
+  items:
+    - page: ./open_api/json_api.yaml
+      label: 'JSON RPC API'
+    - page: ./async_api/websocket_api.yaml
+      label: 'Websocket API'

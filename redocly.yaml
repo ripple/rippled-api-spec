@@ -1,0 +1,13 @@
+extends:
+  - recommended
+
+apis:
+  json_rpc:
+    root: ./open_api/json_api.yaml
+
+  websocket:
+    root: ./async_api/websocket_api.yaml
+
+theme:
+  imports:
+    - '@redocly/portal-plugin-async-api'

@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "prettier": "3.2.5"
+  },
+  "dependencies": {
+    "@redocly/portal-plugin-async-api": "^1.0.169"
   }
 }
