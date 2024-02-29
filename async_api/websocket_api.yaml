@@ -36,14 +36,14 @@ channels:
     # a channel where the api is 'subscribed'. This is changed in 3.0.0.
     subscribe:
       message:
-        messageId: 'AccountChannelRequest'
+        messageId: 'AccountChannelsRequest'
         payload:
-          $ref: './requests/account_channels.yaml#components/schemas/AccountChannelRequest'
+          $ref: './requests/account_channels.yaml#/components/schemas/AccountChannelsRequest'
       # TODO: Add additional request types for individual requests here via "oneOf"
 
     publish:
       message:
         messageId: 'AccountChannelsResponse'
         payload:
-          $ref: './requests/account_channels.yaml#components/schemas/AccountChannelsResponse'
+          $ref: './requests/account_channels.yaml#/components/schemas/AccountChannelsResponse'
       # TODO: Add additional response types for individual requests here via "oneOf"
