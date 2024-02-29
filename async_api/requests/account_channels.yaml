@@ -15,18 +15,18 @@ components:
       allOf:
         - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsRequest'
       properties:
-        method:
+        command:
           type: string
           enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
             - account_channels
       required:
         - method
       example:
-        method: 'account_channels'
-        params:
-          - account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
-            destination_account: 'ra5nK24KXen9AHvsdFTKHSANinZseWnPcX'
-            ledger_index": 'validated'
+        id: 1
+        command: account_channels
+        account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+        destination_account: ra5nK24KXen9AHvsdFTKHSANinZseWnPcX
+        ledger_index: validated
 
     AccountChannelsResponse:
       type: object

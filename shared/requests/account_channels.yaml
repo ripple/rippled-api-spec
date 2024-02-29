@@ -103,6 +103,8 @@ components:
 
     AccountChannelsSuccessResponse:
       type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
       properties:
         account:
           type: string
@@ -112,14 +114,6 @@ components:
           items:
             $ref: '#/components/schemas/Channel'
           description: Payment channels owned by this account.
-        ledger_hash:
-          type: string
-          description: The identifying hash of the ledger version used to generate this response.
-        ledger_index:
-          oneOf:
-            - type: string
-            - type: integer
-          description: The ledger index of the ledger version used to generate this response.
         validated:
           type: boolean
           description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
