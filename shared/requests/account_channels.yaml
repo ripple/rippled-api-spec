@@ -98,7 +98,6 @@ components:
           # Not specifying a type is how we express "any" value is acceptable
           description: Value from a previous paginated response. Resume retrieving data where that response left off.
       required:
-        - method
         - account
 
     AccountChannelsSuccessResponse:

@@ -20,7 +20,7 @@ components:
           enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
             - account_channels
       required:
-        - method
+        - command
       example:
         id: 1
         command: account_channels
