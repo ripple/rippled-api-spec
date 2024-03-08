@@ -101,9 +101,9 @@ components:
         - account
 
     AccountChannelsSuccessResponse:
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      type: object
       properties:
         account:
           type: string

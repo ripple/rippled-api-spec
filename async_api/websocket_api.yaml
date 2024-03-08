@@ -46,4 +46,4 @@ channels:
         messageId: 'AccountChannelsResponse'
         payload:
           $ref: './requests/account_channels.yaml#/components/schemas/AccountChannelsResponse'
-      # TODO: Add additional response types for individual requests here via "oneOf"
+    # TODO: Add additional response types for individual requests here via "oneOf"
