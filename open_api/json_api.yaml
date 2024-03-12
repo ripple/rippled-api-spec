@@ -6,6 +6,7 @@ info:
     name: MIT License
     identifier: mit
     url: https://opensource.org/license/mit/
+  # TODO: version should eventually match the rippled version we are aiming to model
   version: 1.0.0
 
 servers:
@@ -19,6 +20,8 @@ servers:
 paths:
   # We use OpenAPI's discriminator field with the `method` name to delineate between the options
   /:
+    # TODO: Potentially we can try making a union of types at this level of Request / Response pairs (as opposed to one big Request array, and one big Response array)
+    # If that works, we could solve the problem below of tying inputs to outputs very specifically. Needs further investigation.
     post:
       summary: Send JSON-RPC request to server
       requestBody:
@@ -31,7 +34,7 @@ paths:
                 mapping:
                   account_channels: 'requests/account_channels.yaml#/components/schemas/AccountChannelsRequest' # TODO: Verify this is the correct syntax
                   # TODO: Add the rest of the JSON RPC requests here
-              anyOf:
+              oneOf:
                 - $ref: 'requests/account_channels.yaml#/components/schemas/AccountChannelsRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
@@ -49,6 +52,10 @@ paths:
                   - $ref: 'requests/account_channels.yaml#/components/schemas/AccountChannelsResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
+        # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.
+        # (Eventually the goal should be removing the '4XX' because all cases are covered)
+        # TODO: We also should investigate if some commands in rippled have unique http error codes / responses for common error code
+        # which are not shared across commands. (If so they should also be documented here)
         '4XX':
           description: JSON-RPC http error. The response is a plain-text explanation with the http error code and description in the response body.
           content:

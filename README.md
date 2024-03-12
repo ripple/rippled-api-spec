@@ -14,3 +14,7 @@ _If you're new to **AsyncAPI**, you should read through [this tutorial](https://
 For instructions on updating / testing the OpenAPI spec, please see [open_api/README.md](./open_api/README.md)
 
 For instructions on updating / testing the AsyncAPI spec, please see [async_api/README.md](./async_api/README.md)
+
+# Things we'd like to see eventually
+
+1. For now, we're not including tests for every possible rippled error that could be returned because that'd take a lot of effort for marginal robustness. The goal though is long-term this api serves as a source of truth for how rippled works, so having clear examples which reproduce each new rippled error code would be a great way to verify that changes in rippled work as they are expected to. We may also be able to use this to automatically generate unit tests for those api calls, but that's beyond the scope for this prototype.

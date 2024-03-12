@@ -16,6 +16,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/license/mit/
+  # TODO: version should eventually match the rippled version we are aiming to model
   version: 1.0.0
 
 servers:
