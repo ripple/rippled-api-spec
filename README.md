@@ -28,28 +28,33 @@ We currently use Redocly's tooling to test that our api is following the specifi
 
 For these instructions:
 
-- "..." indicates you should edit something (Ex. Replacing `...Request` with `AccountChannelsRequest`)
+- There's a decent amount of boilerplate code, so each step will include a template you should copy along with a list of which fields need updating.
+- `...` in the template indicates you should edit something (Ex. Replacing `...Request` with `AccountChannelsRequest`)
 - If this is for a request documented on xrpl.org, please copy and paste the documentation from there.
 - Read through `shared/base.yaml` after doing a draft of your spec to see if there are any re-usable components that make sense for your requests/responses
-- These instructions start with the "shared" schemas between OpenAPI and AsyncAPI, then links to the specific steps to do AFTER. Adding a request to either requires doing this shared work first!
 
 1.  _If you've already created a spec in the shared folder for this request, skip to the OpenAPI specific steps!_
 2.  Create a new file for the rippled request / response information in `shared/requests/<request_name.yaml>`
 
-    - Ex. [`shared/requests/account_channels.yaml`](/shared/requests/account_channels.yaml)
+    - For example: [`shared/requests/account_channels.yaml`](/shared/requests/account_channels.yaml)
 
 3.  In that shared file, add the `Request` type.
 
-    1.  "..." indicates you should edit something (Ex. Replacing `...Request` with `AccountChannelsRequest`)
+    1.  `...` indicates you should edit something (Ex. Replacing `...Request` with `AccountChannelsRequest`)
     2.  If this is for a request documented on xrpl.org, please copy and paste the documentation from there.
     3.  Read through `shared/base.yaml` to see if there are any re-usable components that make sense for your request
 
-    - Ex.
+    - Fields to update:
+      1. `...Request` with the name of the request (ex. `AccountChannelsRequest`)
+      2. `summary:` with a description of this request
+      3. If there are any common fields in `shared/base.yaml` that can be re-used, do so with `allOf` - otherwise delete that TODO comment.
+      4. `properties` with the parameters for this request (in alphabetical order)
+      5. `required` with a list of any required parameters (in alphabetical order)
 
     ```
     ...Request:
       summary: >
-        "..."
+        ...
       type: object
       # TODO: Add any common fields from `shared/base.yaml` that are applicable using `allOf`. Otherwise delete these comments! For example:
       # allOf:
@@ -65,9 +70,13 @@ For these instructions:
         - ...
     ```
 
-4.  Create the `...SuccessResponse` schema for when `rippled` responds with `success`
+4.  Create the `...SuccessResponse` schema for when `rippled` responds with `success`.
 
-    - Ex.
+    - Fields to update:
+      1. `...SuccessResponse` with the name of the request (ex. `AccountChannelsSuccessResponse`)
+      2. If there are any common fields in `shared/base.yaml` that can be re-used, do so with `allOf` - otherwise delete that TODO comment.
+      3. `properties` with the parameters for this request (in alphabetical order)
+      4. `required` with a list of any required parameters (in alphabetical order)
 
     ```
     ...SuccessResponse:
@@ -86,9 +95,12 @@ For these instructions:
         - ...
     ```
 
-5.  Create the `...ErrorResponse` schema for when `rippled` responds with an error code
+5.  Create the `...ErrorResponse` schema for when `rippled` responds with an error code.
 
-    - Ex.
+    - Fields to update:
+      1. `...ErrorResponse` with the name of the request (ex. `AccountChannelsErrorResponse`)
+      2. `enum:` with a yaml list of the specific error codes that are associated with this specific response (ex. invalidParams). Do not include errors which are already in the `UniversalErrorResponseCodes` listed in `shared/base.yaml`.
+      3. `request` should have a reference to the **shared** `...Request`. (**NOT** the `...Request` object that is in this file!)
 
     ```
     ...ErrorResponse:
@@ -101,8 +113,8 @@ For these instructions:
             # Add the error codes specific to this response here (ex. invalidParams)
             - enum:
                 - ...
+          # Include a bullet descrip for every
           description: >
-            # Describe each error code in bullet form here. Ex. "* `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing."
             ...
         status:
           type: string
@@ -124,13 +136,133 @@ For these instructions:
 
 _This section assumes you've already completed the shared work steps for this request in [How to add a new request](#how-to-add-a-new-request)_
 
-Although most of the body will re-use the shared schemas we defined earlier, we need boilerplate to fit the OpenAPI formatting and specify this new request/response as a valid rippled input/output.
+At a high level, we need to:
+
+1. Create boilerplate so the core types we defined in `shared/` can be used to match the JSON RPC formatting
+2. Reference that in the main `json_api.yaml` file
+
+The following instructions will each have a template you should copy, along with a list of fields you'll have to update. As a reminder, if there are already docs on xrpl.org, please use those for the descriptions/summary fields.
 
 1. Create a new file in `open_api/requests` named `..._open_api.yaml` for your new request. Ex. `account_channels_open_api.yaml`
 
    - The reason to include `_open_api` in the name is to make it easier to tell which file we're referencing throughout the codebase, and to make filename searches less confusing when debugging. Including it at the end also makes it easier to at a glance find the right file in the explorer.
+   - Example file: [open_api/requests/account_channels_open_api.yaml](./open_api/requests/account_channels_open_api.yaml)
 
-2. Create
+2. Add a `...Request` schema with the following JSON boilerplate and an example which references the `...Request` we defined in `shared/requests`. See template below:
+
+   - Fields to update:
+     1. `...Request` with the name of the request (Ex. `AccountChannelRequest`)
+     2. `description` with a long explanation of what the request is (use xrpl.org text if available)
+     3. `allOf`'s `-$ref:` to reference the `...Request`we defined in `shared/requests`
+     4. `command` with the request name (ex. `account_channels`)
+     5. `example` with a valid request of this type that includes most if as many optional fields as possible while still being valid
+
+   ```
+   ...Request:
+      description: >
+        ...
+      type: object
+      allOf:
+        - $ref: ... # Reference the Request in `shared/requests` here
+      properties:
+        command:
+          type: string
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - ...
+        id:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: 'A unique identifier for the request.'
+      required:
+        - command
+        - id
+      example:
+        # Show a valid request that follows the schema here, for example for account_channels:
+        # id: 1
+        # command: account_channels
+        # account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+        # destination_account: ra5nK24KXen9AHvsdFTKHSANinZseWnPcX
+        # ledger_index: validated
+        ...
+   ```
+
+3. Add the `...Response` object which is mostly boilerplate, but still has a couple fields to update:
+
+   - Fields to update:
+     1. `...Response` with the name of the request (Ex. `AccountChannelResponse`)
+     2. In the oneOf, the first entry should reference the `...SuccessResponse` in **this** file (NOT the shared file!)
+     3. In the oneOf, the second entry should reference the `...ErrorResponse` in **this** file (NOT the shared file!)
+     4. `example` with a valid successful response of this type, ideally the exact response to sending the example in `...Request` in this file.
+
+   ```
+   ...Response:
+     discriminator: status
+     oneOf:
+       - $ref: # Reference the ...SuccessResponse in this file
+       - $ref: # Reference the ...ErrorResponse in this file
+     type: object
+     properties:
+       id:
+         # Not specifying a type is how we express "any" value is acceptable
+         description: 'A unique identifier for the request.'
+       type:
+         type: string
+         description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
+         enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+           - response
+     required:
+       - id
+       - type
+     example:
+      # Example formatting for `account_channels` response
+      # id: 1
+      # result:
+      #   account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+      #   channels:
+      #     - account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+      #       amount: '1000'
+      #       balance: '0'
+      #       channel_id: C7F634794B79DB40E87179A9D1BF05D05797AE7E92DF8E93FD6656E8C4BE3AE7
+      #       destination_account: ra5nK24KXen9AHvsdFTKHSANinZseWnPcX
+      #       public_key: aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw
+      #       public_key_hex: 03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2
+      #       settle_delay: 60
+      #   ledger_hash: 27F530E5C93ED5C13994812787C1ED073C822BAEC7597964608F2C049C2ACD2D
+      #   ledger_index: 71766343
+      #   validated: true
+      # status: success
+      # type: response
+      ...
+   ```
+
+4. Create the `...SuccessResponse` schema to combine the `BaseSuccessResponse` and the shared success schema. (This is done to match the JSON RPC response format while re-using our shared schema)
+
+   - Fields to update:
+     1. `...SuccessResponse`
+     2. Update the 2nd reference in `allOf` to the **SHARED** `...SuccessResponse` (NOT the one in this file!)
+
+   ```
+   AccountChannelsSuccessResponse:
+     type: object
+     allOf:
+       - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+       - $ref: # Reference the `...SuccessResponse` in the **SHARED** folder
+   ```
+
+5. Lastly, we need to **update** the `open_api/json_api.yaml` file:
+
+   - Fields to update:
+
+   1. Update `#paths///post/requestBody/content/application/json/schema/discriminator/mapping` with a mapping between the request name and your `...Request` object **from the `..._open_api.yaml` file** (NOT the shared file!)
+
+      - Ex. `account_channels: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'`
+
+   2. Update the `oneOf` just below the `mapping` you modified with another reference to the `...Request` object from the `..._open_api.yaml` file
+
+      - Ex. `- $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'`
+
+   3. Update `#paths///post/responses/200/content/application/json/schema/oneOf` with a reference to the **`...Response`** (NOT `...Request`) object from the `..._open_api.yaml` file.
+
+      - Ex. `- $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'`
 
 Note: If you want to also add this request to the AsyncAPI, continue by [following these steps here](#asyncapi-specific-steps-for-adding-a-new-request)
 
