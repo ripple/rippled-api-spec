@@ -1,8 +1,3 @@
-# Notes:
-# The `Channel` object seems re-usable between the two
-# The response structure is NOT re-usable, so that's one challenge
-# TODO: In order to re-use code, we could potentially store shared "param" objects which get re-used across the Websocket and JSON RPC
-# Request types. (JSON RPC has the params as an object in an array, but the core attributes of that object are shared)
 components:
   schemas:
     Channel:
@@ -95,7 +90,7 @@ components:
           maximum: 400
           description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
         marker:
-          # Not specifying a type is how we express "any" value is acceptable
+          # Not specifying a type is how we express the type can be "any" value
           description: Value from a previous paginated response. Resume retrieving data where that response left off.
       required:
         - account
@@ -120,7 +115,7 @@ components:
           type: number
           description: The limit to how many channel objects were actually returned by this request.
         marker:
-          # Not specifying a type is how we express "any" value is acceptable
+          # Not specifying a type is how we express the type can be "any" value
           description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
       required:
         - account
