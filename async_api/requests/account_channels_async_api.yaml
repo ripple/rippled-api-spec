@@ -1,8 +1,3 @@
-# Notes:
-# The `Channel` object seems re-usable between the two
-# The response structure is NOT re-usable, so that's one challenge
-# TODO: In order to re-use code, we could potentially store shared "param" objects which get re-used across the Websocket and JSON RPC
-# Request types. (JSON RPC has the params as an object in an array, but the core attributes of that object are shared)
 components:
   schemas:
     AccountChannelsRequest:
@@ -19,8 +14,12 @@ components:
           type: string
           enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
             - account_channels
+        id:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: 'A unique identifier for the request.'
       required:
         - command
+        - id
       example:
         id: 1
         command: account_channels

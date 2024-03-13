@@ -32,10 +32,10 @@ paths:
               discriminator:
                 propertyName: method
                 mapping:
-                  account_channels: 'requests/account_channels.yaml#/components/schemas/AccountChannelsRequest' # TODO: Verify this is the correct syntax
+                  account_channels: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest' # TODO: Verify this is the correct syntax
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
-                - $ref: 'requests/account_channels.yaml#/components/schemas/AccountChannelsRequest'
+                - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'
@@ -49,7 +49,7 @@ paths:
                 # They do not have a consistent field which is available on all of them which tells you which request was sent.
                 # Errors have `result.request.method`, but success responses
                 oneOf:
-                  - $ref: 'requests/account_channels.yaml#/components/schemas/AccountChannelsResponse'
+                  - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.
