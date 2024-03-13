@@ -24,7 +24,7 @@ We currently use Redocly's tooling to test that our api is following the specifi
 
 4.  Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
 
-# OpenAPI
+# OpenAPI (used for rippled's JSON API)
 
 ## Preferences
 
@@ -45,7 +45,7 @@ At a high level, you'll be adding a Request and Response (which can be either a 
 
 _Image generated via a mermaid diagram from the specification in [`example_request_diagram.mermaid`](./example_request_diagram.mermaid)_
 
-The rest of these steps will use [`accountChannels.yaml`](./requests/account_channels.yaml) as an example you can follow when adding other requests.
+The rest of these steps will use [`account_channels.yaml`](./requests/account_channels.yaml) as an example you can follow when adding other requests.
 
 > Note: Examples may contain [...] - this just means parts of the file were omitted to make it easier to read. (Often they are used to skip over most of the properties in an example schema)
 
@@ -165,7 +165,7 @@ AccountChannelsErrorResponse:
 
 6. Now go to `json_api.yaml` and add a reference to the `Response` under the `RequestType` schema in the `components` section.
 
-   - Add a discriminator mapping (ex. `account_channels: $ref: 'accountChannels.yaml#/AccountChannelRequest'`)
+   - Add a discriminator mapping (ex. `account_channels: $ref: 'account_channels.yaml#/AccountChannelRequest'`)
      - Example syntax to reference a schema in another file: `$ref: '../document.yaml#/myElement'` [More details](https://swagger.io/docs/specification/using-ref/)
    - Add the ref to the pool of options (in the `anyOf` section below the discriminator mapping)
 
@@ -185,7 +185,7 @@ RequestType:
 
 7. Include a reference to the Response in `json_api.yaml` under the `paths` section in the 200 area.
 
-   - Add a discriminator mapping (ex. `account_channels: $ref: 'accountChannels.yaml#/AccountChannelResponse'`)
+   - Add a discriminator mapping (ex. `account_channels: $ref: 'account_channels.yaml#/AccountChannelResponse'`)
      - Example syntax to reference a schema in another file: `$ref: '../document.yaml#/myElement'` [More details](https://swagger.io/docs/specification/using-ref/)
    - Add the ref to the pool of options (in the `anyOf` section below the discriminator mapping)
 
@@ -212,13 +212,14 @@ TODO: Add steps for testing the "Try It" feature locally with Redocly using the 
 
 TODO: Update the steps now that we're using a shared folder for parts that are re-used across OpenAPI and AsyncAPI
 
-# AsyncAPI
+# AsyncAPI (used for rippled's Websocket API)
 
 _If you're new to **AsyncAPI**, you should read through [this 2.6.0 tutorial](https://v2.asyncapi.com/docs/tutorials/getting-started) and use [these 2.6.0 reference docs](https://v2.asyncapi.com/docs/reference/specification/v2.6.0) to look up any terms you see that are unfamiliar_
 
 # Things to investigate
 
 1. We'll need to fix the CORS error for the Redocly "Try it" feature when we deploy on xrpl.org. That should be a server setting.
+1. We'll need to talk to Redocly about getting them to support "Try it" for AsyncAPI specs (should be similar code).
 1. It's unclear the best way to set up the primary api file (websocket_api.yaml and json_api.yaml) to pair specific input parameters to a specific response. As it is now, both api descriptions have a list of possible parameters for each `rippled` request, but it's defined as two lists rather than a list of input/output pairs. One idea for how to solve this is maybe we can define multiple `post` requests
 1. Should we use AsyncAPI 2.6.0 (currently partially supported by Redocly) or use AsyncAPI 3.0.0 (cleaner interface & resolves input / output pairing problem)
 
