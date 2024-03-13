@@ -72,9 +72,7 @@ components:
       type: object
       properties:
         result:
-          type: object
-          properties:
-            $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
+          $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
       required:
         - result
 
