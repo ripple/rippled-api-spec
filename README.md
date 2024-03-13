@@ -405,13 +405,14 @@ In situations where there are multiple equivalent ways to write this spec, this 
 # Things to investigate
 
 1. We'll need to fix the CORS error for the Redocly "Try it" feature when we deploy on xrpl.org. That should be a server setting.
-1. We'll need to talk to Redocly about getting them to support "Try it" for AsyncAPI specs (should be similar code).
-1. It's unclear the best way to set up the primary api file (websocket_api.yaml and json_api.yaml) to pair specific input parameters to a specific response. As it is now, both api descriptions have a list of possible parameters for each `rippled` request, but it's defined as two lists rather than a list of input/output pairs. One idea for how to solve this is maybe we can define multiple `post` requests
-1. Should we use AsyncAPI 2.6.0 (currently partially supported by Redocly) or use AsyncAPI 3.0.0 (cleaner interface & resolves input / output pairing problem)
+2. We'll need to talk to Redocly about getting them to support "Try it" for AsyncAPI specs (should be similar code).
+3. It's unclear the best way to set up the primary api file (websocket_api.yaml and json_api.yaml) to pair specific input parameters to a specific response. As it is now, both api descriptions have a list of possible parameters for each `rippled` request, but it's defined as two lists rather than a list of input/output pairs. One idea for how to solve this is maybe we can define multiple `post` requests
+4. Should we use AsyncAPI 2.6.0 (currently partially supported by Redocly) or use AsyncAPI 3.0.0 (cleaner interface & resolves input / output pairing problem)
 
-1. Currently, the way we test the spec is through including examples which we can validate against rippled using the "Try It" feature in Redocly previews. That's not a robust way to test all possible inputs / outputs of rippled requests. Some enhancements we can consider for this long-term:
+5. Currently, the way we test the spec is through including examples which we can validate against rippled using the "Try It" feature in Redocly previews. That's not a robust way to test all possible inputs / outputs of rippled requests. Some enhancements we can consider for this long-term:
 
    1. Having examples which reproduce every error case for a specific request
    2. Verifying that we have unit tests for every possible error code in our test suite
 
-1. Note on the formatting of this README - for some reason prettier formats code blocks with one-space indents instead of 2 (in the yaml file 2 space indents are used). This makes the examples slightly harder to copy and paste, although they should work. Would be nice to fix that.
+6. Note on the formatting of this README - for some reason prettier formats code blocks with one-space indents instead of 2 (in the yaml file 2 space indents are used). This makes the examples slightly harder to copy and paste, although they should work. Would be nice to fix that.
+7. We should automate the creation of boilerplate with a simple script - these steps are very automatable.
