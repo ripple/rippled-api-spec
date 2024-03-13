@@ -74,9 +74,9 @@ components:
         result:
           type: object
           properties:
-            - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
-        required:
-          - result
+            $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
+      required:
+        - result
 
     AccountChannelsErrorResponse:
       oneOf:
