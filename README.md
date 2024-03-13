@@ -24,7 +24,127 @@ We currently use Redocly's tooling to test that our api is following the specifi
 
 4.  Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
 
+# How to add a new request
+
+For these instructions:
+
+- "..." indicates you should edit something (Ex. Replacing `...Request` with `AccountChannelsRequest`)
+- If this is for a request documented on xrpl.org, please copy and paste the documentation from there.
+- Read through `shared/base.yaml` after doing a draft of your spec to see if there are any re-usable components that make sense for your requests/responses
+- These instructions start with the "shared" schemas between OpenAPI and AsyncAPI, then links to the specific steps to do AFTER. Adding a request to either requires doing this shared work first!
+
+1.  _If you've already created a spec in the shared folder for this request, skip to the OpenAPI specific steps!_
+2.  Create a new file for the rippled request / response information in `shared/requests/<request_name.yaml>`
+
+    - Ex. [`shared/requests/account_channels.yaml`](/shared/requests/account_channels.yaml)
+
+3.  In that shared file, add the `Request` type.
+
+    1.  "..." indicates you should edit something (Ex. Replacing `...Request` with `AccountChannelsRequest`)
+    2.  If this is for a request documented on xrpl.org, please copy and paste the documentation from there.
+    3.  Read through `shared/base.yaml` to see if there are any re-usable components that make sense for your request
+
+    - Ex.
+
+    ```
+    ...Request:
+      summary: >
+        "..."
+      type: object
+      # TODO: Add any common fields from `shared/base.yaml` that are applicable using `allOf`. Otherwise delete these comments! For example:
+      # allOf:
+      #  - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      #  - ...
+      properties:
+        # Example property
+        # account:
+          # type: string
+          # description: The unique identifier of an account, typically the account's address.
+        ...
+      required:
+        - ...
+    ```
+
+4.  Create the `...SuccessResponse` schema for when `rippled` responds with `success`
+
+    - Ex.
+
+    ```
+    ...SuccessResponse:
+      # TODO: Add any common fields from `shared/base.yaml` that are applicable using `allOf`. Otherwise delete these comments! For example:
+      # allOf:
+      #  - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      #  - ...
+      type: object
+      properties:
+        # Example property
+        # account:
+          # type: string
+          # description: The unique identifier of an account, typically the account's address.
+        ...
+      required:
+        - ...
+    ```
+
+5.  Create the `...ErrorResponse` schema for when `rippled` responds with an error code
+
+    - Ex.
+
+    ```
+    ...ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            # Add the error codes specific to this response here (ex. invalidParams)
+            - enum:
+                - ...
+          description: >
+            # Describe each error code in bullet form here. Ex. "* `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing."
+            ...
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          # This should link to the ...Request type you defined above
+          $ref: ...
+      required:
+        - status
+        - error
+        - request
+    ```
+
+6.  If you want to add a request to the OpenAPI spec, [follow these steps here](#openapi-specific-steps-for-adding-a-new-request) (otherwise skip this step)
+7.  If you want to add a request to the AsyncAPI spec, [follow these steps here](#asyncapi-specific-steps-for-adding-a-new-request) (otherwise skip this step)
+
+## OpenAPI-specific steps for adding a new request
+
+_This section assumes you've already completed the shared work steps for this request in [How to add a new request](#how-to-add-a-new-request)_
+
+Although most of the body will re-use the shared schemas we defined earlier, we need boilerplate to fit the OpenAPI formatting and specify this new request/response as a valid rippled input/output.
+
+1. Create a new file in `open_api/requests` named `..._open_api.yaml` for your new request. Ex. `account_channels_open_api.yaml`
+
+   - The reason to include `_open_api` in the name is to make it easier to tell which file we're referencing throughout the codebase, and to make filename searches less confusing when debugging. Including it at the end also makes it easier to at a glance find the right file in the explorer.
+
+2. Create
+
+Note: If you want to also add this request to the AsyncAPI, continue by [following these steps here](#asyncapi-specific-steps-for-adding-a-new-request)
+
+## AsyncAPI-specific steps for adding a new request
+
+_This section assumes you've already completed the shared work steps for this request in [How to add a new request](#how-to-add-a-new-request)_
+
+1.
+
+Note: If you want to also add this request to the OpenAPI spec _and haven't already_, continue by [following these steps here](#asyncapi-specific-steps-for-adding-a-new-request)
+
 # OpenAPI (used for rippled's JSON API)
+
+_If you're new to OpenAPI, you should read through [this tutorial](https://learn.openapis.org/specification/) and use [these reference docs](https://spec.openapis.org/oas/v3.1.0) to look up any terms you see that are unfamiliar_
 
 ## Preferences
 
@@ -36,181 +156,6 @@ In situations where there are multiple equivalent ways to write this spec, this 
 3.  Error responses in the "path" section represent HTTP response / errors. `rippled` or `clio` errors are treated as valid responses, and should be documented as `oneOf` the possible representations for each individual request response. Although rippled errors share a similar shape, ultimately we want to be very clear on what the specific error codes that are possible from each request.
 
 ## How to add a new Request
-
-To add a new request, there are three schemas you have to add, and a couple places you need to update.
-
-At a high level, you'll be adding a Request and Response (which can be either a SuccessResponse or an ErrorResponse). These requests / responses have shared traits which can be included from the `base.yaml` types. See below for a diagram showing how the schemas for an example `tx` request connect. (Each arrow indicates an object including the fields from the ones it points to)
-
-<img src="example_request_diagram.png">
-
-_Image generated via a mermaid diagram from the specification in [`example_request_diagram.mermaid`](./example_request_diagram.mermaid)_
-
-The rest of these steps will use [`account_channels.yaml`](./requests/account_channels.yaml) as an example you can follow when adding other requests.
-
-> Note: Examples may contain [...] - this just means parts of the file were omitted to make it easier to read. (Often they are used to skip over most of the properties in an example schema)
-
-1. Create a new file with the name of the request in snake_case (ex. `account_channel.yaml`)
-2. Create the `Request` schema (e.g. `AccountChannelsRequest`).
-   - This should include `allOf BaseRequest` (and may include other common fields like `LookupByLedgerRequest` - looking at what super classes are used in the xrpl.js types for this request is an easy way to tell what common fields should be inherited)
-   - The schema should also follow the xrpl.org documentation for the request. (These types are also mirrored in client libraries)
-     - ChatGPT can be a handy tool to convert from the plaintext on xrpl.org or the interface descriptions in xrpl.js to OpenAPI compliant schemas with the same documentation for each field.
-   - The resulting schema should look something like this:
-
-```
-AccountChannelsRequest:
-  type: object
-  description: >
-    The account_channels method returns information about an account's Payment Channels.
-    This includes only channels where the specified account is the channel's source, not the destination.
-    (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger.
-    Returns an AccountChannelsResponse.
-  properties:
-    method:
-      type: string
-      enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-        - account_channels
-    params:
-      type: array
-      items:
-        type: object
-        properties:
-          account:
-            type: string
-            description: The unique identifier of an account, typically the account's address.
-          [...]
-        required:
-          - account
-          [...]
-  required:
-    - method
-```
-
-3. Create the high-level `Response` schema.
-
-   - This should look like this with `AccountChannels` replaced by your new request's name (the bulk of the logic will be in the sub-schemas `SuccessResponse` and `ErrorResponse`)
-
-```
-AccountChannelsResponse:
-type: object
-properties:
-  result:
-    type: object
-    discriminator:
-      propertyName: status
-      mapping:
-        success: '#/components/schemas/AccountChannelsSuccessResponse'
-        error: '#/components/schemas/AccountChannelsErrorResponse'
-    oneOf:
-      - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
-      - $ref: '#/components/schemas/AccountChannelsErrorResponse'
-required:
-  - result
-```
-
-4. Create the `SuccessResponse` schema
-
-- Include the `BaseSuccessResponse` schema
-- It should end up looking something like this:
-
-```
-AccountChannelsSuccessResponse:
-  type: object
-  allOf:
-    - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-  properties:
-    account:
-      type: string
-      description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
-    [...]
-  required:
-    - account
-```
-
-5. Create the `ErrorResponse` schema
-
-- In order to include the proper error codes in `error` use `oneOf` between `UniversalErrorResponseCodes` and any request-specific error codes that are possible.
-- Make the descriptions match (and don't forget the `backticks` on any code-like terms!).
-- `status` should always be an enum with only the value `error`.
-- `request` should reference the `Request` schema you created earlier.
-- `error`, `status`, and `request` are all required fields.
-- By the end it should look something like this:
-
-```
-AccountChannelsErrorResponse:
-  type: object
-  properties:
-    error:
-      type: string
-      oneOf:
-        - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
-        - enum:
-            - invalidParams
-            - actNotFound
-            - lgrNotFound
-      description: >
-        * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-        * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
-        * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
-    status:
-      type: string
-      enum:
-        - error
-    request:
-      $ref: '#/components/schemas/AccountChannelsRequest'
-  required:
-    - error
-    - status
-    - request
-```
-
-6. Now go to `json_api.yaml` and add a reference to the `Response` under the `RequestType` schema in the `components` section.
-
-   - Add a discriminator mapping (ex. `account_channels: $ref: 'account_channels.yaml#/AccountChannelRequest'`)
-     - Example syntax to reference a schema in another file: `$ref: '../document.yaml#/myElement'` [More details](https://swagger.io/docs/specification/using-ref/)
-   - Add the ref to the pool of options (in the `anyOf` section below the discriminator mapping)
-
-   Here's what the code you should update here looks like:
-
-```
-RequestType:
-  discriminator:
-    propertyName: method
-    mapping:
-      account_channels: "#/components/schemas/AccountChannelsRequest" # TODO: Verify this is the correct syntax
-      # TODO: Add the rest of the JSON RPC requests here
-    anyOf:
-      - $ref: "#/components/schemas/AccountChannelsRequest"
-      # TODO: Add the rest of the JSON RPC requests here
-```
-
-7. Include a reference to the Response in `json_api.yaml` under the `paths` section in the 200 area.
-
-   - Add a discriminator mapping (ex. `account_channels: $ref: 'account_channels.yaml#/AccountChannelResponse'`)
-     - Example syntax to reference a schema in another file: `$ref: '../document.yaml#/myElement'` [More details](https://swagger.io/docs/specification/using-ref/)
-   - Add the ref to the pool of options (in the `anyOf` section below the discriminator mapping)
-
-   Here's what the code you should update here looks like:
-
-```
-responses:
-  '200':
-    description: JSON-RPC response object
-    content:
-      application/json:
-        schema:
-          # TODO: Map the input request types to these output responses.
-          # They do not have a consistent field which is available on all of them which tells you which request was sent.
-          # Errors have `result.request.method`, but success responses
-          oneOf:
-            - $ref: 'requests/account_channels.yaml#/components/schemas/AccountChannelsResponse'
-            # TODO: Add the rest of the JSON RPC responses here
-```
-
-8. With that, you've successfully added a new request!
-
-TODO: Add steps for testing the "Try It" feature locally with Redocly using the following command to run chrome in a lower security mode (risky beyond immediate dev use) to get around the CORS error that would normally occur: `open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`
-
-TODO: Update the steps now that we're using a shared folder for parts that are re-used across OpenAPI and AsyncAPI
 
 # AsyncAPI (used for rippled's Websocket API)
 
@@ -224,5 +169,8 @@ _If you're new to **AsyncAPI**, you should read through [this 2.6.0 tutorial](ht
 1. Should we use AsyncAPI 2.6.0 (currently partially supported by Redocly) or use AsyncAPI 3.0.0 (cleaner interface & resolves input / output pairing problem)
 
 1. Currently, the way we test the spec is through including examples which we can validate against rippled using the "Try It" feature in Redocly previews. That's not a robust way to test all possible inputs / outputs of rippled requests. Some enhancements we can consider for this long-term:
+
    1. Having examples which reproduce every error case for a specific request
    2. Verifying that we have unit tests for every possible error code in our test suite
+
+1. Note on the formatting of this README - for some reason prettier formats code blocks with one-space indents instead of 2 (in the yaml file 2 space indents are used). This makes the examples slightly harder to copy and paste, although they should work. Would be nice to fix that.
