@@ -27,6 +27,7 @@ We currently use Redocly's tooling to test that our api is following the specifi
     - To Log in run `redocly login` (then follow the instructions)
 
 4.  Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
+5.  In order to use the "Try it!" feature to see if the specification can be used to send a valid request and correctly validate a real response, you'll need to get around CORS errors. One way to do that is to run this script to create an unprotected Chrome, then view your generated docs from there: `open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`
 
 # How to add a new request
 
