@@ -9,6 +9,10 @@ These apis will aim to eventually include all requests for both `rippled` and `c
 The JSON RPC API will be written out using [OpenAPI](https://www.openapis.org/) as it has a more direct request / response format.
 The Websocket API will be written using [AsyncAPI] which better matches the ways in which the Websocket interface can asynchronously call back with things like `stream`.
 
+_If you're new to **OpenAPI**, you should read through [this tutorial](https://learn.openapis.org/specification/) and use [these reference docs](https://spec.openapis.org/oas/v3.1.0) to look up any terms you see that are unfamiliar_
+
+_If you're new to **AsyncAPI**, you should read through [this 2.6.0 tutorial](https://v2.asyncapi.com/docs/tutorials/getting-started) and use [these 2.6.0 reference docs](https://v2.asyncapi.com/docs/reference/specification/v2.6.0) to look up any terms you see that are unfamiliar_
+
 # Testing
 
 We currently use Redocly's tooling to test that our api is following the specification. We also use it to verify that we can generate, submit, and receive responses that match our api description with Redocly's "Try It" feature that let's you send requests directly from the auto-generated docs.
@@ -136,19 +140,134 @@ For these instructions:
 
 _This section assumes you've already completed the shared work steps for this request in [How to add a new request](#how-to-add-a-new-request)_
 
-At a high level, we need to:
-
-1. Create boilerplate so the core types we defined in `shared/` can be used to match the JSON RPC formatting
-2. Reference that in the main `json_api.yaml` file
-
-The following instructions will each have a template you should copy, along with a list of fields you'll have to update. As a reminder, if there are already docs on xrpl.org, please use those for the descriptions/summary fields.
+At a high level, we're going to wrap the core types we defined in `shared/` in boilerplate so it matches the JSON RPC formatting `rippled` expects / produces, then we're going to reference our wrapped types in the core `json_api.yaml` file.
 
 1. Create a new file in `open_api/requests` named `..._open_api.yaml` for your new request. Ex. `account_channels_open_api.yaml`
 
    - The reason to include `_open_api` in the name is to make it easier to tell which file we're referencing throughout the codebase, and to make filename searches less confusing when debugging. Including it at the end also makes it easier to at a glance find the right file in the explorer.
    - Example file: [open_api/requests/account_channels_open_api.yaml](./open_api/requests/account_channels_open_api.yaml)
 
-2. Add a `...Request` schema with the following JSON boilerplate and an example which references the `...Request` we defined in `shared/requests`. See template below:
+2. Add a `...Request` schema with the following boilerplate and an example which references the `...Request` we defined in `shared/requests`. See template below:
+
+   - Fields to update:
+     1. `...Request` with the name of the request (Ex. `AccountChannelRequest`)
+     2. `description` with a long explanation of what the request is (use xrpl.org text if available)
+     3. `method` with the request name (ex. `account_channels`)
+     4. `items`'s `$ref:` to reference the `...Request`we defined in `shared/requests`
+     5. `example` with a valid request of this type that includes most if as many optional fields as possible while still being valid
+
+   ```
+    ...Request:
+      type: object
+      description: >
+        ...
+      properties:
+        method:
+          type: string
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - ...
+        params:
+          type: array
+          items:
+            $ref: # Reference the shared `...Request` schema
+      required:
+        - method
+      example:
+        # Provide a valid example here, such as:
+        # method: 'account_channels'
+        # params:
+        #   - account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
+        #     destination_account: 'ra5nK24KXen9AHvsdFTKHSANinZseWnPcX'
+        #     ledger_index": 'validated'
+   ```
+
+3. Add the `...Response` object which is mostly boilerplate, but still has a couple fields to update:
+
+   - Fields to update:
+     1. `...Response` with the name of the request (Ex. `AccountChannelResponse`)
+     2. In the `mapping`: 3. Map `success` to a reference to the `...SuccessResponse` in **this** file (NOT the shared file!) 4. Map `error` to the the `...ErrorResponse` in the **SHARED** file
+     3. In the oneOf, add BOTH of the above references in a list.
+     4. `example` with a valid successful response of this type, ideally the exact response to sending the example in `...Request` in this file.
+
+   ```
+   ...Response:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: # Include a reference to ...SuccessResponse from this file
+              error: # Include a reference to the **shared** ...ErrorResponse
+          oneOf:
+            - $ref: # Include a reference to ...SuccessResponse from this file
+            - $ref: # Include a reference to the **shared** ...ErrorResponse
+      required:
+        - result
+      example:
+        # result:
+        #   account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+        #   channels:
+        #     - account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+        #       amount: '1000'
+        #       balance: '0'
+        #       channel_id: C7F634794B79DB40E87179A9D1BF05D05797AE7E92DF8E93FD6656E8C4BE3AE7
+        #       destination_account: ra5nK24KXen9AHvsdFTKHSANinZseWnPcX
+        #       public_key: aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw
+        #       public_key_hex: 03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2
+        #       settle_delay: 60
+        #   ledger_hash: 27F530E5C93ED5C13994812787C1ED073C822BAEC7597964608F2C049C2ACD2D
+        #   ledger_index: 71766343
+        #   status: success
+        #   validated: true
+        ...
+   ```
+
+4. Create the `...SuccessResponse` schema to combine the `BaseSuccessResponse` and the shared success schema. (This is done to match the JSON RPC response format while re-using our shared schema)
+
+   - Fields to update:
+     1. `...SuccessResponse`
+     2. Update the 2nd reference in `allOf` to the **SHARED** `...SuccessResponse` (NOT the one in this file!)
+
+   ```
+   ...SuccessResponse:
+     type: object
+     allOf:
+       - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+       - $ref: # Reference the `...SuccessResponse` in the **SHARED** folder
+   ```
+
+5. Lastly, we need to **update** the `open_api/json_api.yaml` file:
+
+   - Fields to update:
+
+   1. Update `#paths///post/requestBody/content/application/json/schema/discriminator/mapping` with a mapping between the request name and your `...Request` object **from the `..._open_api.yaml` file** (NOT the shared file!)
+
+      - Ex. `account_channels: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'`
+
+   2. Update the `oneOf` just below the `mapping` you modified with another reference to the `...Request` object from the `..._open_api.yaml` file
+
+      - Ex. `- $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'`
+
+   3. Update `#paths///post/responses/200/content/application/json/schema/oneOf` with a reference to the **`...Response`** (NOT `...Request`) object from the `..._open_api.yaml` file.
+
+      - Ex. `- $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'`
+
+Note: If you want to also add this request to the AsyncAPI, continue by [following these steps here](#asyncapi-specific-steps-for-adding-a-new-request)
+
+## AsyncAPI-specific steps for adding a new request
+
+_This section assumes you've already completed the shared work steps for this request in [How to add a new request](#how-to-add-a-new-request)_
+
+At a high level, we're going to wrap the core types we defined in `shared/` in boilerplate so it matches the Websocket formatting `rippled` expects / produces, then we're going to reference our wrapped types in the core `websocket_api.yaml` file.
+
+1. Create a new file in `async_api/requests` named `..._async_api.yaml` for your new request. Ex. `account_channels_async_api.yaml`
+
+   - The reason to include `_async_api` in the name is to make it easier to tell which file we're referencing throughout the codebase, and to make filename searches less confusing when debugging. Including it at the end also makes it easier to at a glance find the right file in the explorer.
+   - Example file: [async_api/requests/account_channels_async_api.yaml](./async_api/requests/account_channels_async_api.yaml)
+
+2. Add a `...Request` schema with the following boilerplate and an example which references the `...Request` we defined in `shared/requests`. See template below:
 
    - Fields to update:
      1. `...Request` with the name of the request (Ex. `AccountChannelRequest`)
@@ -248,35 +367,31 @@ The following instructions will each have a template you should copy, along with
        - $ref: # Reference the `...SuccessResponse` in the **SHARED** folder
    ```
 
-5. Lastly, we need to **update** the `open_api/json_api.yaml` file:
+5. Lastly, we're going to update the `websocket_api.yaml` file to reference our newly created `Websocket` wrapper of our `rippled` request / response types.
 
-   - Fields to update:
+   1. In `subscribe` add a **new** `message` object for your new request which references the `...Request` we made in the `..._async_api.yaml` (NOT the shared version!)
 
-   1. Update `#paths///post/requestBody/content/application/json/schema/discriminator/mapping` with a mapping between the request name and your `...Request` object **from the `..._open_api.yaml` file** (NOT the shared file!)
+      - Fields to update:
+        1. `messageId` with the name of your request + `Request` (Ex. `AccountChannelsRequest`)
+        2. `$ref` with a reference to the `...Request` object in the `..._async_api.yaml` file (NOT the shared version!)
+           - Ex. `'./requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsRequest'`
 
-      - Ex. `account_channels: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'`
+      ```
+      message:
+        messageId: '...Request'
+        payload:
+          $ref: ...
+      ```
 
-   2. Update the `oneOf` just below the `mapping` you modified with another reference to the `...Request` object from the `..._open_api.yaml` file
+   2. Do the same in the `publish` section except for `Response` instead of `Request`
 
-      - Ex. `- $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'`
-
-   3. Update `#paths///post/responses/200/content/application/json/schema/oneOf` with a reference to the **`...Response`** (NOT `...Request`) object from the `..._open_api.yaml` file.
-
-      - Ex. `- $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'`
-
-Note: If you want to also add this request to the AsyncAPI, continue by [following these steps here](#asyncapi-specific-steps-for-adding-a-new-request)
-
-## AsyncAPI-specific steps for adding a new request
-
-_This section assumes you've already completed the shared work steps for this request in [How to add a new request](#how-to-add-a-new-request)_
-
-1.
+      - Fields to update:
+        1. `messageId` -> `...Response`
+        2. `$ref` should point to the `...Response` (not `...Request`) schema from the `..._async_api.yaml` file (NOT the shared version!)
 
 Note: If you want to also add this request to the OpenAPI spec _and haven't already_, continue by [following these steps here](#asyncapi-specific-steps-for-adding-a-new-request)
 
-# OpenAPI (used for rippled's JSON API)
-
-_If you're new to OpenAPI, you should read through [this tutorial](https://learn.openapis.org/specification/) and use [these reference docs](https://spec.openapis.org/oas/v3.1.0) to look up any terms you see that are unfamiliar_
+# Contributing Guidelines
 
 ## Preferences
 
@@ -286,12 +401,6 @@ In situations where there are multiple equivalent ways to write this spec, this 
 2.  In order to specify the request / response type for JSON RPC, we need to use a generic path (`/`) and a [`discriminator`](https://redocly.com/docs/resources/discriminator/) which allows us to derive the “type” of an object from the value in a specific parameter in the request. (In the case of the JSON RPC API, the `method` field tells us the type of request, which corresponds exactly with 1 or 2 response types)
     - The one case where this isn’t enough information is when a request has a `binary` option - in which case there are 2 possible response structures.
 3.  Error responses in the "path" section represent HTTP response / errors. `rippled` or `clio` errors are treated as valid responses, and should be documented as `oneOf` the possible representations for each individual request response. Although rippled errors share a similar shape, ultimately we want to be very clear on what the specific error codes that are possible from each request.
-
-## How to add a new Request
-
-# AsyncAPI (used for rippled's Websocket API)
-
-_If you're new to **AsyncAPI**, you should read through [this 2.6.0 tutorial](https://v2.asyncapi.com/docs/tutorials/getting-started) and use [these 2.6.0 reference docs](https://v2.asyncapi.com/docs/reference/specification/v2.6.0) to look up any terms you see that are unfamiliar_
 
 # Things to investigate
 
