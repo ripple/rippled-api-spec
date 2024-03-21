@@ -33,9 +33,11 @@ paths:
                 propertyName: method
                 mapping:
                   account_channels: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest' # TODO: Verify this is the correct syntax
+                  account_info: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoRequest'
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
                 - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
+                - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'
@@ -50,6 +52,7 @@ paths:
                 # Errors have `result.request.method`, but success responses
                 oneOf:
                   - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'
+                  - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.

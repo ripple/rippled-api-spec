@@ -1,0 +1,308 @@
+components:
+  schemas:
+    AccountInfoRequest:
+      summary: >
+        The account_info command retrieves information about an account, its activity, and its XRP balance.
+        All information retrieved is relative to a particular version of the ledger.
+        Returns an AccountInfoResponse
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        account:
+          type: string
+          description: The account to look up.
+        queue:
+          type: boolean
+          description: If true, return stats about queued transactions sent by this account. Can only be used when querying for the data from the current open ledger. Not available from servers in Reporting Mode.
+        signer_lists:
+          type: boolean
+          description: >
+            API v1: If true, return any SignerList objects associated with this account.
+            API v2: Identical to v1, but also returns an invalidParams error if you provide a non-boolean value.
+      required:
+        - account
+
+    AccountRoot:
+      type: object
+      properties:
+        Account:
+          type: string
+          description: The identifying (classic) address of this account.
+        AccountTxnID:
+          type: string
+          description: The identifying hash of the transaction most recently sent by this account. (Optional)
+        AMMID:
+          type: string
+          description: The ledger entry ID of the corresponding AMM ledger entry. (Optional)
+        Balance:
+          type: string
+          description: The account's current XRP balance in drops, represented as a string. (Optional)
+        BurnedNFTokens:
+          type: number
+          format: uint32
+          description: How many total of this account's issued non-fungible tokens have been burned. (Optional)
+        Domain:
+          type: string
+          description: A domain associated with this account. Cannot be more than 256 bytes in length. (Optional)
+        EmailHash:
+          type: string
+          description: The md5 hash of an email address. Clients can use this to look up an avatar. (Optional)
+        FirstNFTokenSequence:
+          type: number
+          format: uint32
+          description: The account's Sequence Number at the time it minted its first non-fungible-token. (Optional)
+        LedgerEntryType:
+          type: string
+          format: uint16
+          description: The value 0x0061, mapped to the string AccountRoot, indicates that this is an AccountRoot object.
+        MessageKey:
+          type: string
+          description: A public key that may be used to send encrypted messages to this account. Must be exactly 33 bytes. (Optional)
+        MintedNFTokens:
+          type: number
+          format: uint32
+          description: How many total non-fungible tokens have been minted by and on behalf of this account. (Optional)
+        NFTokenMinter:
+          type: string
+          description: Another account that can mint non-fungible tokens on behalf of this account. (Optional)
+        OwnerCount:
+          type: number
+          format: uint32
+          description: The number of objects this account owns in the ledger, which contributes to its owner reserve.
+        PreviousTxnID:
+          type: string
+          description: The identifying hash of the transaction that most recently modified this object.
+        PreviousTxnLgrSeq:
+          type: number
+          format: uint32
+          description: The index of the ledger that contains the transaction that most recently modified this object.
+        RegularKey:
+          type: string
+          description: The address of a key pair that can be used to sign transactions for this account instead of the master key. (Optional)
+        Sequence:
+          type: number
+          format: uint32
+          description: The sequence number of the next valid transaction for this account.
+        TicketCount:
+          type: number
+          format: uint32
+          description: How many Tickets this account owns in the ledger. (Optional)
+        TickSize:
+          type: number
+          format: uint8
+          description: How many significant digits to use for exchange rates of Offers involving currencies issued by this address. (Optional)
+        TransferRate:
+          type: number
+          format: uint32
+          description: A transfer fee to charge other users for sending currency issued by this account to each other. (Optional)
+        WalletLocator:
+          type: string
+          description: An arbitrary 256-bit value that users can set. (Optional)
+        WalletSize:
+          type: number
+          format: uint32
+          description: Unused. (The code supports this field but there is no way to set it.) (Optional)
+      required:
+        - Account
+        - LedgerEntryType
+        - PreviousTxnID
+        - PreviousTxnLgrSeq
+        - OwnerCount
+        - Sequence
+
+    AccountFlags:
+      type: object
+      properties:
+        defaultRipple:
+          type: boolean
+          description: If true, the account allows rippling on its trust lines by default.
+        depositAuth:
+          type: boolean
+          description: If true, the account is using Deposit Authorization and does not accept any payments from unknown parties.
+        disableMasterKey:
+          type: boolean
+          description: If true, the account's master key pair is disabled.
+        disallowIncomingCheck:
+          type: boolean
+          description: If true, the account does not allow others to send Checks to it.
+        disallowIncomingNFTokenOffer:
+          type: boolean
+          description: If true, the account does not allow others to make NFT buy or sell offers to it.
+        disallowIncomingPayChan:
+          type: boolean
+          description: If true, the account does not allow others to make Payment Channels to it.
+        disallowIncomingTrustline:
+          type: boolean
+          description: If true, the account does not allow others to make trust lines to it.
+        disallowIncomingXRP:
+          type: boolean
+          description: If true, the account does not want to receive XRP from others. This is advisory and not enforced at a protocol level.
+        globalFreeze:
+          type: boolean
+          description: If true, all tokens issued by the account are currently frozen.
+        noFreeze:
+          type: boolean
+          description: If true, the account has permanently given up the abilities to freeze individual trust lines or end a global freeze.
+        passwordSpent:
+          type: boolean
+          description: If false, the account can send a special key reset transaction with a transaction cost of 0.
+        requireAuthorization:
+          type: boolean
+          description: If true, the account is using Authorized Trust Lines to limit who can hold the tokens it issues.
+        requireDestinationTag:
+          type: boolean
+          description: If true, the account requires a destination tag on all payments it receives.
+
+    Transactions:
+      type: object
+      properties:
+        auth_change:
+          type: boolean
+          description: Whether this transaction changes this address's ways of authorizing transactions.
+        fee:
+          type: string
+          description: The Transaction Cost of this transaction, in drops of XRP.
+        fee_level:
+          type: string
+          description: The transaction cost of this transaction, relative to the minimum cost for this type of transaction, in fee levels.
+        max_spend_drops:
+          type: string
+          description: The maximum amount of XRP, in drops, this transaction could send or destroy.
+        seq:
+          type: integer
+          description: The Sequence Number of this transaction.
+
+    QueueData:
+      type: object
+      properties:
+        txn_count:
+          type: integer
+          description: Number of queued transactions from this address.
+        auth_change_queued:
+          type: boolean
+          description: Whether a transaction in the queue changes this address's ways of authorizing transactions.
+        lowest_sequence:
+          type: integer
+          description: The lowest Sequence Number among transactions queued by this address.
+        highest_sequence:
+          type: integer
+          description: The highest Sequence Number among transactions queued by this address.
+        max_spend_drops_total:
+          type: string
+          description: Integer amount of drops of XRP that could be debited from this address if every transaction in the queue consumes the maximum amount of XRP possible.
+        transactions:
+          type: array
+          description: Information about each queued transaction from this address.
+          items:
+            $ref: '#/components/schemas/Transactions'
+
+    SignerEntry:
+      type: object
+      properties:
+        Account:
+          type: string
+          description: An XRP Ledger address whose signature contributes to the multi-signature. It does not need to be a funded address in the ledger.
+          format: AccountID
+        SignerWeight:
+          type: number
+          description: The weight of a signature from this signer. A multi-signature is only valid if the sum weight of the signatures provided meets or exceeds the signer list's SignerQuorum value.
+          format: UInt16
+        WalletLocator:
+          type: string
+          description: Arbitrary hexadecimal data. This can be used to identify the signer or for other, related purposes. (Optional)
+          format: Hash256
+
+    SignerList:
+      type: object
+      properties:
+        LedgerEntryType:
+          type: string
+          description: The value 0x0053, mapped to the string SignerList, indicates that this is a SignerList ledger entry.
+          format: UInt16
+        OwnerNode:
+          type: string
+          description: A hint indicating which page of the owner directory links to this object, in case the directory consists of multiple pages.
+          format: UInt64
+        PreviousTxnID:
+          type: string
+          description: The identifying hash of the transaction that most recently modified this object.
+          format: Hash256
+        PreviousTxnLgrSeq:
+          type: integer
+          description: The index of the ledger that contains the transaction that most recently modified this object.
+          format: UInt32
+        SignerEntries:
+          type: array
+          description: An array of Signer Entry objects representing the parties who are part of this signer list.
+          items:
+            $ref: '#/components/schemas/SignerEntry'
+        SignerListID:
+          type: integer
+          description: An ID for this signer list. Currently always set to 0. If a future amendment allows multiple signer lists for an account, this may change.
+          format: UInt32
+        SignerQuorum:
+          type: integer
+          description: A target number for signer weights. To produce a valid signature for the owner of this SignerList, the signers must provide valid signatures whose weights sum to this value or more.
+          format: UInt32
+      required:
+        - LedgerEntryType
+        - OwnerNode
+        - PreviousTxnID
+        - PreviousTxnLgrSeq
+        - SignerEntries
+        - SignerListID
+        - SignerQuorum
+
+    AccountInfoSuccessResponse:
+      type: object
+      properties:
+        account_data:
+          $ref: '#/components/schemas/AccountRoot'
+          description: The AccountRoot ledger object with this account's information, as stored in the ledger.
+        account_flags:
+          $ref: '#/components/schemas/AccountFlags'
+          description: The account's flag statuses.
+        signer_lists:
+          type: array
+          description: Array of SignerList ledger objects associated with this account for Multi-Signing.
+          items:
+            $ref: '#/components/schemas/SignerList'
+        ledger_current_index:
+          type: integer
+          description: The ledger index of the current in-progress ledger.
+        ledger_index:
+          type: integer
+          description: The ledger index of the ledger version used when retrieving this information.
+        queue_data:
+          $ref: '#/components/schemas/QueueData'
+          description: Information about queued transactions sent by this account.
+        validated:
+          type: boolean
+          description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
+
+    AccountInfoErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AccountInfoRequest'
+      required:
+        - status
+        - error
+        - request

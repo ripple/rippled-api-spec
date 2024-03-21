@@ -1,0 +1,75 @@
+components:
+  schemas:
+    AccountInfoRequest:
+      type: object
+      description: >
+        The account_info command retrieves information about an account, its activity, and its XRP balance.
+        All information retrieved is relative to a particular version of the ledger.
+        Returns an AccountInfoResponse
+      properties:
+        method:
+          type: string
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - account_info
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoRequest'
+        required:
+          - method
+      example:
+        method: 'account_info'
+        params:
+          - account: 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn'
+            ledger_index: 'current'
+            queue: true
+
+    AccountInfoResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/AccountInfoSuccessResponse'
+              error: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/AccountInfoSuccessResponse'
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          account_data:
+            Account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
+            Balance: '999999999960'
+            Flags: 8388608
+            LedgerEntryType: 'AccountRoot'
+            OwnerCount: 0
+            PreviousTxnID: '4294BEBE5B569A18C0A2702387C9B1E7146DC3A5850C1E87204951C6FDAA4C42'
+            PreviousTxnLgrSeq: 3
+            Sequence: 6
+            index: '92FA6A9FC8EA6018D5D16532D7795C91BFB0831355BDFDA177E86C8BF997985F'
+          ledger_current_index: 71766343
+          queue_data:
+            auth_change_queued: true
+            highest_sequence: 10
+            lowest_sequence: 6
+            max_spend_drops_total: '500'
+            transactions:
+              - auth_change: false
+                fee: '100'
+                fee_level: '2560'
+                max_spend_drops: '100'
+                seq: 6
+              # ... (trimmed for length) ...
+              - LastLedgerSequence: 10
+                auth_change: false
+                fee: '100'
+                fee_level: '2560'
+                max_spend_drops: '100'
+                seq: 10
+            txn_count: 5
+          status: 'success'
+          validated: true
