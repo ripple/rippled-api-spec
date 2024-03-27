@@ -73,3 +73,11 @@ components:
             txn_count: 5
           status: 'success'
           validated: true
+
+    AccountInfoSuccessResponse:
+      type: object
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - oneOf:
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountChannelsSuccessResponseV1'
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountChannelsSuccessResponseV2'

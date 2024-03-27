@@ -9,6 +9,7 @@ components:
       type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
       properties:
         account:
           type: string

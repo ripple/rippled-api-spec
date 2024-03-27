@@ -22,6 +22,14 @@ components:
         - id
         - message
 
+    BaseRequest:
+      type: object
+      description: Information which could be included in every request sent to rippled
+      properties:
+        api_version:
+          type: integer
+          description: The API version to use. If omitted, uses version 1.
+
     BaseSuccessResponse:
       type: object
       description: Information which is included in every successful response from a request sent to rippled.

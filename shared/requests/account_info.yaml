@@ -8,6 +8,7 @@ components:
       type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
       properties:
         account:
           type: string
@@ -110,6 +111,17 @@ components:
         - PreviousTxnLgrSeq
         - OwnerCount
         - Sequence
+
+  AccountRootWithSignerLists:
+    allOf:
+      - $ref: '#/components/schemas/AccountRoot'
+      - type: object
+        properties:
+          signer_lists:
+            type: array
+            description: Array of SignerList ledger objects associated with this account for Multi-Signing.
+            items:
+              $ref: '#/components/schemas/SignerList'
 
     AccountFlags:
       type: object
@@ -254,20 +266,12 @@ components:
         - SignerListID
         - SignerQuorum
 
-    AccountInfoSuccessResponse:
+    AccountInfoSuccessResponseBase:
       type: object
       properties:
-        account_data:
-          $ref: '#/components/schemas/AccountRoot'
-          description: The AccountRoot ledger object with this account's information, as stored in the ledger.
         account_flags:
           $ref: '#/components/schemas/AccountFlags'
           description: The account's flag statuses.
-        signer_lists:
-          type: array
-          description: Array of SignerList ledger objects associated with this account for Multi-Signing.
-          items:
-            $ref: '#/components/schemas/SignerList'
         ledger_current_index:
           type: integer
           description: The ledger index of the current in-progress ledger.
@@ -280,6 +284,29 @@ components:
         validated:
           type: boolean
           description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
+
+    AccountInfoSuccessResponseV1:
+      allOf:
+        - $ref: '#/components/schemas/AccountInfoSuccessResponseBase'
+        - type: object
+          properties:
+            account_data:
+              $ref: '#/components/schemas/AccountRootWithSignerLists'
+              description: The AccountRoot ledger object with this account's information, including signer lists, as stored in the ledger.
+
+    AccountInfoSuccessResponseV2:
+      allOf:
+        - $ref: '#/components/schemas/AccountInfoSuccessResponseBase'
+        - type: object
+          properties:
+            account_data:
+              $ref: '#/components/schemas/AccountRoot'
+              description: The AccountRoot ledger object with this account's information, as stored in the ledger.
+            signer_lists:
+              type: array
+              description: Array of SignerList ledger objects associated with this account for Multi-Signing.
+              items:
+                $ref: '#/components/schemas/SignerList'
 
     AccountInfoErrorResponse:
       type: object
