@@ -112,16 +112,16 @@ components:
         - OwnerCount
         - Sequence
 
-  AccountRootWithSignerLists:
-    allOf:
-      - $ref: '#/components/schemas/AccountRoot'
-      - type: object
-        properties:
-          signer_lists:
-            type: array
-            description: Array of SignerList ledger objects associated with this account for Multi-Signing.
-            items:
-              $ref: '#/components/schemas/SignerList'
+    AccountRootWithSignerLists:
+      allOf:
+        - $ref: '#/components/schemas/AccountRoot'
+        - type: object
+          properties:
+            signer_lists:
+              type: array
+              description: Array of SignerList ledger objects associated with this account for Multi-Signing.
+              items:
+                $ref: '#/components/schemas/SignerList'
 
     AccountFlags:
       type: object
@@ -307,6 +307,28 @@ components:
               description: Array of SignerList ledger objects associated with this account for Multi-Signing.
               items:
                 $ref: '#/components/schemas/SignerList'
+          oneOf:
+            - type: object
+              properties:
+                signer_lists:
+                  type: array
+                  description: Array of SignerList ledger objects associated with this account for Multi-Signing.
+                  items:
+                    $ref: '#/components/schemas/SignerList'
+            - type: object
+              properties:
+                error:
+                  type: string
+                  description: Error type.
+                  example: 'invalidParams'
+                error_code:
+                  type: integer
+                  description: Error code.
+                  example: 31
+                error_message:
+                  type: string
+                  description: Error message.
+                  example: 'Invalid parameters.'
 
     AccountInfoErrorResponse:
       type: object

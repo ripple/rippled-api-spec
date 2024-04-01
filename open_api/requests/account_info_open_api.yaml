@@ -15,8 +15,8 @@ components:
           type: array
           items:
             $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoRequest'
-        required:
-          - method
+      required:
+        - method
       example:
         method: 'account_info'
         params:
@@ -78,6 +78,6 @@ components:
       type: object
       allOf:
         - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
-        - oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountChannelsSuccessResponseV1'
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountChannelsSuccessResponseV2'
+      oneOf:
+        - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
+        - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
