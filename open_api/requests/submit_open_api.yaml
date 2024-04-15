@@ -1,0 +1,80 @@
+components:
+  schemas:
+    SubmitRequest:
+      type: object
+      description: >
+        The submit method applies a transaction and sends it to the network to be confirmed and included in future ledgers.
+
+        This command has two modes:
+
+        - Submit-only mode takes a signed, serialized transaction as a binary blob, and submits it to the network as-is. Since signed transaction objects are immutable, no part of the transaction can be modified or automatically filled in after submission.
+        - Sign-and-submit mode takes a JSON-formatted Transaction object, completes and signs the transaction in the same manner as the sign method, and then submits the signed transaction. We recommend only using this mode for testing and development.
+        To send a transaction as robustly as possible, you should construct and sign it in advance, persist it somewhere that you can access even after a power outage, then submit it as a tx_blob. After submission, monitor the network with the tx method command to see if the transaction was successfully applied; if a restart or other problem occurs, you can safely re-submit the tx_blob transaction: it won't be applied twice since it has the same sequence number as the old transaction.
+
+      properties:
+        method:
+          type: string
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - submit
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitRequest'
+      required:
+        - method
+      example:
+        method: 'submit'
+        params:
+          - tx_blob: '1200002280000000240000000361D4838D7EA4C6800000000000000000000000000055534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA968400000000000000A732103AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB74473045022100D184EB4AE5956FF600E7536EE459345C7BBCF097A84CC61A93B9AF7197EDB98702201CEA8009B7BEEBAA2AACC0359B41C427C1C5B550A4CA4B80CF2174AF2D6D5DCE81144B4E9C06F24296074F7BC48F92A97916C6DC5EA983143E9D4A2B8AA0780F682D136F7A56D6724EF53754'
+
+    SubmitResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/SubmitSuccessResponse'
+              error: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/SubmitSuccessResponse'
+            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          accepted: true
+          account_sequence_available: 362
+          account_sequence_next: 362
+          applied: true
+          broadcast: true
+          engine_result: 'tesSUCCESS'
+          engine_result_code: 0
+          engine_result_message: 'The transaction was applied. Only final in a validated ledger.'
+          status: 'success'
+          kept: true
+          open_ledger_cost: 10
+          queued: false
+          tx_blob: '1200002280000000240000016961D4838D7EA4C6800000000000000000000000000055534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA9684000000000002710732103AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB74473045022100A7CCD11455E47547FF617D5BFC15D120D9053DFD0536B044F10CA3631CD609E502203B61DEE4AC027C5743A1B56AF568D1E2B8E79BB9E9E14744AC87F38375C3C2F181144B4E9C06F24296074F7BC48F92A97916C6DC5EA983143E9D4A2B8AA0780F682D136F7A56D6724EF53754'
+          tx_json:
+            Account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
+            Amount:
+              currency: 'USD'
+              issuer: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
+              value: 1
+            Destination: 'ra5nK24KXen9AHvsdFTKHSANinZseWnPcX'
+            Fee: 10000
+            Flags: 2147483648
+            Sequence: 361
+            SigningPubKey: '03AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB'
+            TransactionType: 'Payment'
+            TxnSignature: '3045022100A7CCD11455E47547FF617D5BFC15D120D9053DFD0536B044F10CA3631CD609E502203B61DEE4AC027C5743A1B56AF568D1E2B8E79BB9E9E14744AC87F38375C3C2F1'
+            hash: '5B31A7518DC304D5327B4887CD1F7DC2C38D5F684170097020C7C9758B973847'
+        validated_ledger_index: 21184416
+
+    SubmitSuccessResponse:
+      type: object
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponse'

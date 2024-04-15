@@ -1,0 +1,63 @@
+components:
+  schemas:
+    PaymentTransaction:
+      summary: >
+        A Payment transaction represents a transfer of value from one account to another. (Depending on the path taken, this can involve additional exchanges of value, which occur atomically.) This transaction type can be used for several types of payments.
+        Payments are also the only way to create accounts.
+
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      properties:
+        TransactionType:
+          type: string
+          enum: [Payment]
+        Amount:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: 'Only available in API v1. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead.'
+        DeliverMax:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: 'Only available in API v2. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead. New in: rippled 2.0.0'
+        DeliverMin:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: '(Optional) Minimum amount of destination currency this transaction should deliver. Only valid if this is a partial payment. For non-XRP amounts, the nested field names are lower-case.'
+        Destination:
+          type: string
+          description: 'The unique address of the account receiving the payment.'
+        DestinationTag:
+          type: integer
+          description: '(Optional) Arbitrary tag that identifies the reason for the payment to the destination, or a hosted recipient to pay.'
+        InvoiceID:
+          type: string
+          description: '(Optional) Arbitrary 256-bit hash representing a specific reason or identifier for this payment.'
+        Paths:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/Path'
+          description: '(Optional, auto-fillable) Array of payment paths to be used for this transaction. Must be omitted for XRP-to-XRP transactions.'
+        SendMax:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: '(Optional) Highest amount of source currency this transaction is allowed to cost, including transfer fees, exchange rates, and slippage. Does not include the XRP destroyed as a cost for submitting the transaction. For non-XRP amounts, the nested field names MUST be lower-case. Must be supplied for cross-currency/cross-issue payments. Must be omitted for XRP-to-XRP payments.'
+
+    Path:
+      type: object
+      properties:
+        account:
+          type: string
+          format: address
+          description: '(Optional) If present, this path step represents rippling through the specified address. MUST NOT be provided if this step specifies the currency or issuer fields.'
+        currency:
+          type: string
+          description: '(Optional) If present, this path step represents changing currencies through an order book. The currency specified indicates the new currency. MUST NOT be provided if this step specifies the account field.'
+        issuer:
+          type: string
+          format: address
+          description: '(Optional) If present, this path step represents changing currencies and this address defines the issuer of the new currency. If omitted in a step with a non-XRP currency, a previous step of the path defines the issuer. If present when currency is omitted, indicates a path step that uses an order book between same-named currencies with different issuers. MUST be omitted if the currency is XRP. MUST NOT be provided if this step specifies the account field.'
+        type:
+          type: integer
+          description: 'DEPRECATED (Optional) An indicator of which other fields are present.'
+        type_hex:
+          type: string
+          description: 'DEPRECATED: (Optional) A hexadecimal representation of the type field.'
