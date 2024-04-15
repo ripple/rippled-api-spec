@@ -34,10 +34,12 @@ paths:
                 mapping:
                   account_channels: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest' # TODO: Verify this is the correct syntax
                   account_info: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoRequest'
+                  submit: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequest'
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
                 - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
                 - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoRequest'
+                - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'
@@ -50,9 +52,13 @@ paths:
                 # TODO: Map the input request types to these output responses.
                 # They do not have a consistent field which is available on all of them which tells you which request was sent.
                 # Errors have `result.request.method`, but success responses
+                # 04/10/24 updates:
+                # We cannot do 1:1 mapping between request and response at the moment (probably until OpenAPI 4.0).
+                # References: https://github.com/OAI/OpenAPI-Specification/issues/791#issuecomment-1912910995
                 oneOf:
                   - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'
                   - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoResponse'
+                  - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.
