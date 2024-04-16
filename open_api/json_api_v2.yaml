@@ -6,7 +6,7 @@ info:
     name: MIT License
     identifier: mit
     url: https://opensource.org/license/mit/
-  version: 1.0.0
+  version: 2.0.0
 
 servers:
   # TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
@@ -51,7 +51,7 @@ paths:
                 # Errors have `result.request.method`, but success responses
                 oneOf:
                   - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'
-                  - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoResponseV1'
+                  - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoResponseV2'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.

@@ -267,23 +267,25 @@ components:
         - SignerQuorum
 
     AccountInfoSuccessResponseBase:
-      type: object
-      properties:
-        account_flags:
-          $ref: '#/components/schemas/AccountFlags'
-          description: The account's flag statuses.
-        ledger_current_index:
-          type: integer
-          description: The ledger index of the current in-progress ledger.
-        ledger_index:
-          type: integer
-          description: The ledger index of the ledger version used when retrieving this information.
-        queue_data:
-          $ref: '#/components/schemas/QueueData'
-          description: Information about queued transactions sent by this account.
-        validated:
-          type: boolean
-          description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            account_flags:
+              $ref: '#/components/schemas/AccountFlags'
+              description: The account's flag statuses.
+            ledger_current_index:
+              type: integer
+              description: The ledger index of the current in-progress ledger.
+            ledger_index:
+              type: integer
+              description: The ledger index of the ledger version used when retrieving this information.
+            queue_data:
+              $ref: '#/components/schemas/QueueData'
+              description: Information about queued transactions sent by this account.
+            validated:
+              type: boolean
+              description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
 
     AccountInfoSuccessResponseV1:
       allOf:
@@ -307,28 +309,19 @@ components:
               description: Array of SignerList ledger objects associated with this account for Multi-Signing.
               items:
                 $ref: '#/components/schemas/SignerList'
-          oneOf:
-            - type: object
-              properties:
-                signer_lists:
-                  type: array
-                  description: Array of SignerList ledger objects associated with this account for Multi-Signing.
-                  items:
-                    $ref: '#/components/schemas/SignerList'
-            - type: object
-              properties:
-                error:
-                  type: string
-                  description: Error type.
-                  example: 'invalidParams'
-                error_code:
-                  type: integer
-                  description: Error code.
-                  example: 31
-                error_message:
-                  type: string
-                  description: Error message.
-                  example: 'Invalid parameters.'
+            # Only when the input for signer_lists in the request is not of type boolean.
+            error:
+              type: string
+              description: Error type.
+              example: 'invalidParams'
+            error_code:
+              type: integer
+              description: Error code.
+              example: 31
+            error_message:
+              type: string
+              description: Error message.
+              example: 'Invalid parameters.'
 
     AccountInfoErrorResponse:
       type: object

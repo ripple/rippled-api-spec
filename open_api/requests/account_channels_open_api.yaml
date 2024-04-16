@@ -33,10 +33,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '#/components/schemas/AccountChannelsSuccessResponse'
+              success: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
               error: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsErrorResponse'
           oneOf:
-            - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
+            - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
             - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsErrorResponse'
       required:
         - result

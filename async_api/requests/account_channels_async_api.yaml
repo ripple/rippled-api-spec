@@ -28,12 +28,18 @@ components:
         ledger_index: validated
 
     AccountChannelsResponse:
-      discriminator: status
-      oneOf:
-        - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
-        - $ref: '#/components/schemas/AccountChannelsErrorResponse'
       type: object
       properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
+              error: '#/components/schemas/AccountChannelsErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
+            - $ref: '#/components/schemas/AccountChannelsErrorResponse'
         # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
         id:
           # Not specifying a type is how we express "any" value is acceptable
@@ -64,16 +70,6 @@ components:
           validated: true
         status: success
         type: response
-
-    AccountChannelsSuccessResponse:
-      allOf:
-        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
-      type: object
-      properties:
-        result:
-          $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
-      required:
-        - result
 
     AccountChannelsErrorResponse:
       oneOf:
