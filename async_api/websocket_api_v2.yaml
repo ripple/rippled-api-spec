@@ -16,7 +16,7 @@ info:
   license:
     name: MIT License
     url: https://opensource.org/license/mit/
-  version: 1.0.0
+  version: 2.0.0
 
 servers:
   # TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
@@ -53,5 +53,5 @@ channels:
               $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsResponse'
           - messageId: 'AccountInfoResponse'
             payload:
-              $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV1'
+              $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV2'
           # TODO: Add additional response types for individual requests here

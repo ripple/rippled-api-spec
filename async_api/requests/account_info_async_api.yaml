@@ -7,22 +7,25 @@ components:
         All information retrieved is relative to a particular version of the ledger.
         Returns an AccountInfoResponse
       properties:
-        method:
-          type: string
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-            - account_info
-        params:
-          type: array
-          items:
-            $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoRequest'
-      required:
-        - method
+        allOf:
+          - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoRequest'
+        properties:
+          command:
+            type: string
+            enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+              - account_info
+          id:
+            # Not specifying a type is how we express "any" value is acceptable
+            description: 'A unique identifier for the request.'
+        required:
+          - command
+          - id
       example:
-        method: 'account_info'
-        params:
-          - account: 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn'
-            ledger_index: 'current'
-            queue: true
+        id: 2
+        command: account_info
+        account: rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn
+        ledger_index: current
+        queue: true
 
     AccountInfoResponseV1:
       type: object
@@ -37,9 +40,84 @@ components:
           oneOf:
             - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
             - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
+        # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
+        id:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: 'A unique identifier for the request.'
+        type:
+          type: string
+          description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - response
       required:
-        - result
+        - id
+        - type
       example:
+        id: 5
+        status: success
+        type: response
+        result:
+          account_data:
+            Account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
+            Balance: '999999999960'
+            Flags: 8388608
+            LedgerEntryType: 'AccountRoot'
+            OwnerCount: 0
+            PreviousTxnID: '4294BEBE5B569A18C0A2702387C9B1E7146DC3A5850C1E87204951C6FDAA4C42'
+            PreviousTxnLgrSeq: 3
+            Sequence: 6
+            index: '92FA6A9FC8EA6018D5D16532D7795C91BFB0831355BDFDA177E86C8BF997985F'
+          ledger_current_index: 71766343
+          queue_data:
+            auth_change_queued: true
+            highest_sequence: 10
+            lowest_sequence: 6
+            max_spend_drops_total: '500'
+            transactions:
+              - auth_change: false
+                fee: '100'
+                fee_level: '2560'
+                max_spend_drops: '100'
+                seq: 6
+              # ... (trimmed for length) ...
+              - LastLedgerSequence: 10
+                auth_change: false
+                fee: '100'
+                fee_level: '2560'
+                max_spend_drops: '100'
+                seq: 10
+            txn_count: 5
+          validated: true
+
+    AccountInfoResponseV2:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
+              error: '#/components/schemas/AccountInfoErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
+            - $ref: '#/components/schemas/AccountInfoErrorResponse'
+        # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
+        id:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: 'A unique identifier for the request.'
+        type:
+          type: string
+          description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - response
+      required:
+        - id
+        - type
+      example:
+        id: 5
+        status: success
+        type: response
         result:
           account_data:
             Account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
@@ -74,52 +152,7 @@ components:
           status: 'success'
           validated: true
 
-    AccountInfoResponseV2:
-      type: object
-      properties:
-        result:
-          type: object
-          discriminator:
-            propertyName: status
-            mapping:
-              success: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
-              error: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
-          oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
-      required:
-        - result
-      example:
-        result:
-          account_data:
-            Account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
-            Balance: '999999999960'
-            Flags: 8388608
-            LedgerEntryType: 'AccountRoot'
-            OwnerCount: 0
-            PreviousTxnID: '4294BEBE5B569A18C0A2702387C9B1E7146DC3A5850C1E87204951C6FDAA4C42'
-            PreviousTxnLgrSeq: 3
-            Sequence: 6
-            index: '92FA6A9FC8EA6018D5D16532D7795C91BFB0831355BDFDA177E86C8BF997985F'
-          ledger_current_index: 71766343
-          queue_data:
-            auth_change_queued: true
-            highest_sequence: 10
-            lowest_sequence: 6
-            max_spend_drops_total: '500'
-            transactions:
-              - auth_change: false
-                fee: '100'
-                fee_level: '2560'
-                max_spend_drops: '100'
-                seq: 6
-              # ... (trimmed for length) ...
-              - LastLedgerSequence: 10
-                auth_change: false
-                fee: '100'
-                fee_level: '2560'
-                max_spend_drops: '100'
-                seq: 10
-            txn_count: 5
-          status: 'success'
-          validated: true
+    AccountInfoErrorResponse:
+      oneOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/WebsocketErrorFields'
+        - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
