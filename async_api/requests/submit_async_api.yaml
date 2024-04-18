@@ -1,6 +1,7 @@
 components:
   schemas:
-    SubmitRequestBase:
+    SubmitRequest:
+      type: object
       description: >
         The submit method applies a transaction and sends it to the network to be confirmed and included in future ledgers.
 
@@ -9,42 +10,24 @@ components:
         - Submit-only mode takes a signed, serialized transaction as a binary blob, and submits it to the network as-is. Since signed transaction objects are immutable, no part of the transaction can be modified or automatically filled in after submission.
         - Sign-and-submit mode takes a JSON-formatted Transaction object, completes and signs the transaction in the same manner as the sign method, and then submits the signed transaction. We recommend only using this mode for testing and development.
         To send a transaction as robustly as possible, you should construct and sign it in advance, persist it somewhere that you can access even after a power outage, then submit it as a tx_blob. After submission, monitor the network with the tx method command to see if the transaction was successfully applied; if a restart or other problem occurs, you can safely re-submit the tx_blob transaction: it won't be applied twice since it has the same sequence number as the old transaction.
-      type: object
       properties:
-        method:
-          type: string
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-            - submit
-      required:
-        - method
-
-    SubmitRequestV1:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/SubmitRequestBase'
-      properties:
-        params:
-          type: array
-          items:
-            $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitRequestV1'
+        allOf:
+          - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitRequest'
+        properties:
+          command:
+            type: string
+            enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+              - submit
+          id:
+            # Not specifying a type is how we express "any" value is acceptable
+            description: 'A unique identifier for the request.'
+        required:
+          - command
+          - id
       example:
-        method: 'submit'
-        params:
-          - tx_blob: '1200002280000000240000000361D4838D7EA4C6800000000000000000000000000055534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA968400000000000000A732103AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB74473045022100D184EB4AE5956FF600E7536EE459345C7BBCF097A84CC61A93B9AF7197EDB98702201CEA8009B7BEEBAA2AACC0359B41C427C1C5B550A4CA4B80CF2174AF2D6D5DCE81144B4E9C06F24296074F7BC48F92A97916C6DC5EA983143E9D4A2B8AA0780F682D136F7A56D6724EF53754'
-
-    SubmitRequestV2:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/SubmitRequestBase'
-      properties:
-        params:
-          type: array
-          items:
-            $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitRequestV2'
-      example:
-        method: 'submit'
-        params:
-          - tx_blob: '1200002280000000240000000361D4838D7EA4C6800000000000000000000000000055534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA968400000000000000A732103AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB74473045022100D184EB4AE5956FF600E7536EE459345C7BBCF097A84CC61A93B9AF7197EDB98702201CEA8009B7BEEBAA2AACC0359B41C427C1C5B550A4CA4B80CF2174AF2D6D5DCE81144B4E9C06F24296074F7BC48F92A97916C6DC5EA983143E9D4A2B8AA0780F682D136F7A56D6724EF53754'
+        id: 2
+        command: submit
+        tx_blob: '1200002280000000240000000361D4838D7EA4C6800000000000000000000000000055534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA968400000000000000A732103AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB74473045022100D184EB4AE5956FF600E7536EE459345C7BBCF097A84CC61A93B9AF7197EDB98702201CEA8009B7BEEBAA2AACC0359B41C427C1C5B550A4CA4B80CF2174AF2D6D5DCE81144B4E9C06F24296074F7BC48F92A97916C6DC5EA983143E9D4A2B8AA0780F682D136F7A56D6724EF53754'
 
     SubmitResponseV1:
       type: object
@@ -55,13 +38,26 @@ components:
             propertyName: status
             mapping:
               success: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV1'
-              error: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'
+              error: '../../shared/requests/account_info.yaml#/components/schemas/SubmitErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV1'
-            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/SubmitSuccessResponseV1'
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/SubmitErrorResponse'
+        # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
+        id:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: 'A unique identifier for the request.'
+        type:
+          type: string
+          description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - response
       required:
-        - result
+        - id
+        - type
       example:
+        id: 5
+        status: success
+        type: response
         result:
           accepted: true
           account_sequence_available: 362
@@ -71,7 +67,6 @@ components:
           engine_result: 'tesSUCCESS'
           engine_result_code: 0
           engine_result_message: 'The transaction was applied. Only final in a validated ledger.'
-          status: 'success'
           kept: true
           open_ledger_cost: 10
           queued: false
@@ -92,7 +87,7 @@ components:
             hash: '5B31A7518DC304D5327B4887CD1F7DC2C38D5F684170097020C7C9758B973847'
         validated_ledger_index: 21184416
 
-    SubmitResponseV2:
+    AccountInfoResponseV2:
       type: object
       properties:
         result:
@@ -101,13 +96,26 @@ components:
             propertyName: status
             mapping:
               success: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV2'
-              error: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'
+              error: '#/components/schemas/SubmitErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV2'
-            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/SubmitSuccessResponseV2'
+            - $ref: '#/components/schemas/SubmitErrorResponse'
+        # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
+        id:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: 'A unique identifier for the request.'
+        type:
+          type: string
+          description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
+          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+            - response
       required:
-        - result
+        - id
+        - type
       example:
+        id: 5
+        status: success
+        type: response
         result:
           accepted: true
           account_sequence_available: 362
@@ -117,7 +125,6 @@ components:
           engine_result: 'tesSUCCESS'
           engine_result_code: 0
           engine_result_message: 'The transaction was applied. Only final in a validated ledger.'
-          status: 'success'
           kept: true
           open_ledger_cost: 10
           queued: false
@@ -137,3 +144,8 @@ components:
             TxnSignature: '3045022100A7CCD11455E47547FF617D5BFC15D120D9053DFD0536B044F10CA3631CD609E502203B61DEE4AC027C5743A1B56AF568D1E2B8E79BB9E9E14744AC87F38375C3C2F1'
             hash: '5B31A7518DC304D5327B4887CD1F7DC2C38D5F684170097020C7C9758B973847'
         validated_ledger_index: 21184416
+
+    SubmitErrorResponse:
+      oneOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/WebsocketErrorFields'
+        - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'

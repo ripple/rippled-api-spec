@@ -1,10 +1,14 @@
 components:
   schemas:
-    SubmitRequest:
-      description: Definition of SubmitRequest object with two modes
+    SubmitRequestV1:
       oneOf:
         - $ref: '#/components/schemas/SubmitOnlyMode'
-        - $ref: '#/components/schemas/SignAndSubmitMode'
+        - $ref: '#/components/schemas/SignAndSubmitModeV1'
+
+    SubmitRequestV2:
+      oneOf:
+        - $ref: '#/components/schemas/SubmitOnlyMode'
+        - $ref: '#/components/schemas/SignAndSubmitModeV2'
 
     SubmitOnlyMode:
       description: A submit-only request for submitting transactions.
@@ -16,22 +20,13 @@ components:
         fail_hard:
           type: boolean
           description: 'If true, and the transaction fails locally, do not retry or relay the transaction to other servers. Default is false.'
+      required:
+        - tx_blob
 
-    SignAndSubmitMode:
+    SignAndSubmitModeBase:
       description: A mode for signing a transaction and immediately submitting it. This mode is intended for testing.
       type: object
       properties:
-        tx_json:
-          type: object
-          discriminator:
-            propertyName: TransactionType
-            mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
-          oneOf:
-            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
-            # TODO: Add other transaction types here
-
-          description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
         secret:
           type: string
           description: '(Optional) Secret key of the account supplying the transaction, used to sign it. Do not send your secret to untrusted servers or through unsecured network connections. Cannot be used with key_type, seed, seed_hex, or passphrase.'
@@ -63,72 +58,133 @@ components:
           type: integer
           description: '(Optional) Sign-and-submit fails with the error rpcHIGH_FEE if the auto-filled Fee value would be greater than the reference transaction cost x fee_mult_max ÷ fee_div_max. This field has no effect if you explicitly specify the Fee field of the transaction. Default is 1.'
 
-    SubmitSuccessResponse:
+    SignAndSubmitModeV1:
       type: object
+      allOf:
+        - $ref: '#/components/schemas/SignAndSubmitModeBase'
       properties:
-        engine_result:
-          type: string
-          description: Text result code indicating the preliminary result of the transaction, for example tesSUCCESS
-        engine_result_code:
-          type: integer
-          description: Numeric version of the result code. Not recommended.
-        engine_result_message:
-          type: string
-          description: Human-readable explanation of the transaction's preliminary result
-        tx_blob:
-          type: string
-          description: The complete transaction in hex string format
+        tx_json:
+          type: object
+          discriminator:
+            propertyName: TransactionType
+            mapping:
+              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+          oneOf:
+            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+            # TODO: Add other transaction types here
+
+          description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
+      required:
+        - tx_json
+
+    SignAndSubmitModeV2:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SignAndSubmitModeBase'
+      properties:
+        tx_json:
+          type: object
+          discriminator:
+            propertyName: TransactionType
+            mapping:
+              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
+          oneOf:
+            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
+            # TODO: Add other transaction types here
+          description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
+      required:
+        - tx_json
+
+    SubmitSuccessResponseBase:
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            engine_result:
+              type: string
+              description: Text result code indicating the preliminary result of the transaction, for example tesSUCCESS
+            engine_result_code:
+              type: integer
+              description: Numeric version of the result code. Not recommended.
+            engine_result_message:
+              type: string
+              description: Human-readable explanation of the transaction's preliminary result
+            tx_blob:
+              type: string
+              description: The complete transaction in hex string format
+            accepted:
+              type: boolean
+              description: |
+                (Omitted in sign-and-submit mode) The value true indicates that the transaction was applied, queued, broadcast, or kept for later.
+                The value false indicates that none of those happened, so the transaction cannot possibly succeed as long as you do not submit it again and have not already submitted it another time.
+            account_sequence_available:
+              type: number
+              description: |
+                (Omitted in sign-and-submit mode) The next Sequence Number available for the sending account after all pending and queued transactions.
+            account_sequence_next:
+              type: number
+              description: |
+                (Omitted in sign-and-submit mode) The next Sequence Number for the sending account after all transactions that have been provisionally applied, but not transactions in the queue.
+            applied:
+              type: boolean
+              description: |
+                (Omitted in sign-and-submit mode) The value true indicates that this transaction was applied to the open ledger.
+                In this case, the transaction is likely, but not guaranteed, to be validated in the next ledger version.
+            broadcast:
+              type: boolean
+              description: |
+                (Omitted in sign-and-submit mode) The value true indicates this transaction was broadcast to peer servers in the peer-to-peer XRP Ledger network.
+                (Note: if the server has no peers, such as in stand-alone mode, the server uses the value true for cases where it would have broadcast the transaction.)
+                The value false indicates the transaction was not broadcast to any other servers.
+            kept:
+              type: boolean
+              description: |
+                (Omitted in sign-and-submit mode) The value true indicates that the transaction was kept to be retried later.
+            queued:
+              type: boolean
+              description: |
+                (Omitted in sign-and-submit mode) The value true indicates the transaction was put in the Transaction Queue, which means it is likely to be included in a future ledger version.
+            open_ledger_cost:
+              type: string
+              description: |
+                (Omitted in sign-and-submit mode) The current open ledger cost before processing this transaction.
+                Transactions with a lower cost are likely to be queued.
+            validated_ledger_index:
+              type: integer
+              description: |
+                (Omitted in sign-and-submit mode) The ledger index of the newest validated ledger at the time of submission.
+                This provides a lower bound on the ledger versions that the transaction can appear in as a result of this request.
+                (The transaction could only have been validated in this ledger version or earlier if it had already been submitted before.)
+
+    SubmitSuccessResponseV1:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SubmitSuccessResponseBase'
+      properties:
         tx_json:
           discriminator:
             propertyName: TransactionType
             mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
+              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+              # TODO: Add other transaction types here
           oneOf:
-            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
+            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             # TODO: Add other transaction types here
-        accepted:
-          type: boolean
-          description: |
-            (Omitted in sign-and-submit mode) The value true indicates that the transaction was applied, queued, broadcast, or kept for later.
-            The value false indicates that none of those happened, so the transaction cannot possibly succeed as long as you do not submit it again and have not already submitted it another time.
-        account_sequence_available:
-          type: number
-          description: |
-            (Omitted in sign-and-submit mode) The next Sequence Number available for the sending account after all pending and queued transactions.
-        account_sequence_next:
-          type: number
-          description: |
-            (Omitted in sign-and-submit mode) The next Sequence Number for the sending account after all transactions that have been provisionally applied, but not transactions in the queue.
-        applied:
-          type: boolean
-          description: |
-            (Omitted in sign-and-submit mode) The value true indicates that this transaction was applied to the open ledger.
-            In this case, the transaction is likely, but not guaranteed, to be validated in the next ledger version.
-        broadcast:
-          type: boolean
-          description: |
-            (Omitted in sign-and-submit mode) The value true indicates this transaction was broadcast to peer servers in the peer-to-peer XRP Ledger network.
-            (Note: if the server has no peers, such as in stand-alone mode, the server uses the value true for cases where it would have broadcast the transaction.)
-            The value false indicates the transaction was not broadcast to any other servers.
-        kept:
-          type: boolean
-          description: |
-            (Omitted in sign-and-submit mode) The value true indicates that the transaction was kept to be retried later.
-        queued:
-          type: boolean
-          description: |
-            (Omitted in sign-and-submit mode) The value true indicates the transaction was put in the Transaction Queue, which means it is likely to be included in a future ledger version.
-        open_ledger_cost:
-          type: string
-          description: |
-            (Omitted in sign-and-submit mode) The current open ledger cost before processing this transaction.
-            Transactions with a lower cost are likely to be queued.
-        validated_ledger_index:
-          type: integer
-          description: |
-            (Omitted in sign-and-submit mode) The ledger index of the newest validated ledger at the time of submission.
-            This provides a lower bound on the ledger versions that the transaction can appear in as a result of this request.
-            (The transaction could only have been validated in this ledger version or earlier if it had already been submitted before.)
+
+    SubmitSuccessResponseV2:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SubmitSuccessResponseBase'
+      properties:
+        tx_json:
+          discriminator:
+            propertyName: TransactionType
+            mapping:
+              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
+              # TODO: Add other transaction types here
+          oneOf:
+            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
+            # TODO: Add other transaction types here
 
     SubmitErrorResponse:
       type: object
@@ -164,7 +220,10 @@ components:
           enum:
             - error
         request:
-          $ref: '#/components/schemas/SubmitRequest'
+          oneOf:
+            - $ref: '#/components/schemas/SubmitRequestV1'
+            - $ref: '#/components/schemas/SubmitRequestV2'
+
       required:
         - status
         - error

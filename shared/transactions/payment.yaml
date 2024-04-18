@@ -1,10 +1,9 @@
 components:
   schemas:
-    PaymentTransaction:
+    PaymentTransactionBase:
       summary: >
         A Payment transaction represents a transfer of value from one account to another. (Depending on the path taken, this can involve additional exchanges of value, which occur atomically.) This transaction type can be used for several types of payments.
         Payments are also the only way to create accounts.
-
       type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseTransaction'
@@ -12,12 +11,6 @@ components:
         TransactionType:
           type: string
           enum: [Payment]
-        Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
-          description: 'Only available in API v1. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead.'
-        DeliverMax:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
-          description: 'Only available in API v2. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead. New in: rippled 2.0.0'
         DeliverMin:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: '(Optional) Minimum amount of destination currency this transaction should deliver. Only valid if this is a partial payment. For non-XRP amounts, the nested field names are lower-case.'
@@ -40,6 +33,24 @@ components:
         SendMax:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: '(Optional) Highest amount of source currency this transaction is allowed to cost, including transfer fees, exchange rates, and slippage. Does not include the XRP destroyed as a cost for submitting the transaction. For non-XRP amounts, the nested field names MUST be lower-case. Must be supplied for cross-currency/cross-issue payments. Must be omitted for XRP-to-XRP payments.'
+
+    PaymentTransactionV1:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PaymentTransactionBase'
+      properties:
+        Amount:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: 'Only available in API v1. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead.'
+
+    PaymentTransactionV2:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PaymentTransactionBase'
+      properties:
+        DeliverMax:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: 'Only available in API v2. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead. New in: rippled 2.0.0'
 
     Path:
       type: object
