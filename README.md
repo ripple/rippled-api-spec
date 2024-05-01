@@ -43,7 +43,7 @@ For these instructions:
 Run the following command to generate boilerplate code for a new request where you can edit based on the steps in the latter sections:
 
 ```
-node addRequestTemplate.js <request_name>
+npm run template <request_name>
 ```
 
 For the above command, `<request_name>` should be the name of the new request in snake_case convention (e.g. account_channels). This would create 3 different files:

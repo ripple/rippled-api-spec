@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "template": "node addRequestTemplate.js"
+  },
   "devDependencies": {
     "prettier": "3.2.5"
   },
