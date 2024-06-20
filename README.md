@@ -2,7 +2,75 @@
 
 ## Introduction & Motivation
 
-Currently, the XRP Ledger (`rippled`) and the XRP Ledger API Server (`clio`) offer both an ad-hoc [JSON-RPC](https://en.wikipedia.org/wiki/JSON-RPC) API as well as a Websockets API that allow you to query the ledger and submit transactions to the blockchain. Both are implemented in C++ through a variety of headers and function calls. Most of the input / output, parameters, responses, codes - or generally anything - are at best sparsely documented in code and there is no centralized human readable specification nor a machine readable spec at all. The API is manually documented on xrpl.org with a few sparse comments contained in C++ headers. See the [public API methods reference](https://xrpl.org/docs/references/http-websocket-apis/public-api-methods).
+```mermaid
+graph LR
+  subgraph Current Implementation
+    Websockets-->C++_Headers
+    JSON_RPC-->C++_Headers
+    C++_Headers-->Function_Calls
+    Function_Calls-->Ad_hoc_API
+    Ad_hoc_API-->XRP_Ledger
+  end
+
+  subgraph Proposed Implementation
+    OpenAPI-->|Documents| JSON_RPC
+    C++_API_Stubs-->C++_Headers
+    C++_API_Stubs-->|Code Gen| Runtime_Validation
+    Runtime_Validation-->|Manual Hookup by Devs| Function_Calls
+    OpenAPI-->|Code Gen| C++_API_Stubs
+    OpenAPI-->|Code Gen| Compile_Checks
+    CI_CD_Tests-->XRP_Ledger
+    Compile_Checks-->C++_Headers
+
+    OpenAPI-->|Code Gen| CI_CD_Tests
+
+    AsyncAPI-->|Documents| Websockets
+    AsyncAPI--> Same_As_OpenAPI
+  end
+
+  subgraph Client_Libraries["Client Libraries"]
+    XRPL_JS
+    XRPL_PY
+    XRPL_RUST
+    XRPL_GO
+    XRPL_4J
+  end
+
+  OpenAPI-->|Code Gen - Types, Calls, Tests| Client_Libraries
+
+  JSON_RPC[JSON RPC]
+  C++_Headers[C++ Headers]
+  Function_Calls[Function Calls]
+  Ad_hoc_API[Ad hoc API]
+  XRP_Ledger[XRP Ledger]
+  OpenAPI[OpenAPI]
+  C++_API_Stubs["C++ API Stubs"]
+  CI_CD_Tests[Integration Tests]
+  Runtime_Validation["Runtime Validation"]
+  Compile_Checks["Compile Static Checks"]
+  AsyncAPI[AsyncAPI]
+  Websockets[Websockets]
+  Same_As_OpenAPI["Same As OpenAPI"]
+  XRPL_JS["xrpl.js"]
+  XRPL_PY["xrpl-py"]
+  XRPL_RUST["xrpl-rust"]
+  XRPL_GO["xrpl-go"]
+  XRPL_4J["xrpl-4j"]
+
+  linkStyle default stroke-width:4px,stroke:green
+  linkStyle 3,4,5 stroke-width:4px,stroke:blue
+  linkStyle 6,8 stroke-width:4px,stroke:red
+  linkStyle 7,10 stroke-width:4px,stroke:orange
+  linkStyle 9,11 stroke-width:4px,stroke:blueviolet
+```
+
+Currently, the XRP Ledger (`rippled`) and the XRP Ledger API Server (`clio`) offer both an ad-hoc [JSON-RPC](https://en.wikipedia.org/wiki/JSON-RPC) API as well as a Websockets API that allow you to query the ledger and submit transactions to the blockchain. Both are implemented in C++ through a variety of headers and function calls. Most of the input / output, parameters, responses, codes - or generally anything - are at best sparsely documented in code and there is no centralized human readable specification nor a machine readable spec at all. The API is manually documented on xrpl.org with a few sparse comments contained in C++ headers. See the [public API methods reference](https://xrpl.org/docs/references/http-websocket-apis/public-api-methods).penAPI]
+C++\_API_Stubs["C++ API Stubs"]
+CI_CD_Tests[Integration Tests]
+Runtime_Validation["Runtime Validation"]
+Compile_Checks["Compile Static Checks"]
+AsyncAPI[AsyncAPI]
+Websocket
 
 Changes to this interface are picked up manually via people watching pull requests and manually translating this into [xrpl.org](https://xrpl.org) docs or dependent client libraries such as [xrpl.js](https://github.com/XRPLF/xrpl.js/tree/main/packages/xrpl/src/models) and [xrpl-py](https://github.com/XRPLF/xrpl-py/tree/main/xrpl/models) and [xrpl4j](https://github.com/XRPLF/xrpl4j/tree/main/xrpl4j-core/src/main/java/org/xrpl/xrpl4j/model). In these dependent places, work is duplicated, and it is error-prone to keep the types in sync as well as bring the libraries in line with the latest changes in rippled. Additionally, there is drift between client libraries in different languages such as [xrpl-php](https://github.com/AlexanderBuzz/xrpl-php/tree/master/src/Models) where not all transactions and fields are supported. This is simply an issue of less resources dedicated to supporting various tools in the ecosystem as well as natural human error through lapsed memory.
 
