@@ -5,21 +5,21 @@ components:
       description: >
         The account_info command retrieves information about an account, its activity, and its XRP balance.
         All information retrieved is relative to a particular version of the ledger.
-        Returns an AccountInfoResponse
-      properties:
-        allOf:
-          - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoRequest'
-        properties:
-          command:
-            type: string
-            enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-              - account_info
-          id:
-            # Not specifying a type is how we express "any" value is acceptable
-            description: 'A unique identifier for the request.'
-        required:
-          - command
-          - id
+        Returns an AccountInfoResponse.
+      allOf:
+        - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoRequest'
+        - type: object
+          properties:
+            command:
+              type: string
+              enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+                - account_info
+            id:
+              # Not specifying a type is how we express "any" value is acceptable
+              description: 'A unique identifier for the request.'
+      required:
+        - command
+        - id
       example:
         id: 2
         command: account_info
@@ -29,17 +29,10 @@ components:
 
     AccountInfoResponseV1:
       type: object
+      oneOf:
+        - $ref: '#/components/schemas/AccountInfoSuccessResponseV1'
+        - $ref: '#/components/schemas/AccountInfoErrorResponse'
       properties:
-        result:
-          type: object
-          discriminator:
-            propertyName: status
-            mapping:
-              success: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
-              error: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
-          oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
         # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
         id:
           # Not specifying a type is how we express "any" value is acceptable
@@ -47,7 +40,7 @@ components:
         type:
           type: string
           description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+          enum:
             - response
       required:
         - id
@@ -91,17 +84,10 @@ components:
 
     AccountInfoResponseV2:
       type: object
+      oneOf:
+        - $ref: '#/components/schemas/AccountInfoSuccessResponseV2'
+        - $ref: '#/components/schemas/AccountInfoErrorResponse'
       properties:
-        result:
-          type: object
-          discriminator:
-            propertyName: status
-            mapping:
-              success: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
-              error: '#/components/schemas/AccountInfoErrorResponse'
-          oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
-            - $ref: '#/components/schemas/AccountInfoErrorResponse'
         # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
         id:
           # Not specifying a type is how we express "any" value is acceptable
@@ -109,7 +95,7 @@ components:
         type:
           type: string
           description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+          enum:
             - response
       required:
         - id
@@ -149,10 +135,40 @@ components:
                 max_spend_drops: '100'
                 seq: 10
             txn_count: 5
-          status: 'success'
           validated: true
 
     AccountInfoErrorResponse:
       oneOf:
         - $ref: '../../shared/base.yaml#/components/schemas/WebsocketErrorFields'
         - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
+      properties:
+        status:
+          type: string
+          enum:
+            - error
+
+    AccountInfoSuccessResponseV1:
+      properties:
+        result:
+          type: object
+          allOf:
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
+        status:
+          type: string
+          enum:
+            - success
+      required:
+        - status
+
+    AccountInfoSuccessResponseV2:
+      properties:
+        result:
+          type: object
+          allOf:
+            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
+        status:
+          type: string
+          enum:
+            - success
+        required:
+          - status

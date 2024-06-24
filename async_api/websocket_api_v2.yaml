@@ -9,10 +9,10 @@
 # Subscriptions
 # Submit request (As it will have transaction types as a requirement)
 
-asyncapi: 2.6.0
+asyncapi: '2.6.0'
 info:
   title: XRP Ledger Public API
-  description: A Websocket API used to query rippled.
+  description: A WebSocket API used to query rippled.
   license:
     name: MIT License
     url: https://opensource.org/license/mit/
@@ -34,24 +34,28 @@ channels:
   /:
     # In AsyncAPI 2.x 'subscribe' is from the api's perspective - so an end user sends a request to
     # a channel where the api is 'subscribed'. This is changed in 3.0.0.
+    description: The root channel for sending requests and receiving responses.
     subscribe:
       message:
         oneOf:
-          - messageId: 'AccountChannelsRequest'
+          - name: AccountChannelsRequest
+            contentType: application/json
             payload:
               $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsRequest'
-          - messageId: 'AccountInfoRequest'
+          - name: AccountInfoRequest
+            contentType: application/json
             payload:
               $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoRequest'
           # TODO: Add additional request types for individual requests here
-
     publish:
       message:
         oneOf:
-          - messageId: 'AccountChannelsResponse'
+          - name: AccountChannelsResponse
+            contentType: application/json
             payload:
               $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsResponse'
-          - messageId: 'AccountInfoResponse'
+          - name: AccountInfoResponse
+            contentType: application/json
             payload:
               $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV2'
           # TODO: Add additional response types for individual requests here

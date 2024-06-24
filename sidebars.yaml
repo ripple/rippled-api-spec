@@ -2,5 +2,9 @@
   items:
     - page: ./open_api/json_api.yaml
       label: 'JSON RPC API'
+    - page: ./open_api/json_api_v2.yaml
+      label: 'JSON RPC API V2'
     - page: ./async_api/websocket_api.yaml
       label: 'Websocket API'
+    - page: ./async_api/websocket_api_v2.yaml
+      label: 'Websocket API V2'
