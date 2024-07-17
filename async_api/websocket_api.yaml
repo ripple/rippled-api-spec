@@ -10,8 +10,17 @@
 # Submit request (As it will have transaction types as a requirement)
 
 asyncapi: '2.6.0'
+defaultContentType: application/json
+id: urn:xrp-ledger:public-api
+tags:
+  - name: xrp-ledger
+    description: API related to XRP Ledger
 info:
   title: XRP Ledger Public API
+  contact:
+    name: Ripple Dev Support
+    url: https://ripple.com/contact
+    email: support@ripple.com
   description: A WebSocket API used to query rippled.
   license:
     name: MIT License
@@ -36,25 +45,31 @@ channels:
     # a channel where the api is 'subscribed'. This is changed in 3.0.0.
     description: The root channel for sending requests and receiving responses.
     subscribe:
+      operationId: subscribeToRoot
       message:
         oneOf:
           - name: AccountChannelsRequest
+            messageId: AccountChannelsRequest
             contentType: application/json
             payload:
               $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsRequest'
           - name: AccountInfoRequest
+            messageId: AccountInfoRequest
             contentType: application/json
             payload:
               $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoRequest'
           # TODO: Add additional request types for individual requests here
     publish:
+      operationId: publishToRoot
       message:
         oneOf:
           - name: AccountChannelsResponse
+            messageId: AccountChannelsResponse
             contentType: application/json
             payload:
               $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsResponse'
           - name: AccountInfoResponse
+            messageId: AccountInfoResponse
             contentType: application/json
             payload:
               $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV1'
