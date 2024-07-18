@@ -170,5 +170,5 @@ components:
           type: string
           enum:
             - success
-        required:
-          - status
+      required:
+        - status
