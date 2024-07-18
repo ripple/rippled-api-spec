@@ -19,8 +19,6 @@ servers:
 paths:
   # We use OpenAPI's discriminator field with the `method` name to delineate between the options
   /:
-    # TODO: Potentially we can try making a union of types at this level of Request / Response pairs (as opposed to one big Request array, and one big Response array)
-    # If that works, we could solve the problem below of tying inputs to outputs very specifically. Needs further investigation.
     post:
       summary: Send JSON-RPC request to server
       requestBody:
@@ -48,9 +46,6 @@ paths:
           content:
             application/json:
               schema:
-                # TODO: Map the input request types to these output responses.
-                # They do not have a consistent field which is available on all of them which tells you which request was sent.
-                # Errors have `result.request.method`, but success responses
                 oneOf:
                   - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'
                   - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoResponseV2'
