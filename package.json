@@ -3,6 +3,7 @@
     "template": "node addRequestTemplate.js"
   },
   "devDependencies": {
+    "json-schema-ref-parser": "^9.0.9",
     "prettier": "3.2.5"
   },
   "dependencies": {
