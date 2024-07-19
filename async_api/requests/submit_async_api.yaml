@@ -1,6 +1,7 @@
 components:
   schemas:
     SubmitRequest:
+      $id: SubmitRequest
       type: object
       description: >
         The submit method applies a transaction and sends it to the network to be confirmed and included in future ledgers.
@@ -15,9 +16,7 @@ components:
           - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitRequest'
         properties:
           command:
-            type: string
-            enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-              - submit
+            $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
           id:
             # Not specifying a type is how we express "any" value is acceptable
             description: 'A unique identifier for the request.'
@@ -30,6 +29,7 @@ components:
         tx_blob: '1200002280000000240000000361D4838D7EA4C6800000000000000000000000000055534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA968400000000000000A732103AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB74473045022100D184EB4AE5956FF600E7536EE459345C7BBCF097A84CC61A93B9AF7197EDB98702201CEA8009B7BEEBAA2AACC0359B41C427C1C5B550A4CA4B80CF2174AF2D6D5DCE81144B4E9C06F24296074F7BC48F92A97916C6DC5EA983143E9D4A2B8AA0780F682D136F7A56D6724EF53754'
 
     SubmitResponseV1:
+      $id: SubmitResponseV1
       type: object
       properties:
         result:
@@ -87,7 +87,8 @@ components:
             hash: '5B31A7518DC304D5327B4887CD1F7DC2C38D5F684170097020C7C9758B973847'
         validated_ledger_index: 21184416
 
-    AccountInfoResponseV2:
+    SubmitResponseV2:
+      $id: SubmitResponseV2
       type: object
       properties:
         result:

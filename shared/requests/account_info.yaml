@@ -288,6 +288,7 @@ components:
               description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
 
     AccountInfoSuccessResponseV1:
+      $id: AccountInfoResponseSuccess
       allOf:
         - $ref: '#/components/schemas/AccountInfoSuccessResponseBase'
         - type: object
