@@ -27,7 +27,7 @@ jobs:
         run: | 
             npm install # setup the dependencies from package.json
             npm install -g @redocly/cli
-            echo "Redocly CLI successfully installed:"
+            echo "Redocly CLI successfully installed, version info:"
             redocly --version
 
       - name: Validate OpenAPI Spec
@@ -54,8 +54,8 @@ jobs:
         - name: Install AsyncAPI  CLI
           run: | 
             npm install # setup the dependencies from package.json
-            npm i @asyncapi/cli
-            echo "AsyncAPI CLI successfully installed:"
+            npm install -g @asyncapi/cli
+            echo "AsyncAPI CLI successfully installed, version info:"
             asyncapi --version
 
         - name: Validate AsyncAPI Spec
