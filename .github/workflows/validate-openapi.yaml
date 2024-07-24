@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - '**/*.yaml'
+      - '**/*.json'
   pull_request:
     paths:
       - '**/*.yaml'
+      - '**/*.json'
 
 jobs:
   validate-openapi:
@@ -23,6 +25,7 @@ jobs:
 
       - name: Install Redocly CLI
         run: | 
+            npm install # setup the dependencies from package.json
             npm install -g @redocly/cli
             echo "Redocly CLI successfully installed:"
             redocly --version
@@ -50,6 +53,7 @@ jobs:
 
         - name: Install AsyncAPI  CLI
           run: | 
+            npm install # setup the dependencies from package.json
             npm i @asyncapi/cli
             echo "AsyncAPI CLI successfully installed:"
             asyncapi --version
