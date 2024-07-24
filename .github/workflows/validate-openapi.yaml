@@ -22,7 +22,10 @@ jobs:
           node-version: '22'
 
       - name: Install Redocly CLI
-        run: npm install -g @redocly/cli
+        run: | 
+            npm install -g @redocly/cli
+            echo "Redocly CLI successfully installed:"
+            redocly --version
 
       - name: Validate OpenAPI Spec
         run: | 
@@ -31,4 +34,32 @@ jobs:
 
       - name: Check Validation Result
         if: failure()
-        run: exit 1
+        run: echo "OpenAPI Specification validation failed"
+
+  validate-asyncapi:
+    runs-on: ubuntu-latest
+
+    steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '22'
+
+        - name: Install AsyncAPI  CLI
+          run: | 
+            npm i @asyncapi/cli
+            echo "AsyncAPI CLI successfully installed:"
+            asyncapi --version
+
+        - name: Validate AsyncAPI Spec
+          run: | 
+            asyncapi validate ./async_api/websocket_api.yaml
+            asyncapi validate ./async_api/websocket_api_v2.yaml
+
+        - name: Check Validation Result
+          if: failure()
+          run: echo "AsyncAPI Specification validation failed"
+        
