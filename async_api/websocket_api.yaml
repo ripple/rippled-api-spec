@@ -9,6 +9,8 @@
 # Subscriptions
 # Submit request (As it will have transaction types as a requirement)
 
+# TODO: (Preserved from original)
+
 asyncapi: '2.6.0'
 defaultContentType: application/json
 id: urn:xrp-ledger:public-api
@@ -28,49 +30,73 @@ info:
   version: 1.0.0
 
 servers:
-  # TODO: Should this list contain non-ripple servers? All UNL ws_urls? Just public infrastructure?
+  # TODO: Consider separating public and non-public servers (Preserved from original)
   mainnet:
     url: wss://s1.ripple.com:51233
     protocol: wss
     description: Mainnet Public API server
-  # TODO: Should testnet / devnet / xahau / etc. be on this list?
   testnet:
     url: wss://s.altnet.rippletest.net:51233
     protocol: wss
     description: Testnet (not for production usage)
 
+# Refactored channels section for better reusability
 channels:
+  # Root channel for all requests and responses
   /:
-    # In AsyncAPI 2.x 'subscribe' is from the api's perspective - so an end user sends a request to
-    # a channel where the api is 'subscribed'. This is changed in 3.0.0.
     description: The root channel for sending requests and receiving responses.
+    # Leverages operationId for clarity
     subscribe:
       operationId: subscribeToRoot
       message:
         oneOf:
-          - name: AccountChannelsRequest
-            messageId: AccountChannelsRequest
-            contentType: application/json
-            payload:
-              $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsRequest'
-          - name: AccountInfoRequest
-            messageId: AccountInfoRequest
-            contentType: application/json
-            payload:
-              $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoRequest'
-          # TODO: Add additional request types for individual requests here
+          # Reusable message references
+          - $ref: '#/components/messages/AccountChannelsRequest'
+          - $ref: '#/components/messages/AccountInfoRequest'
+          # ... (Add references for additional requests)
     publish:
       operationId: publishToRoot
       message:
         oneOf:
-          - name: AccountChannelsResponse
-            messageId: AccountChannelsResponse
-            contentType: application/json
-            payload:
-              $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsResponse'
-          - name: AccountInfoResponse
-            messageId: AccountInfoResponse
-            contentType: application/json
-            payload:
-              $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV1'
-          # TODO: Add additional response types for individual requests here
+          - $ref: '#/components/messages/AccountChannelsResponse'
+          - $ref: '#/components/messages/AccountInfoResponseV1'
+          # ... (Add references for additional responses)
+
+# Moved message definitions to a separate components section
+components:
+  messages:
+    # Account channels request message
+    AccountChannelsRequest:
+      name: AccountChannelsRequest
+      messageId: AccountChannelsRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsRequest'
+
+    # Account info request message
+    AccountInfoRequest:
+      name: AccountInfoRequest
+      messageId: AccountInfoRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoRequest'
+
+    # ... (Add definitions for additional message types)
+
+    # Account channels response message
+    AccountChannelsResponse:
+      name: AccountChannelsResponse
+      messageId: AccountChannelsResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsResponse'
+
+    # Account info response message (version 1)
+    AccountInfoResponseV1:
+      name: AccountInfoResponse
+      messageId: AccountInfoResponseV1  # Consider using a version suffix
+      contentType: application/json
+      payload:
+        $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV1'
+
+    # ... (Add definitions for additional response types)

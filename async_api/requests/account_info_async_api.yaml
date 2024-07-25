@@ -1,6 +1,7 @@
 components:
   schemas:
     AccountInfoRequest:
+      $id: AccountInfoRequest
       type: object
       description: >
         The account_info command retrieves information about an account, its activity, and its XRP balance.
@@ -11,9 +12,7 @@ components:
         - type: object
           properties:
             command:
-              type: string
-              enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-                - account_info
+              $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
             id:
               # Not specifying a type is how we express "any" value is acceptable
               description: 'A unique identifier for the request.'
@@ -28,6 +27,7 @@ components:
         queue: true
 
     AccountInfoResponseV1:
+      $id: AccountInfoResponseV1
       type: object
       oneOf:
         - $ref: '#/components/schemas/AccountInfoSuccessResponseV1'
@@ -83,6 +83,7 @@ components:
           validated: true
 
     AccountInfoResponseV2:
+      $id: AccountInfoResponseV2
       type: object
       oneOf:
         - $ref: '#/components/schemas/AccountInfoSuccessResponseV2'
@@ -138,6 +139,7 @@ components:
           validated: true
 
     AccountInfoErrorResponse:
+      $id: AccountInfoErrorResponse
       oneOf:
         - $ref: '../../shared/base.yaml#/components/schemas/WebsocketErrorFields'
         - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
@@ -148,6 +150,7 @@ components:
             - error
 
     AccountInfoSuccessResponseV1:
+      $id: AccountInfoSuccessResponseV1
       properties:
         result:
           type: object
@@ -161,6 +164,7 @@ components:
         - status
 
     AccountInfoSuccessResponseV2:
+      $id: AccountInfoSuccessResponseV2
       properties:
         result:
           type: object

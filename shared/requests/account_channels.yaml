@@ -1,6 +1,7 @@
 components:
   schemas:
     AccountChannelsRequest:
+      $id: AccountChannelsRequestPayload
       summary: >
         The account_channels method returns information about an account's Payment Channels. 
         This includes only channels where the specified account is the channel's source, not the destination. 
@@ -29,6 +30,7 @@ components:
         - account
 
     Channel:
+      $id: Channel
       type: object
       properties:
         account:
@@ -97,6 +99,7 @@ components:
         - settle_delay
 
     AccountChannelsSuccessResponse:
+      $id: AccountChannelResponseSuccess
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
@@ -123,6 +126,7 @@ components:
         - account
 
     AccountChannelsErrorResponse:
+      $id: AccountChannelsResponseError
       type: object
       properties:
         error:

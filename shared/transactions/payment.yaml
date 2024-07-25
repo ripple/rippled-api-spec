@@ -1,6 +1,7 @@
 components:
   schemas:
     PaymentTransactionBase:
+      $id: PaymentTransactionBase
       summary: >
         A Payment transaction represents a transfer of value from one account to another. (Depending on the path taken, this can involve additional exchanges of value, which occur atomically.) This transaction type can be used for several types of payments.
         Payments are also the only way to create accounts.
@@ -38,6 +39,7 @@ components:
         - Destination
 
     PaymentTransactionV1:
+      $id: PaymentTransactionV1
       type: object
       allOf:
         - $ref: '#/components/schemas/PaymentTransactionBase'
@@ -49,6 +51,7 @@ components:
         - Amount
 
     PaymentTransactionV2:
+      $id: PaymentTransactionV2
       type: object
       allOf:
         - $ref: '#/components/schemas/PaymentTransactionBase'
@@ -60,6 +63,7 @@ components:
         - DeliverMax
 
     Path:
+      $id: Path
       type: object
       properties:
         account:

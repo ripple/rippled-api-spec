@@ -1,9 +1,10 @@
 {
   "scripts": {
-    "template": "node addRequestTemplate.js"
+    "template": "node addRequestTemplate.js",
+    "bundle": "redocly bundle open_api/json_api.yaml --output dist/openapi && node generate-specs.js"
   },
   "devDependencies": {
-    "json-schema-ref-parser": "^9.0.9",
+    "@apidevtools/json-schema-ref-parser": "^11.6.4",
     "prettier": "3.2.5"
   },
   "dependencies": {

@@ -1,6 +1,15 @@
 components:
   schemas:
+    CommandTypes:
+      $id: CommandTypes
+      type: string
+      enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
+        - account_channels
+        - account_info
+        - submit
+
     ResponseWarning:
+      $id: ResponseWarning
       type: object
       description: Used to share rate-limiting warnings or other potential issues with a request.
       properties:
@@ -23,6 +32,7 @@ components:
         - message
 
     BaseRequest:
+      $id: BaseRequest
       type: object
       description: Information which could be included in every request sent to rippled
       properties:
@@ -31,6 +41,7 @@ components:
           description: The API version to use. If omitted, uses version 1.
 
     BaseSuccessResponse:
+      $id: BaseSuccessResponse
       type: object
       description: Information which is included in every successful response from a request sent to rippled.
       properties:
@@ -54,6 +65,7 @@ components:
         - status
 
     LookupByLedgerRequest:
+      $id: LookupByLedgerRequest
       type: object
       description: Additional information shared in requests which search for specific ledger data.
       properties:
@@ -67,6 +79,7 @@ components:
           description: The ledger index of the ledger to use, or a shortcut string.
 
     WebsocketErrorFields:
+      $id: WebsocketErrorFields
       type: object
       properties:
         api_version:
@@ -74,6 +87,7 @@ components:
           description: The api_version specified in the request, if any.
 
     UniversalErrorResponseCodes:
+      $id: UniversalErrorResponseCodes
       enum:
         - amendmentBlocked
         - failedToForward
@@ -94,6 +108,7 @@ components:
         * `unknownCmd` - The request does not contain a command that the rippled server recognizes.
 
     BaseTransaction:
+      $id: BaseTransaction
       type: object
       required:
         - Account
@@ -154,12 +169,14 @@ components:
           description: The signature that verifies this transaction as originating from the account it says it is from.
 
     CurrencyAmount:
+      $id: CurrencyAmount
       oneOf:
         - type: string
           description: 'The amount of XRP (drops), represented as a string.'
         - $ref: '#/components/schemas/TokenAmount'
 
     TokenAmount:
+      $id: TokenAmount
       type: object
       properties:
         currency:

@@ -7,13 +7,13 @@ components:
         (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
         Returns an AccountChannelsResponse.
       type: object
+      $id: AccountChannelsRequest
       allOf:
         - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsRequest'
       properties:
         command:
-          type: string
-          enum: # This is the most supported way to define a specific string as the only valid input. `const` is a new keyword which is supported in OpenAPI, but not in all corresponding codegen tools. https://github.com/OAI/OpenAPI-Specification/issues/1313
-            - account_channels
+          $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
+          constant: account_channels
         id:
           # Not specifying a type is how we express "any" value is acceptable
           description: 'A unique identifier for the request.'
@@ -29,6 +29,7 @@ components:
 
     AccountChannelsResponse:
       type: object
+      $id: AccountChannelsResponse
       oneOf:
         - $ref: '#/components/schemas/AccountChannelsErrorResponse'
         - $ref: '#/components/schemas/AccountChannelsSuccessResponse'
@@ -64,6 +65,7 @@ components:
         status: success
 
     AccountChannelsErrorResponse:
+      $id: AccountChanelErrorResponse
       # In AsyncAPI 2.x 'subscribe' is from the api's perspective - so an end user sends a request to
       # a channel where the api is 'subscribed'. This is changed in 3.0.0.
       oneOf:
@@ -76,6 +78,7 @@ components:
             - error
 
     AccountChannelsSuccessResponse:
+      $id: AccountChannelsSuccessResponse
       properties:
         result:
           type: object
