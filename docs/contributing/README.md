@@ -14,6 +14,10 @@ We currently use Redocly's tooling to test that our api is following the specifi
 4.  Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
 5.  In order to use the "Try it!" feature to see if the specification can be used to send a valid request and correctly validate a real response, you'll need to get around CORS errors. One way to do that is to run this script to create an unprotected Chrome, then view your generated docs from there: `open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`
 
+# How to add a new Amendment
+
+New Amendments usually introduce new transactions and/or requests. Please follow [these](./add-a-new-request.md#how-to-add-a-new-request) [documents](./add-a-new-transaction.md#how-to-add-a-new-transaction) for implementing changes, in addition to updating the rippled API version spec as detailed [here](./add-a-new-rippled-api-version.md).
+
 # Plan & Actions
 
 We targets toward the end of November 2024 to have a first version available, not necessarily encompassing all the below tasks.
