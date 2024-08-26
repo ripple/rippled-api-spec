@@ -1,0 +1,86 @@
+components:
+  schemas:
+    AccountLinesRequest:
+      summary: >
+        The account_lines command retrieves information about an account's trust lines, including balances in all non-XRP currencies and assets.
+        All information retrieved is relative to a particular version of the ledger.
+        Returns an AccountLinesResponse
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+      properties:
+        account:
+          type: string
+          description: The account to look up trust lines for.
+        peer:
+          type: string
+          description: (Optional) A second account; if provided, filter results to trust lines connecting the two accounts.
+        limit:
+          type: integer
+          description: (Optional) Limit the number of trust lines to retrieve. Must be within the inclusive range 10 to 400. Default is 200.
+        marker:
+          type: object
+          description: (Optional) Value from a previous paginated response. Resume retrieving data where that response left off.
+      required:
+        - account
+
+    AccountLinesSuccessResponse:
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            account:
+              type: string
+              description: The address of the account this request corresponds to.
+            lines:
+              type: array
+              description: Array of trust line objects.
+              items:
+                $ref: '#/components/schemas/TrustLine'
+            ledger_hash:
+              type: string
+              description: (Optional) The identifying hash of the ledger version used to retrieve this data.
+            ledger_index:
+              type: integer
+              description: The ledger index of the ledger version used to retrieve this data.
+            ledger_current_index:
+              type: integer
+              description: (Optional) The ledger index of the current in-progress ledger version, which was used when retrieving this information.
+            marker:
+              type: object
+              description: (Optional) Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off.
+            validated:
+              type: boolean
+              description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
+
+    TrustLine:
+      type: object
+      properties:
+        account:
+          type: string
+          description: The address of the account this trust line extends to.
+        balance:
+          type: string
+          description: The balance of the trust line, from the perspective of the requesting account.
+        currency:
+          type: string
+          description: The currency code of the trust line.
+        limit:
+          type: string
+          description: The maximum amount of the currency that the counterparty account is allowed to send.
+        limit_peer:
+          type: string
+          description: The maximum amount of currency that the requesting account is allowed to send.
+        quality_in:
+          type: integer
+          description: (Optional) The exchange rate for funds coming in to the requesting account, as a ratio of this value per 1 billion units.
+        quality_out:
+          type: integer
+          description: (Optional) The exchange rate for funds going out of the requesting account, as a ratio of this value per 1 billion units.
+        no_ripple:
+          type: boolean
+          description: (Optional) If true, this account has enabled the No Ripple flag for this trust line.
+        no_ripple_peer:
+          type: boolean
+          description: (Optional) If true, the peer account has enabled the No Ripple flag for this trust line
