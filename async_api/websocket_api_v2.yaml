@@ -58,6 +58,11 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoRequest'
+          - name: AccountLinesRequest
+            messageId: AccountLinesRequest
+            contentType: application/json
+            payload:
+              $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesRequest'
           # TODO: Add additional request types for individual requests here
     publish:
       operationId: publishToRoot
@@ -73,4 +78,9 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV2'
+          - name: AccountLinesResponse
+            messageId: AccountLinesResponse
+            contentType: application/json
+            payload:
+              $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesResponse'
           # TODO: Add additional response types for individual requests here

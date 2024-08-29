@@ -1,0 +1,105 @@
+components:
+  schemas:
+    AccountLinesRequest:
+      $id: AccountLinesRequest
+      type: object
+      description: >
+        The account_lines command retrieves information about an account's trust lines, including balances in all non-XRP currencies and assets.
+        All information retrieved is relative to a particular version of the ledger.
+      allOf:
+        - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesRequest'
+        - type: object
+          properties:
+            command:
+              $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
+            id:
+              # Not specifying a type is how we express "any" value is acceptable
+              description: 'A unique identifier for the request.'
+      required:
+        - command
+        - id
+      example:
+        id: 2
+        command: account_lines
+        account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+        ledger_index: validated
+
+    AccountLinesResponse:
+      $id: AccountLinesResponse
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/AccountLinesSuccessResponse'
+        - $ref: '#/components/schemas/AccountLinesErrorResponse'
+      properties:
+        id:
+          # Not specifying a type is how we express "any" value is acceptable
+          description: 'A unique identifier for the request.'
+        type:
+          type: string
+          description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
+          enum:
+            - response
+      required:
+        - id
+        - type
+      example:
+        id: 2
+        type: response
+        result:
+          account: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+          ledger_hash: 16566FE44F0222B4373BBA5CD8B62AA0200D1D42031A946D15F96DE5479A1564
+          ledger_index: 90395101
+          validated: true
+          limit: 200
+          lines:
+            - account: rJF9txJpy3RG7XkXsiL72us5X5txbQDFgA
+              balance: '0'
+              currency: VGB
+              limit: '0'
+              limit_peer: '100000000'
+              quality_in: 0
+              quality_out: 0
+              no_ripple: false
+              no_ripple_peer: true
+            - account: rJXhkzNcijhgwkPHUT966Mhr22b4CwPkjS
+              balance: '0'
+              currency: USD
+              limit: '0'
+              limit_peer: '14.0301'
+              quality_in: 0
+              quality_out: 0
+              no_ripple: false
+              no_ripple_peer: true
+          status: success
+          type: response
+          warnings:
+            - id: 2001
+              message:
+                This is a clio server. clio only serves validated data. If you want to
+                talk to rippled, include 'ledger_index':'current' in your request
+
+    AccountLinesSuccessResponse:
+      $id: AccountLinesSuccessResponse
+      allOf:
+        - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesSuccessResponse'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - success
+      required:
+        - status
+
+    AccountLinesErrorResponse:
+      $id: AccountLinesErrorResponse
+      allOf:
+        - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesErrorResponse'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - error
+      required:
+        - status
