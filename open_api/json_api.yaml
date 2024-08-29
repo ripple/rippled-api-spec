@@ -60,6 +60,7 @@ paths:
                   - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsResponse'
                   - $ref: 'requests/account_info_open_api.yaml#/components/schemas/AccountInfoResponseV1'
                   - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitResponseV1'
+                  - $ref: 'requests/account_lines_open_api.yaml#/components/schemas/AccountLinesResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.

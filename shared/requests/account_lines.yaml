@@ -54,6 +54,34 @@ components:
               type: boolean
               description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
 
+    AccountLinesErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+                - actMalformed
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
+            * `actMalformed` - If the `marker` field provided is not acceptable.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AccountLinesRequest'
+      required:
+        - status
+        - error
+        - request
+
     TrustLine:
       type: object
       properties:

@@ -7,6 +7,7 @@ components:
         - account_channels
         - account_info
         - submit
+        - account_lines
 
     ResponseWarning:
       $id: ResponseWarning
