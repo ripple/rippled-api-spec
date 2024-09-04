@@ -1,0 +1,277 @@
+components:
+  schemas:
+    BaseLedgerEntryRequest:
+      type: object
+      properties:
+        binary:
+          type: boolean
+          description: (Optional) If true, return the requested ledger entry's contents as a hex string in the XRP Ledger's binary format. Otherwise, return data in JSON format. The default is false.
+        include_deleted:
+          type: boolean
+          description: (Optional, Clio servers only) If set to true and the queried object has been deleted, return its complete data as it was prior to its deletion. If set to false or not provided, and the queried object has been deleted, return objectNotFound (current behavior).
+
+    LedgerEntryRequestOptions:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/LedgerEntryByID'
+        - $ref: '#/components/schemas/AccountRootEntry'
+        - $ref: '#/components/schemas/AMMEntry'
+        - $ref: '#/components/schemas/BridgeEntry'
+        - $ref: '#/components/schemas/DirectoryNodeEntry'
+        - $ref: '#/components/schemas/OfferEntry'
+        - $ref: '#/components/schemas/OracleEntry'
+        - $ref: '#/components/schemas/RippleStateEntry'
+        - $ref: '#/components/schemas/CheckEntry'
+        - $ref: '#/components/schemas/EscrowEntry'
+        - $ref: '#/components/schemas/PayChannelEntry'
+        - $ref: '#/components/schemas/DepositPreauthEntry'
+        - $ref: '#/components/schemas/TicketEntry'
+        - $ref: '#/components/schemas/NFTPageEntry'
+
+    # Ledger entry request message
+    LedgerEntryRequest:
+      summary: >
+        The ledger_entry method returns a single ledger entry from the XRP Ledger in its raw format.
+        All information retrieved is relative to a particular version of the ledger.
+        Returns a LedgerEntryResponse
+      description: The ledger_entry method returns a single ledger entry from the XRP Ledger in its raw format. All information retrieved is relative to a particular version of the ledger.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/BaseLedgerEntryRequest'
+        - $ref: '#/components/schemas/LedgerEntryRequestOptions'
+
+    LedgerEntryByID:
+      type: object
+      description: Retrieve any type of ledger object by its unique ID.
+      properties:
+        index:
+          type: string
+          description: The ledger entry ID of a single entry to retrieve from the ledger, as a 64-character (256-bit) hexadecimal string.
+
+    AccountRootEntry:
+      type: object
+      description: Retrieve an AccountRoot entry by its address. This is roughly equivalent to the account_info method.
+      properties:
+        account_root:
+          type: string
+          description: The classic address of the AccountRoot entry to retrieve.
+
+    AMMEntry:
+      type: object
+      description: Retrieve an Automated Market-Maker (AMM) object from the ledger. This is similar to amm_info method, but the ledger_entry version returns only the ledger entry as stored.
+      properties:
+        amm:
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                asset:
+                  $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+                asset2:
+                  $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+
+    BridgeEntry:
+      type: object
+      description: Retrieve a Bridge entry, which represents a single cross-chain bridge that connects the XRP Ledger with another blockchain.
+      properties:
+        bridge_account:
+          type: string
+          description: The account that submitted the XChainCreateBridge transaction on the blockchain.
+        bridge:
+          type: object
+          properties:
+            IssuingChainDoor:
+              type: string
+            IssuingChainIssue:
+              $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+            LockingChainDoor:
+              type: string
+            LockingChainIssue:
+              $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+
+    DirectoryNodeEntry:
+      type: object
+      description: Retrieve a DirectoryNode, which contains a list of other ledger objects.
+      properties:
+        directory:
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                sub_index:
+                  type: integer
+                dir_root:
+                  type: string
+                owner:
+                  type: string
+
+    OfferEntry:
+      type: object
+      description: Retrieve an Offer entry, which defines an offer to exchange currency.
+      properties:
+        offer:
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                account:
+                  type: string
+                seq:
+                  type: integer
+
+    OracleEntry:
+      type: object
+      description: Retrieve an Oracle entry, which represents a single price oracle that can store token prices.
+      properties:
+        oracle:
+          type: object
+          properties:
+            account:
+              type: string
+            oracle_document_id:
+              type: integer
+
+    RippleStateEntry:
+      type: object
+      description: Retrieve a RippleState entry, which tracks a (non-XRP) currency balance between two accounts.
+      properties:
+        ripple_state:
+          type: object
+          properties:
+            accounts:
+              type: array
+              items:
+                type: string
+              minItems: 2
+              maxItems: 2
+            currency:
+              type: string
+
+    CheckEntry:
+      type: object
+      description: Retrieve a Check entry, which is a potential payment that can be cashed by its recipient.
+      properties:
+        check:
+          type: string
+
+    EscrowEntry:
+      type: object
+      description: Retrieve an Escrow entry, which holds XRP until a specific time or condition is met.
+      properties:
+        escrow:
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                owner:
+                  type: string
+                seq:
+                  type: integer
+
+    PayChannelEntry:
+      type: object
+      description: Retrieve a PayChannel entry, which holds XRP for asynchronous payments.
+      properties:
+        payment_channel:
+          type: string
+
+    DepositPreauthEntry:
+      type: object
+      description: Retrieve a DepositPreauth entry, which tracks preauthorization for payments to accounts requiring Deposit Authorization.
+      properties:
+        deposit_preauth:
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                owner:
+                  type: string
+                authorized:
+                  type: string
+
+    TicketEntry:
+      type: object
+      description: Retrieve a Ticket entry, which represents a sequence number set aside for future use.
+      properties:
+        ticket:
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                account:
+                  type: string
+                ticket_seq:
+                  type: integer
+
+    NFTPageEntry:
+      type: object
+      description: Return an NFT Page in its raw ledger format.
+      properties:
+        nft_page:
+          type: string
+
+    LedgerEntrySuccessResponse:
+      description: The response for a successful ledger_entry request, containing the requested ledger entry data.
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            result:
+              type: object
+              properties:
+                index:
+                  type: string
+                  description: The unique ID of this ledger entry.
+                ledger_index:
+                  type: integer
+                  description: The ledger index of the ledger that was used when retrieving this data.
+                node:
+                  type: object
+                  description: (Omitted if "binary":true specified.) Object containing the data of this ledger entry, according to the ledger format.
+                node_binary:
+                  type: string
+                  description: (Omitted unless "binary":true specified) The binary representation of the ledger object, as hexadecimal.
+                deleted_ledger_index:
+                  type: integer
+                  description: (Clio server only, returned if include_deleted parameter is set.) The ledger index where the ledger entry object was deleted.
+
+    LedgerEntryErrorResponse:
+      description: The response for an unsuccessful ledger_entry request, containing error information.
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - deprecatedFeature
+                - entryNotFound
+                - invalidParams
+                - lgrNotFound
+                - malformedAddress
+                - malformedCurrency
+                - malformedOwner
+                - malformedRequest
+                - unknownOption
+          description: >
+            * `deprecatedFeature` - The request specified a deprecated feature.
+            * `entryNotFound` - The requested ledger entry was not found in the ledger.
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `lgrNotFound` - The ledger specified by the ledger_hash or ledger_index does not exist, or it does exist but the server does not have it.
+            * `malformedAddress` - The request specified an invalid address.
+            * `malformedCurrency` - The request specified an invalid currency.
+            * `malformedOwner` - The request specified an invalid owner.
+            * `malformedRequest` - The request was not formatted properly.
+            * `unknownOption` - The request specified an unknown option.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/LedgerEntryRequest'
+      required:
+        - status
+        - error
+        - request
