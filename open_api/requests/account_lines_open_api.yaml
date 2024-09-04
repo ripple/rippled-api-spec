@@ -1,0 +1,56 @@
+components:
+  schemas:
+    AccountLinesRequest:
+      type: object
+      description: >
+        The account_lines command retrieves information about an account's trust lines, including balances in all non-XRP currencies and assets.
+        All information retrieved is relative to a particular version of the ledger.
+        Returns an AccountLinesResponse
+      properties:
+        method:
+          type: string
+          enum:
+            - account_lines
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesRequest'
+      required:
+        - method
+      example:
+        method: 'account_lines'
+        params:
+          - account: 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn'
+            ledger_index: 'current'
+            peer: 'rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B'
+            limit: 200
+
+    AccountLinesResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesSuccessResponse'
+              error: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesSuccessResponse'
+            - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          account: 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn'
+          lines:
+            - account: 'rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B'
+              balance: '0'
+              currency: 'USD'
+              limit: '1000000000'
+              limit_peer: '0'
+              quality_in: 0
+              quality_out: 0
+          ledger_current_index: 14380380
+          validated: false
+          status: 'success'
