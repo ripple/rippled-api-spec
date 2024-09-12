@@ -143,8 +143,18 @@ components:
         Memos:
           type: array
           items:
-            type: object
-          description: Additional arbitrary information used to identify this transaction.
+            $ref: '#/components/schemas/Memo'
+          description: The Memos field includes arbitrary messaging data with the transaction. It is presented as an array of objects. Each object has only one field, Memo, which in turn contains another object. The Memos field is limited to no more than 1 KB in size (when serialized in binary format). The MemoType and MemoFormat fields should only consist of the following characters - ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=%
+          example:
+            TransactionType: Payment
+            Account: rMmTCjGFRWPz8S2zAUUoNVSQHxtRQD4eCx
+            Destination: r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV
+            Memos:
+              - Memo:
+                  MemoType: 687474703a2f2f6578616d706c652e636f6d2f6d656d6f2f67656e65726963
+                  MemoData: 72656e74
+            Amount: '1'
+
         NetworkID:
           type: integer
           format: uint32
@@ -168,6 +178,19 @@ components:
         TxnSignature:
           type: string
           description: The signature that verifies this transaction as originating from the account it says it is from.
+
+    Memo:
+      type: object
+      properties:
+        MemoData:
+          type: string
+          description: Arbitrary hex value, conventionally containing the content of the memo.
+        MemoFormat:
+          type: string
+          description: Hex value representing characters allowed in URLs. Conventionally containing information on how the memo is encoded, for example as a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml).
+        MemoType:
+          type: string
+          description: Hex value representing characters allowed in URLs. Conventionally, a unique relation (according to [RFC 5988](https://datatracker.ietf.org/doc/html/rfc5988#section-4)) that defines the format of this memo.
 
     CurrencyAmount:
       $id: CurrencyAmount
