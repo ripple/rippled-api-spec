@@ -29,7 +29,7 @@ components:
           items:
             type: array
             items:
-              $ref: '#/components/schemas/Path'
+              $ref: '#/components/schemas/PathStep'
           description: '(Optional, auto-fillable) Array of payment paths to be used for this transaction. Must be omitted for XRP-to-XRP transactions.'
         SendMax:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
@@ -62,8 +62,8 @@ components:
       required:
         - DeliverMax
 
-    Path:
-      $id: Path
+    PathStep:
+      $id: PathStep
       type: object
       properties:
         account:
