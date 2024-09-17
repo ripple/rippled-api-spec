@@ -4,7 +4,7 @@
     "bundle": "redocly bundle open_api/json_api.yaml --output dist/openapi && node generate-specs.js"
   },
   "devDependencies": {
-    "@apidevtools/json-schema-ref-parser": "^11.6.4",
+    "@apidevtools/json-schema-ref-parser": "^11.7.0",
     "prettier": "3.2.5"
   },
   "dependencies": {

@@ -1,0 +1,55 @@
+components:
+  schemas:
+    LedgerEntryRequest:
+      type: object
+      description: >
+        The ledger_entry method returns a single ledger entry from the XRP Ledger in its raw format.
+        All information retrieved is relative to a particular version of the ledger.
+        Returns a LedgerEntryResponse.
+      properties:
+        method:
+          type: string
+          enum:
+            - ledger_entry
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/ledger_entry.yaml#/components/schemas/LedgerEntryRequest'
+      required:
+        - method
+      example:
+        method: 'ledger_entry'
+        params:
+          - ledger_index: 'validated'
+            binary: false
+            index: '13F1A95D7AAB7108D5CE7EEAF504B2894B8C674E6D68499076441C4837282BF8'
+
+    LedgerEntryResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/ledger_entry.yaml#/components/schemas/LedgerEntrySuccessResponse'
+              error: '../../shared/requests/ledger_entry.yaml#/components/schemas/LedgerEntryErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/ledger_entry.yaml#/components/schemas/LedgerEntrySuccessResponse'
+            - $ref: '../../shared/requests/ledger_entry.yaml#/components/schemas/LedgerEntryErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          index: '13F1A95D7AAB7108D5CE7EEAF504B2894B8C674E6D68499076441C4837282BF8'
+          ledger_index: 54321
+          node:
+            Account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn'
+            Balance: '148446663'
+            Flags: 8388608
+            LedgerEntryType: 'AccountRoot'
+            OwnerCount: 3
+            PreviousTxnID: '13F1A95D7AAB7108D5CE7EEAF504B2894B8C674E6D68499076441C4837282BF8'
+            PreviousTxnLgrSeq: 54320
+            Sequence: 336
+          status: 'success'

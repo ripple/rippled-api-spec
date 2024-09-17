@@ -63,6 +63,11 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesRequest'
+          - name: LedgerEntryRequest
+            messageId: LedgerEntryRequest
+            contentType: application/json
+            payload:
+              $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
           # TODO: Add additional request types for individual requests here
     publish:
       operationId: publishToRoot
@@ -83,4 +88,9 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesResponse'
+          - name: LedgerEntryResponse
+            messageId: LedgerEntryResponse
+            contentType: application/json
+            payload:
+              $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
           # TODO: Add additional response types for individual requests here

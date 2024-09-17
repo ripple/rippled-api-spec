@@ -213,3 +213,14 @@ components:
         issuer:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
+
+    CurrencyWithoutAmount:
+      $id: CurrencyWithoutAmount
+      type: object
+      properties:
+        currency:
+          type: string
+          description: 'Arbitrary currency code for the token.'
+        issuer:
+          type: string
+          description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
