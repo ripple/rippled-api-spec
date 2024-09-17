@@ -71,6 +71,9 @@ components:
                   $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
                 asset2:
                   $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+              required:
+                - asset
+                - asset2
 
     BridgeEntry:
       type: object
@@ -128,6 +131,9 @@ components:
                   type: string
                 seq:
                   type: integer
+              required:
+                - account
+                - seq
 
     OracleEntry:
       type: object
@@ -140,6 +146,9 @@ components:
               type: string
             oracle_document_id:
               type: integer
+          required:
+            - account
+            - oracle_document_id
 
     RippleStateEntry:
       type: object
@@ -156,6 +165,9 @@ components:
               maxItems: 2
             currency:
               type: string
+          required:
+            - accounts
+            - currency
 
     CheckEntry:
       type: object
@@ -177,6 +189,9 @@ components:
                   type: string
                 seq:
                   type: integer
+              required:
+                - owner
+                - seq
 
     PayChannelEntry:
       type: object
@@ -198,6 +213,9 @@ components:
                   type: string
                 authorized:
                   type: string
+              required:
+                - owner
+                - authorized
 
     TicketEntry:
       type: object
@@ -212,6 +230,9 @@ components:
                   type: string
                 ticket_seq:
                   type: integer
+              required:
+                - account
+                - ticket_seq
 
     NFTPageEntry:
       type: object
