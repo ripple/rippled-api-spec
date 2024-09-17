@@ -90,6 +90,14 @@ components:
               type: string
             LockingChainIssue:
               $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+          required:
+            - IssuingChainDoor
+            - IssuingChainIssue
+            - LockingChainDoor
+            - LockingChainIssue
+      required:
+        - bridge_account
+        - bridge
 
     DirectoryNodeEntry:
       type: object
