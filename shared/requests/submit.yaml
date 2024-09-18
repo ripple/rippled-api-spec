@@ -20,6 +20,7 @@ components:
         fail_hard:
           type: boolean
           description: 'If true, and the transaction fails locally, do not retry or relay the transaction to other servers. Default is false.'
+          default: false
       required:
         - tx_blob
 
@@ -45,6 +46,7 @@ components:
         fail_hard:
           type: boolean
           description: '(Optional) If true, and the transaction fails locally, do not retry or relay the transaction to other servers. Default is false. Updated in: rippled 1.5.0'
+          default: false
         offline:
           type: boolean
           description: '(Optional) If true, when constructing the transaction, do not try to automatically fill in or validate values. Default is false.'
