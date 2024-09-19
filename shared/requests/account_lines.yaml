@@ -1,7 +1,7 @@
 components:
   schemas:
     AccountLinesRequest:
-      summary: >
+      description: >
         The account_lines command retrieves information about an account's trust lines, including balances in all non-XRP currencies and assets.
         All information retrieved is relative to a particular version of the ledger.
         Returns an AccountLinesResponse

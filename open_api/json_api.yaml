@@ -22,7 +22,7 @@ paths:
     # TODO: Potentially we can try making a union of types at this level of Request / Response pairs (as opposed to one big Request array, and one big Response array)
     # If that works, we could solve the problem below of tying inputs to outputs very specifically. Needs further investigation.
     post:
-      summary: Send JSON-RPC request to server
+      description: Send JSON-RPC request to server
       requestBody:
         description: JSON-RPC request object
         content:

@@ -20,7 +20,7 @@ paths:
   # We use OpenAPI's discriminator field with the `method` name to delineate between the options
   /:
     post:
-      summary: Send JSON-RPC request to server
+      description: Send JSON-RPC request to server
       requestBody:
         description: JSON-RPC request object
         content:

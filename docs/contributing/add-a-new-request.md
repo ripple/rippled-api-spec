@@ -37,14 +37,14 @@ For the above command, `<request_name>` should be the name of the new request in
 
     - Fields to update:
       1. `...Request` with the name of the request (ex. `AccountChannelsRequest`)
-      2. `summary:` with a description of this request
+      2. `description:` with a description of this request
       3. If there are any common fields in `shared/base.yaml` that can be re-used, do so with `allOf` - otherwise delete that TODO comment.
       4. `properties` with the parameters for this request (in alphabetical order)
       5. `required` with a list of any required parameters (in alphabetical order)
 
     ```
     ...Request:
-      summary: >
+      description: >
         ...
       type: object
       # TODO: Add any common fields from `shared/base.yaml` that are applicable using `allOf`. Otherwise delete these comments! For example:
