@@ -37,8 +37,8 @@ components:
       description: The ledger_entry method returns a single ledger entry from the XRP Ledger in its raw format. All information retrieved is relative to a particular version of the ledger.
       type: object
       allOf:
-        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
         - $ref: '#/components/schemas/BaseLedgerEntryRequest'
         - $ref: '#/components/schemas/LedgerEntryRequestOptions'
 

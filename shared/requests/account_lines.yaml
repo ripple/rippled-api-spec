@@ -7,8 +7,8 @@ components:
         Returns an AccountLinesResponse
       type: object
       allOf:
-        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
       properties:
         account:
           type: string
