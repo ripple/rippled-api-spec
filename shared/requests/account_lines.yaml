@@ -19,6 +19,9 @@ components:
         limit:
           type: integer
           description: (Optional) Limit the number of trust lines to retrieve. Must be within the inclusive range 10 to 400. Default is 200.
+          minimum: 10
+          maximum: 400
+          default: 200
         marker:
           type: object
           description: (Optional) Value from a previous paginated response. Resume retrieving data where that response left off.

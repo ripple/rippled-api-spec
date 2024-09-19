@@ -6,6 +6,7 @@ components:
         binary:
           type: boolean
           description: (Optional) If true, return the requested ledger entry's contents as a hex string in the XRP Ledger's binary format. Otherwise, return data in JSON format. The default is false.
+          default: false
         include_deleted:
           type: boolean
           description: (Optional, Clio servers only) If set to true and the queried object has been deleted, return its complete data as it was prior to its deletion. If set to false or not provided, and the queried object has been deleted, return objectNotFound (current behavior).
