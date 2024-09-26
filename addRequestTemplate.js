@@ -144,17 +144,17 @@ sharedRequestSpecs = YAML.stringify(
     components: {
       schemas: {
         [`${camelCaseInput}Request`]: {
-          summary: '',
+          description: '',
           type:'object',
           properties: {},
         },
         [`${camelCaseInput}SuccessResponse`]: {
-          summary: '',
+          description: '',
           type:'object',
           properties: {},
         },
         [`${camelCaseInput}ErrorResponse`]: {
-          summary: '',
+          description: '',
           type:'object',
           properties: {},
         },
