@@ -194,6 +194,9 @@ components:
 
     CurrencyAmount:
       $id: CurrencyAmount
+      description: >
+        A CurrencyAmount is an object specifying a currency, a quantity of that currency, and the
+        counterparty (issuer) on the trustline that holds the value. For XRP, there is no counterparty.
       oneOf:
         - type: string
           description: 'The amount of XRP (drops), represented as a string.'
@@ -202,6 +205,7 @@ components:
     TokenAmount:
       $id: TokenAmount
       type: object
+      description: Specifies an amount of a (fungible) token.
       properties:
         currency:
           type: string

@@ -64,6 +64,7 @@ components:
 
     PathStep:
       $id: PathStep
+      description: A PathStep represents an individual step along a Path.
       type: object
       properties:
         account:
