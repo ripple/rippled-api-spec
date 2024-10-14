@@ -1,0 +1,35 @@
+name: Publish NPM Packages
+
+on:
+  workflow_dispatch: # Only allow manual trigger
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package-dir: ['dist/asyncapi', 'dist/openapi']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies for the sub-package
+        working-directory: ${{ matrix.package-dir }}
+        run: npm ci
+
+      - name: Publish Sub-package to NPM
+        working-directory: ${{ matrix.package-dir }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --access public
+
+      - name: Clear npm cache
+        run: npm cache clean --force

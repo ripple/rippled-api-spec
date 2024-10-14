@@ -1,6 +1,7 @@
 components:
   schemas:
     BaseLedgerEntryRequest:
+      $id: BaseLedgerEntryRequest
       type: object
       properties:
         binary:
@@ -12,6 +13,7 @@ components:
 
     LedgerEntryRequestOptions:
       type: object
+      $id: LedgerEntryRequestOptions
       oneOf:
         - $ref: '#/components/schemas/LedgerEntryByID'
         - $ref: '#/components/schemas/AccountRootEntry'
@@ -30,6 +32,7 @@ components:
 
     # Ledger entry request message
     LedgerEntryRequest:
+      $id: LedgerEntryRequestPayload
       summary: >
         The ledger_entry method returns a single ledger entry from the XRP Ledger in its raw format.
         All information retrieved is relative to a particular version of the ledger.
@@ -43,6 +46,7 @@ components:
         - $ref: '#/components/schemas/LedgerEntryRequestOptions'
 
     LedgerEntryByID:
+      $id: LedgerEntryByID
       type: object
       description: Retrieve any type of ledger object by its unique ID.
       properties:
@@ -51,6 +55,7 @@ components:
           description: The ledger entry ID of a single entry to retrieve from the ledger, as a 64-character (256-bit) hexadecimal string.
 
     AccountRootEntry:
+      $id: AccountRootEntry
       type: object
       description: Retrieve an AccountRoot entry by its address. This is roughly equivalent to the account_info method.
       properties:
@@ -59,6 +64,7 @@ components:
           description: The classic address of the AccountRoot entry to retrieve.
 
     AMMEntry:
+      $id: AMMEntry
       type: object
       description: Retrieve an Automated Market-Maker (AMM) object from the ledger. This is similar to amm_info method, but the ledger_entry version returns only the ledger entry as stored.
       properties:
@@ -76,6 +82,7 @@ components:
                 - asset2
 
     BridgeEntry:
+      $id: BridgeEntry
       type: object
       description: Retrieve a Bridge entry, which represents a single cross-chain bridge that connects the XRP Ledger with another blockchain.
       properties:
@@ -103,6 +110,7 @@ components:
         - bridge
 
     DirectoryNodeEntry:
+      $id: DirectoryNodeEntry
       type: object
       description: Retrieve a DirectoryNode, which contains a list of other ledger objects.
       properties:
@@ -119,6 +127,7 @@ components:
                   type: string
 
     OfferEntry:
+      $id: OfferEntry
       type: object
       description: Retrieve an Offer entry, which defines an offer to exchange currency.
       properties:
@@ -136,6 +145,7 @@ components:
                 - seq
 
     OracleEntry:
+      $id: OracleEntry
       type: object
       description: Retrieve an Oracle entry, which represents a single price oracle that can store token prices.
       properties:
@@ -151,6 +161,7 @@ components:
             - oracle_document_id
 
     RippleStateEntry:
+      $id: RippleStateEntry
       type: object
       description: Retrieve a RippleState entry, which tracks a (non-XRP) currency balance between two accounts.
       properties:
@@ -170,6 +181,7 @@ components:
             - currency
 
     CheckEntry:
+      $id: CheckEntry
       type: object
       description: Retrieve a Check entry, which is a potential payment that can be cashed by its recipient.
       properties:
@@ -177,6 +189,7 @@ components:
           type: string
 
     EscrowEntry:
+      $id: EscrowEntry
       type: object
       description: Retrieve an Escrow entry, which holds XRP until a specific time or condition is met.
       properties:
@@ -194,6 +207,7 @@ components:
                 - seq
 
     PayChannelEntry:
+      $id: PayChannelEntry
       type: object
       description: Retrieve a PayChannel entry, which holds XRP for asynchronous payments.
       properties:
@@ -201,6 +215,7 @@ components:
           type: string
 
     DepositPreauthEntry:
+      $id: DepositPreauthEntry
       type: object
       description: Retrieve a DepositPreauth entry, which tracks preauthorization for payments to accounts requiring Deposit Authorization.
       properties:
@@ -218,6 +233,7 @@ components:
                 - authorized
 
     TicketEntry:
+      $id: TicketEntry
       type: object
       description: Retrieve a Ticket entry, which represents a sequence number set aside for future use.
       properties:
@@ -235,6 +251,7 @@ components:
                 - ticket_seq
 
     NFTPageEntry:
+      $id: NFTPageEntry
       type: object
       description: Return an NFT Page in its raw ledger format.
       properties:
@@ -242,6 +259,7 @@ components:
           type: string
 
     LedgerEntrySuccessResponse:
+      $id: LedgerEntrySuccessResponse
       description: The response for a successful ledger_entry request, containing the requested ledger entry data.
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
@@ -249,6 +267,7 @@ components:
           properties:
             result:
               type: object
+              $id: LedgerEntrySuccessResponseData
               properties:
                 index:
                   type: string
@@ -267,6 +286,7 @@ components:
                   description: (Clio server only, returned if include_deleted parameter is set.) The ledger index where the ledger entry object was deleted.
 
     LedgerEntryErrorResponse:
+      $id: LedgerEntryErrorResponse
       description: The response for an unsuccessful ledger_entry request, containing error information.
       type: object
       properties:

@@ -11,18 +11,17 @@ components:
         - Submit-only mode takes a signed, serialized transaction as a binary blob, and submits it to the network as-is. Since signed transaction objects are immutable, no part of the transaction can be modified or automatically filled in after submission.
         - Sign-and-submit mode takes a JSON-formatted Transaction object, completes and signs the transaction in the same manner as the sign method, and then submits the signed transaction. We recommend only using this mode for testing and development.
         To send a transaction as robustly as possible, you should construct and sign it in advance, persist it somewhere that you can access even after a power outage, then submit it as a tx_blob. After submission, monitor the network with the tx method command to see if the transaction was successfully applied; if a restart or other problem occurs, you can safely re-submit the tx_blob transaction: it won't be applied twice since it has the same sequence number as the old transaction.
-      properties:
-        allOf:
-          - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitRequest'
-        properties:
-          command:
-            $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
-          id:
-            # Not specifying a type is how we express "any" value is acceptable
-            description: 'A unique identifier for the request.'
-        required:
-          - command
-          - id
+      allOf:
+        - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitRequestV1'
+        - type: object
+          properties:
+            command:
+              $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
+            id:
+              description: 'A unique identifier for the request.'
+      required:
+        - command
+        - id
       example:
         id: 2
         command: submit
@@ -34,14 +33,10 @@ components:
       properties:
         result:
           type: object
-          discriminator:
-            propertyName: status
-            mapping:
-              success: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV1'
-              error: '../../shared/requests/account_info.yaml#/components/schemas/SubmitErrorResponse'
+          discriminator: status
           oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/SubmitSuccessResponseV1'
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/SubmitErrorResponse'
+            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV1'
+            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitErrorResponse'
         # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
         id:
           # Not specifying a type is how we express "any" value is acceptable
@@ -93,13 +88,9 @@ components:
       properties:
         result:
           type: object
-          discriminator:
-            propertyName: status
-            mapping:
-              success: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV2'
-              error: '#/components/schemas/SubmitErrorResponse'
+          discriminator: status
           oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/SubmitSuccessResponseV2'
+            - $ref: '../../shared/requests/submit.yaml#/components/schemas/SubmitSuccessResponseV2'
             - $ref: '#/components/schemas/SubmitErrorResponse'
         # TODO: Decide if it's worth having these fields (id and type) here or better to just include them in both the BaseSuccess and BaseError objects for maintainability / readability.
         id:

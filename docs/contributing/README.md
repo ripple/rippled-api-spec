@@ -2,23 +2,23 @@
 
 We currently use Redocly's tooling to test that our api is following the specification. We also use it to verify that we can generate, submit, and receive responses that match our api description with Redocly's "Try It" feature that let's you send requests directly from the auto-generated docs.
 
-1.  Install `redocly cli` - https://redocly.com/docs/cli/installation/
-2.  Run `redocly lint json_api.yaml` (Docs on their lint command: https://redocly.com/docs/cli/commands/lint/)
+1. Install `redocly cli` - [https://redocly.com/docs/cli/installation/](https://redocly.com/docs/cli/installation/)
+2. Run `redocly lint openapi.yaml` (Docs on their lint command: [https://redocly.com/docs/cli/commands/lint/](https://redocly.com/docs/cli/commands/lint/))
 
-    - Resolve any errors that appear by looking up error codes here: https://redocly.com/docs/cli/rules/recommended/
+   - Resolve any errors that appear by looking up error codes here: [https://redocly.com/docs/cli/rules/recommended/](https://redocly.com/docs/cli/rules/recommended/)
 
-3.  Log in if you have Redocly credentials to use the premium version (the community version also works, but does not have the ["Try It"](https://redocly.com/docs/api-reference-docs/guides/try-it-console/) feature)
+3. Log in if you have Redocly credentials to use the premium version (the community version also works, but does not have the ["Try It"](https://redocly.com/docs/api-reference-docs/guides/try-it-console/) feature)
 
-    - To Log in run `redocly login` (then follow the instructions)
+   - To Log in run `redocly login` (then follow the instructions)
 
-4.  Run `redocly preview-docs json_api.yaml` - https://redocly.com/docs/cli/commands/preview-docs/
-5.  In order to use the "Try it!" feature to see if the specification can be used to send a valid request and correctly validate a real response, you'll need to get around CORS errors. One way to do that is to run this script to create an unprotected Chrome, then view your generated docs from there: `open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`
+4. Run `redocly preview-docs openapi.yaml` - [https://redocly.com/docs/cli/commands/preview-docs/](https://redocly.com/docs/cli/commands/preview-docs/)
+5. In order to use the "Try it!" feature to see if the specification can be used to send a valid request and correctly validate a real response, you'll need to get around CORS errors. One way to do that is to run this script to create an unprotected Chrome, then view your generated docs from there: `open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`
 
-# How to add a new Amendment
+## How to add a new Amendment
 
 New Amendments usually introduce new transactions and/or requests. Please follow [these](./add-a-new-request.md#how-to-add-a-new-request) [documents](./add-a-new-transaction.md#how-to-add-a-new-transaction) for implementing changes, in addition to updating the rippled API version spec as detailed [here](./add-a-new-rippled-api-version.md).
 
-# Plan & Actions
+## Plan & Actions
 
 We targets toward the end of November 2024 to have a first version available, not necessarily encompassing all the below tasks.
 
@@ -113,16 +113,16 @@ AsyncAPI Docs Work
 - [ ] Upgrade XRPL AI to include AI function calling that allows the bot to execute commands automatically against the XRPL simply by reading the API specification
 - [ ] Integrate OpenAPI and AsyncAPI into Redocly, including styling
 
-# Future work
+## Future work
 
 - [ ] Publish specs to other package managers such as Cargo (for Rust)
-- [ ] Work with https://xrplcluster.com to see about integration
+- [ ] Work with [https://xrplcluster.com](xrplcluster) to see about integration
 
 ## Moving to OpenAPI 4.0 due to limitation of OpenAPI 3.0 mapping input parameters to exact output response objects
 
 The `discriminator` property on input parameters can map input parameters to input schemas, but it does not do the same for mapping input parameters to response schema.
 
-```
+```yaml
 paths:
   /:
     post:

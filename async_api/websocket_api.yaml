@@ -55,6 +55,7 @@ channels:
           - $ref: '#/components/messages/AccountInfoRequest'
           - $ref: '#/components/messages/AccountLinesRequest'
           - $ref: '#/components/messages/LedgerEntryRequest'
+          - $ref: '#/components/messages/SubmitRequest'
           # ... (Add references for additional requests)
     publish:
       operationId: publishToRoot
@@ -64,6 +65,7 @@ channels:
           - $ref: '#/components/messages/AccountInfoResponseV1'
           - $ref: '#/components/messages/AccountLinesResponse'
           - $ref: '#/components/messages/LedgerEntryResponse'
+          - $ref: '#/components/messages/SubmitResponse'
           # ... (Add references for additional responses)
 
 # Moved message definitions to a separate components section
@@ -101,6 +103,14 @@ components:
       payload:
         $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
 
+    # Submit request message
+    SubmitRequest:
+      name: SubmitRequest
+      messageId: SubmitRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/submit_async_api.yaml#/components/schemas/SubmitRequest'
+
     # ... (Add definitions for additional message types)
 
     # Account channels response message
@@ -134,4 +144,12 @@ components:
       contentType: application/json
       payload:
         $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
+
+    # Submit response message
+    SubmitResponse:
+      name: SubmitResponse
+      messageId: SubmitResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/submit_async_api.yaml#/components/schemas/SubmitResponseV1'
     # ... (Add definitions for additional response types)

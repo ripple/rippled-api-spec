@@ -12,8 +12,8 @@ components:
         - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsRequest'
       properties:
         command:
+          description: The account_channels method returns information about an account's Payment Channels. This includes only channels where the specified account is the channel's source, not the destination. (A channel's "source" and "owner" are the same.) All information retrieved is relative to a particular version of the ledger. Returns an {@link AccountChannelsResponse}.
           $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
-          constant: account_channels
         id:
           # Not specifying a type is how we express "any" value is acceptable
           description: 'A unique identifier for the request.'
@@ -82,9 +82,11 @@ components:
       properties:
         result:
           type: object
+          $id: AccountChannelsSuccessResult
           allOf:
             - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
         status:
           type: string
+          $id: AccountChannelsStatusSuccess
           enum:
             - success

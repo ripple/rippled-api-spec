@@ -1,0 +1,19 @@
+{
+  "name": "@xrpl/rippled-asyncapi-spec",
+  "version": "1.0.0",
+  "description": "AsyncAPI Specification for the XRPL rippled API",
+  "author": "Ripple",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ripple/rippled-api-spec.git"
+  },
+  "keywords": [
+    "asyncapi",
+    "asyncapi-spec",
+    "xrpl",
+    "rippled"
+  ],
+  "license": "MIT",
+  "main": "asyncapi.json",
+  "sideEffects": false
+}

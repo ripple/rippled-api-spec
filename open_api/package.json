@@ -1,0 +1,19 @@
+{
+  "name": "@xrpl/rippled-openapi-spec",
+  "version": "1.0.0",
+  "description": "OpenAPI Specification for the XRPL rippled API",
+  "author": "Ripple",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ripple/rippled-api-spec.git"
+  },
+  "keywords": [
+    "openapi",
+    "openapi-spec",
+    "xrpl",
+    "rippled"
+  ],
+  "license": "MIT",
+  "main": "openapi.yaml",
+  "sideEffects": false
+}
