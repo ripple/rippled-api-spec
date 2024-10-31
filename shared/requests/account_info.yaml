@@ -1,6 +1,7 @@
 components:
   schemas:
     AccountInfoRequest:
+      $id: AccountInfoRequestPayload
       summary: >
         The account_info command retrieves information about an account, its activity, and its XRP balance.
         All information retrieved is relative to a particular version of the ledger.
@@ -25,6 +26,7 @@ components:
         - account
 
     AccountRoot:
+      $id: AccountRoot
       type: object
       description: An AccountRoot ledger entry type describes a single account, its settings, and XRP balance.
       properties:
@@ -114,9 +116,12 @@ components:
         - Sequence
 
     AccountRootWithSignerLists:
+      type: object
+      $id: AccountRootWithSignerLists
       allOf:
         - $ref: '#/components/schemas/AccountRoot'
         - type: object
+          $id: SignerListBase
           properties:
             signer_lists:
               type: array
@@ -126,6 +131,7 @@ components:
 
     AccountFlags:
       type: object
+      $id: AccountFlags
       properties:
         defaultRipple:
           type: boolean
@@ -168,6 +174,7 @@ components:
           description: If true, the account requires a destination tag on all payments it receives.
 
     Transactions:
+      $id: Transactions
       type: object
       properties:
         auth_change:
@@ -187,6 +194,7 @@ components:
           description: The Sequence Number of this transaction.
 
     QueueData:
+      $id: QueueData
       type: object
       properties:
         txn_count:
@@ -211,6 +219,7 @@ components:
             $ref: '#/components/schemas/Transactions'
 
     SignerEntry:
+      $id: SignerEntry
       type: object
       properties:
         Account:
@@ -227,6 +236,7 @@ components:
           format: Hash256
 
     SignerList:
+      $id: SignerList
       type: object
       properties:
         LedgerEntryType:
@@ -271,6 +281,7 @@ components:
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
+          $id: AccountInfoSuccessResponseBaseData
           properties:
             account_flags:
               $ref: '#/components/schemas/AccountFlags'
@@ -289,10 +300,11 @@ components:
               description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
 
     AccountInfoSuccessResponseV1:
-      $id: AccountInfoResponseSuccess
+      $id: AccountInfoSuccessResponseV1Data
       allOf:
         - $ref: '#/components/schemas/AccountInfoSuccessResponseBase'
         - type: object
+          $id: AccountData
           properties:
             account_data:
               $ref: '#/components/schemas/AccountRootWithSignerLists'
@@ -302,6 +314,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/AccountInfoSuccessResponseBase'
         - type: object
+          $id: AccountInfoSuccessResponseV2Data
           properties:
             account_data:
               $ref: '#/components/schemas/AccountRoot'
@@ -327,6 +340,7 @@ components:
 
     AccountInfoErrorResponse:
       type: object
+      $id: AccountInfoErrorResponseData
       properties:
         error:
           type: string

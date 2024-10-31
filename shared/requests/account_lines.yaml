@@ -1,6 +1,7 @@
 components:
   schemas:
     AccountLinesRequest:
+      $id: AccountLinesRequest
       summary: >
         The account_lines command retrieves information about an account's trust lines, including balances in all non-XRP currencies and assets.
         All information retrieved is relative to a particular version of the ledger.
@@ -55,13 +56,17 @@ components:
               description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
 
     AccountLinesErrorResponse:
+      $id: AccountLinesErrorResponseData
       type: object
       properties:
         error:
           type: string
+          $id: AccountLinesErrorString
           oneOf:
             - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
-            - enum:
+            - type: string
+              $id: AccountLinesErrorResponseCodes
+              enum:
                 - invalidParams
                 - actNotFound
                 - lgrNotFound
@@ -73,6 +78,7 @@ components:
             * `actMalformed` - If the `marker` field provided is not acceptable.
         status:
           type: string
+          $id: AccountLinesStatusError
           enum:
             - error
         request:
@@ -83,6 +89,7 @@ components:
         - request
 
     TrustLine:
+      $id: TrustLine
       type: object
       properties:
         account:

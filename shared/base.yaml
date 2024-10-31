@@ -50,6 +50,7 @@ components:
           type: boolean
           description: Indicates whether the request was forwarded.
         status:
+          $id: StatusSuccess
           type: string
           description: The status of the response (e.g., 'success').
           enum:
@@ -181,6 +182,7 @@ components:
 
     Memo:
       type: object
+      $id: Memo
       properties:
         MemoData:
           type: string

@@ -12,6 +12,7 @@ components:
         - type: object
           properties:
             command:
+              description: The `account_info` command retrieves information about an account, its activity, and its XRP balance. All information retrieved is relative to a particular version of the ledger. Returns an {@link AccountInfoResponseV1}.
               $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
             id:
               # Not specifying a type is how we express "any" value is acceptable
@@ -153,10 +154,12 @@ components:
       $id: AccountInfoSuccessResponseV1
       properties:
         result:
+          $id: AccountInfoSuccessV1Result
           type: object
           allOf:
             - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
         status:
+          $id: AccountInfoSuccessV1Success
           type: string
           enum:
             - success

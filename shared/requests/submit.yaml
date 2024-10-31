@@ -1,16 +1,21 @@
 components:
   schemas:
     SubmitRequestV1:
+      $id: SubmitRequestV1
+      type: object
       oneOf:
         - $ref: '#/components/schemas/SubmitOnlyMode'
         - $ref: '#/components/schemas/SignAndSubmitModeV1'
 
     SubmitRequestV2:
+      $id: SubmitRequestV2
+      type: object
       oneOf:
         - $ref: '#/components/schemas/SubmitOnlyMode'
         - $ref: '#/components/schemas/SignAndSubmitModeV2'
 
     SubmitOnlyMode:
+      $id: SubmitOnlyMode
       description: A submit-only request for submitting transactions.
       type: object
       properties:
@@ -24,6 +29,7 @@ components:
         - tx_blob
 
     SignAndSubmitModeBase:
+      $id: SignAndSubmitModeBase
       description: A mode for signing a transaction and immediately submitting it. This mode is intended for testing.
       type: object
       properties:
@@ -59,35 +65,31 @@ components:
           description: '(Optional) Sign-and-submit fails with the error rpcHIGH_FEE if the auto-filled Fee value would be greater than the reference transaction cost x fee_mult_max ÷ fee_div_max. This field has no effect if you explicitly specify the Fee field of the transaction. Default is 1.'
 
     SignAndSubmitModeV1:
+      $id: SignAndSubmitModeV1
       type: object
       allOf:
         - $ref: '#/components/schemas/SignAndSubmitModeBase'
-      properties:
-        tx_json:
-          type: object
-          discriminator:
-            propertyName: TransactionType
-            mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
-          oneOf:
-            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
-            # TODO: Add other transaction types here
+        - properties:
+            tx_json:
+              type: object
+              discriminator: TransactionType
+              oneOf:
+                - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+                # TODO: Add other transaction types here
 
-          description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
+              description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
         - tx_json
 
     SignAndSubmitModeV2:
+      $id: SignAndSubmitModeV2
       type: object
       allOf:
         - $ref: '#/components/schemas/SignAndSubmitModeBase'
       properties:
         tx_json:
           type: object
-          discriminator:
-            propertyName: TransactionType
-            mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
+          discriminator: TransactionType
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             # TODO: Add other transaction types here
@@ -96,6 +98,7 @@ components:
         - tx_json
 
     SubmitSuccessResponseBase:
+      $id: SubmitSuccessResponseBase
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
@@ -157,43 +160,40 @@ components:
                 (The transaction could only have been validated in this ledger version or earlier if it had already been submitted before.)
 
     SubmitSuccessResponseV1:
+      $id: SubmitSuccessResponseV1
       type: object
       allOf:
         - $ref: '#/components/schemas/SubmitSuccessResponseBase'
       properties:
         tx_json:
-          discriminator:
-            propertyName: TransactionType
-            mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
-              # TODO: Add other transaction types here
+          discriminator: TransactionType
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
+      $id: SubmitSuccessResponseV2
       type: object
       allOf:
         - $ref: '#/components/schemas/SubmitSuccessResponseBase'
       properties:
         tx_json:
-          discriminator:
-            propertyName: TransactionType
-            mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
-              # TODO: Add other transaction types here
+          discriminator: TransactionType
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
+      $id: SubmitErrorResponse
       type: object
       properties:
         error:
           type: string
           oneOf:
             - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
-            - enum:
+            - type: string
+              $id: SubmitErrorString
+              enum:
                 - amendmentBlocked
                 - highFee
                 - internalJson
@@ -217,6 +217,7 @@ components:
             * `notSupported` - Signing is not supported by this server (Sign-and-Submit mode only.) If you are the server admin, you can still access signing when connected as an admin, or you could enable public signing.
         status:
           type: string
+          $id: SubmitErrorStatus
           enum:
             - error
         request:

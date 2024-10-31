@@ -12,6 +12,7 @@ components:
         - type: object
           properties:
             command:
+              description: The `ledger_entry` method returns a single ledger object from the XRP Ledger in its raw format. Expects a response in the form of a {@link LedgerEntryResponse}.
               $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
             id:
               description: 'A unique identifier for the request.'
@@ -73,11 +74,13 @@ components:
       $id: LedgerEntrySuccessResponse
       properties:
         result:
+          $id: LedgerEntrySuccessResponseResult
           type: object
           allOf:
             - $ref: '../../shared/requests/ledger_entry.yaml#/components/schemas/LedgerEntrySuccessResponse'
         status:
           type: string
+          $id: LedgerEntryStatusSuccess
           enum:
             - success
       required:
