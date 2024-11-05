@@ -1,7 +1,8 @@
 {
   "scripts": {
     "template": "node addRequestTemplate.js",
-    "bundle": "redocly bundle open_api/json_api.yaml --output dist/openapi && node generate-specs.js"
+    "bundle": "redocly bundle open_api/json_api.yaml --output dist/openapi && node generate-specs.js",
+    "preview": "openapi preview"
   },
   "devDependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.7.0",
@@ -9,6 +10,6 @@
   },
   "dependencies": {
     "@redocly/portal-plugin-async-api": "^1.0.207",
-    "@redocly/realm": "^0.86.4"
+    "@redocly/realm": "^0.108.2"
   }
 }
