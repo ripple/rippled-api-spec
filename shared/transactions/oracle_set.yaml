@@ -1,0 +1,95 @@
+components:
+  schemas:
+    OracleSet:
+      $id: OracleSet
+      type: object
+      required:
+        - Account
+        - OracleDocumentID
+        - LastUpdateTime
+        - PriceDataSeries
+      properties:
+        Account:
+          type: string
+          description: The account ID that must match the account in the Owner field of the Oracle object.
+        OracleDocumentID:
+          type: integer
+          description: A unique identifier of the price oracle for the Account.
+        Provider:
+          type: string
+          description: |
+            An arbitrary value identifying an oracle provider, such as Chainlink, Band, or DIA. 
+            This field is a string, up to 256 ASCII hex-encoded characters (0x20-0x7E).
+            Required when creating a new Oracle ledger entry, but optional for updates.
+          maxLength: 256
+        URI:
+          type: string
+          description: |
+            An optional Universal Resource Identifier (URI) to reference price data off-chain. 
+            Limited to 256 bytes.
+          maxLength: 256
+        LastUpdateTime:
+          type: integer
+          description: |
+            The timestamp indicating the last time the data was updated, 
+            in seconds since the UNIX Epoch.
+        AssetClass:
+          type: string
+          description: |
+            Describes the type of asset, such as "currency", "commodity", or "index". 
+            This field is a string, up to 16 ASCII hex-encoded characters (0x20-0x7E).
+            Required when creating a new Oracle ledger entry, but optional for updates.
+          maxLength: 16
+        PriceDataSeries:
+          type: array
+          description: An array of up to 10 PriceData objects, each representing price information for a token pair.
+          maxItems: 10
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/PriceData'
+
+    PriceData:
+      $id: PriceData
+      type: object
+      required:
+        - BaseAsset
+        - QuoteAsset
+      properties:
+        BaseAsset:
+          type: string
+          description: |
+            The primary asset in a trading pair (e.g., BTC in BTC/USD).
+            Any valid identifier, such as a stock symbol, bond CUSIP, or currency code, is allowed.
+        QuoteAsset:
+          type: string
+          description: |
+            The quote asset in a trading pair, denoting the price of one unit of the base asset (e.g., USD in BTC/USD).
+        AssetPrice:
+          type: string
+          description: |
+            The asset price after applying the Scale precision level. 
+            Recommended to be provided as a hexadecimal, but decimal numbers are accepted.
+            Not included if the last update transaction didn't include the BaseAsset/QuoteAsset pair.
+        Scale:
+          type: integer
+          description: |
+            The scaling factor to apply to an asset price. If Scale is 6 and the original price is 0.155, 
+            then the scaled price is 155000. Valid scale ranges are 0-10.
+            Not included if the last update transaction didn't include the BaseAsset/QuoteAsset pair.
+          minimum: 0
+          maximum: 10
+
+    OracleSetErrorCode:
+      $id: OracleSetErrorCode
+      enum:
+        - temARRAY_EMPTY
+        - tecARRAY_TOO_LARGE
+        - tecINVALID_UPDATE_TIME
+        - tecTOKEN_PAIR_NOT_FOUND
+        - temARRAY_TOO_LARGE
+      description: >
+        * `temARRAY_EMPTY` - The PriceDataSeries has no PriceData objects.
+        * `tecARRAY_TOO_LARGE` - The PriceDataSeries exceeds the ten PriceData objects limit.
+        * `tecINVALID_UPDATE_TIME` - The Oracle object has an invalid LastUpdateTime value.
+        * `tecTOKEN_PAIR_NOT_FOUND` - The token pair you're trying to delete doesn't exist in the Oracle object.
+        * `temARRAY_TOO_LARGE` - The PriceDataSeries exceeds the ten PriceData objects limit.
