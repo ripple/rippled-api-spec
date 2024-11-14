@@ -8,6 +8,8 @@ components:
         - OracleDocumentID
         - LastUpdateTime
         - PriceDataSeries
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
       properties:
         Account:
           type: string
