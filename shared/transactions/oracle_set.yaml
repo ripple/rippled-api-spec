@@ -80,6 +80,10 @@ components:
             Not included if the last update transaction didn't include the BaseAsset/QuoteAsset pair.
           minimum: 0
           maximum: 10
+      x-custom-validation:
+        mutualPresence:
+          - field1: AssetPrice
+            field2: Scale
 
     OracleSetErrorCode:
       $id: OracleSetErrorCode
