@@ -1,5 +1,25 @@
 # XRP Ledger OpenAPI / AsyncAPI Specifications
 
+## Getting Started
+
+Install redocly cli:
+
+```bash
+npm i -g @redocly/cli
+```
+
+To bundle and get the final .yaml file:
+
+```bash
+npm run bundle
+```
+
+To preview the rendered spec in your browser:
+
+```bash
+npm run preview
+```
+
 ## Introduction & Motivation
 
 ```mermaid
