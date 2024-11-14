@@ -166,11 +166,11 @@ components:
             propertyName: TransactionType
             mapping:
               Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
-              OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSet'
+              OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
-            - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSet'
+            - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
