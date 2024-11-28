@@ -1,7 +1,7 @@
 components:
   schemas:
     AccountInfoRequest:
-      summary: >
+      description: >
         The account_info command retrieves information about an account, its activity, and its XRP balance.
         All information retrieved is relative to a particular version of the ledger.
         Returns an AccountInfoResponse

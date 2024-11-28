@@ -30,12 +30,10 @@ components:
 
     # Ledger entry request message
     LedgerEntryRequest:
-      summary: >
+      description: >
         The ledger_entry method returns a single ledger entry from the XRP Ledger in its raw format.
         All information retrieved is relative to a particular version of the ledger.
         Returns a LedgerEntryResponse
-      description: The ledger_entry method returns a single ledger entry from the XRP Ledger in its raw format. All information retrieved is relative to a particular version of the ledger.
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
