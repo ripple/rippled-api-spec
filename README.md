@@ -222,6 +222,20 @@ Semantic Versioning (Semver) is a versioning system that helps to avoid dependen
 
 With a machine readable spec, AI is capable of planning and running its own queries against the XRPL. This facilitates natural language queries and responses for easier interaction with the XRPL, streamlining onboarding for new developers by providing AI-driven tutorials and guides based on the spec.
 
+## Running docs
+
+Install `@redocly/cli`:
+
+```bash
+npm i -g @redocly/cli
+```
+
+Run the docs preview
+
+```bash
+npm run preview
+```
+
 ## Automated Testing
 
 Creating OpenAPI and AsyncAPI specifications for the XRPL will enable us to generate automated integration tests, allowing for the testing of many more parameters than would otherwise be possible. For instance, some commands have slight variations in input parameters that result in vastly different outputs, such as returning portions of the response as JSON versus a Blob. Given all the possible combinations, it's easy to overlook tests that cover every single path. With a machine-readable specification, we can ensure that all paths and options are thoroughly tested.
