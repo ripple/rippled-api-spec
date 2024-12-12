@@ -21,14 +21,14 @@
     - Fields to update:
 
       1. `...Transaction` with the name of the transaction (ex. `Payment`)
-      2. `summary:` with a description of this transaction
+      2. `description:` with a description of this transaction
       3. If there are any common fields in `shared/base.yaml` that can be re-used, do so with `allOf` - otherwise delete that TODO comment.
       4. `properties` with the parameters for this transaction (in alphabetical order)
       5. `required` with a list of any required parameters (in alphabetical order)
 
          ```
              ...Transaction:
-               summary: >
+               description: >
                  ...
                type: object
                # TODO: Add any common fields from `shared/base.yaml` that are applicable using `allOf`. Otherwise delete these comments! For example:
