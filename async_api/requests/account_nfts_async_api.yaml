@@ -1,0 +1,71 @@
+components:
+  schemas:
+    AccountNftsRequest:
+      type: object
+      allOf:
+        - $ref: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsRequest
+      properties:
+        command:
+          type: string
+          enum:
+            - account_nfts
+        id:
+          description: A unique identifier for the request.
+      required:
+        - command
+        - id
+      example:
+        command: account_nfts
+        account: rsuHaTvJh1bDmDoxX9QcKP7HEBSBt4XsHx
+        ledger_index: validated
+    AccountNftsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsSuccessResponse
+              error: '#/components/schemas/AccountNftsErrorResponse'
+          oneOf:
+            - $ref: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsSuccessResponse
+            - $ref: '#/components/schemas/AccountNftsErrorResponse'
+        id:
+          description: A unique identifier for the request.
+        type:
+          type: string
+          description:
+            The value response indicates a direct response to an API request.
+            Asynchronous notifications use a different value such as
+            `ledgerClosed` or `transaction`.
+          enum:
+            - response
+      required:
+        - id
+        - type
+      example:
+        result:
+          account: rsuHaTvJh1bDmDoxX9QcKP7HEBSBt4XsHx
+          account_nfts:
+            - Flags: 1
+              Issuer: rGJUF4PvVkMNxG6Bg6AKg3avhrtQyAffcm
+              NFTokenID: 00010000A7CAD27B688D14BA1A9FA5366554D6ADCF9CE0875B974D9F00000004
+              NFTokenTaxon: 0
+              URI: 697066733A2F2F62616679626569676479727A74357366703775646D37687537367568377932366E6634646675796C71616266336F636C67747179353566627A6469
+              nft_serial: 4
+            - Flags: 1
+              Issuer: rGJUF4PvVkMNxG6Bg6AKg3avhrtQyAffcm
+              NFTokenID: 00010000A7CAD27B688D14BA1A9FA5366554D6ADCF9CE087727D1EA000000005
+              NFTokenTaxon: 0
+              URI: 697066733A2F2F62616679626569676479727A74357366703775646D37687537367568377932366E6634646675796C71616266336F636C67747179353566627A6469
+              nft_serial: 5
+          ledger_hash: 7971093E67341E325251268A5B7CD665EF450B126F67DF8384D964DF834961E8
+          ledger_index: 2380540
+          validated: true
+        status: success
+        type: response
+    AccountNftsErrorResponse:
+      oneOf:
+        - $ref: ../../shared/base.yaml#/components/schemas/WebsocketErrorFields
+        - $ref: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsErrorResponse

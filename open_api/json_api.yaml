@@ -37,6 +37,7 @@ paths:
                   submit: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequestV1'
                   ledger_entry: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryRequest'
                   account_currencies: 'requests/account_currencies_open_api.yaml#/components/schemas/AccountCurrenciesRequest'
+                  account_nfts: 'requests/account_nfts_open_api.yaml#/components/schemas/AccountNftsRequest'
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
                 - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
@@ -45,6 +46,7 @@ paths:
                 - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequestV1'
                 - $ref: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryRequest'
                 - $ref: 'requests/account_currencies_open_api.yaml#/components/schemas/AccountCurrenciesRequest'
+                - $ref: 'requests/account_nfts_open_api.yaml#/components/schemas/AccountNftsRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'

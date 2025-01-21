@@ -1,0 +1,61 @@
+components:
+  schemas:
+    AccountNftsRequest:
+      type: object
+      description: ''
+      properties:
+        method:
+          type: string
+          enum:
+            - account_nfts
+        params:
+          type: array
+          items:
+            $ref: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsRequest
+      required:
+        - method
+      example:
+        method: account_nfts
+        params:
+          - account: rsuHaTvJh1bDmDoxX9QcKP7HEBSBt4XsHx
+            ledger_index: validated
+    AccountNftsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsSuccessResponse
+              error: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsErrorResponse
+          oneOf:
+            - $ref: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsSuccessResponse
+            - $ref: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsErrorResponse
+      required:
+        - result
+      example:
+        result:
+          account: rsuHaTvJh1bDmDoxX9QcKP7HEBSBt4XsHx
+          account_nfts:
+            - Flags: 1
+              Issuer: rGJUF4PvVkMNxG6Bg6AKg3avhrtQyAffcm
+              NFTokenID: 00010000A7CAD27B688D14BA1A9FA5366554D6ADCF9CE0875B974D9F00000004
+              NFTokenTaxon: 0
+              URI: 697066733A2F2F62616679626569676479727A74357366703775646D37687537367568377932366E6634646675796C71616266336F636C67747179353566627A6469
+              nft_serial: 4
+            - Flags: 1
+              Issuer: rGJUF4PvVkMNxG6Bg6AKg3avhrtQyAffcm
+              NFTokenID: 00010000A7CAD27B688D14BA1A9FA5366554D6ADCF9CE087727D1EA000000005
+              NFTokenTaxon: 0
+              URI: 697066733A2F2F62616679626569676479727A74357366703775646D37687537367568377932366E6634646675796C71616266336F636C67747179353566627A6469
+              nft_serial: 5
+          ledger_hash: 46497E9FF17A993324F1A0A693DC068B467184023C7FD162812265EAAFEB97CB
+          ledger_index: 2380559
+          status: success
+          validated: true
+    AccountNftsSuccessResponse:
+      type: object
+      allOf:
+        - $ref: ../../shared/base.yaml#/components/schemas/BaseSuccessResponse
+        - $ref: ../../shared/requests/account_nfts.yaml#/components/schemas/AccountNftsSuccessResponse

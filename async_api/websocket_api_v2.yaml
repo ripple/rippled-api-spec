@@ -54,6 +54,8 @@ channels:
           - $ref: '#/components/messages/AccountInfoRequest'
           - $ref: '#/components/messages/AccountLinesRequest'
           - $ref: '#/components/messages/LedgerEntryRequest'
+          - $ref: '#/components/messages/AccountCurrenciesRequest'
+          - $ref: '#/components/messages/AccountNftsRequest'
           # ... (Add references for additional requests)
     publish:
       operationId: publishToRoot
@@ -63,6 +65,8 @@ channels:
           - $ref: '#/components/messages/AccountInfoResponseV2'
           - $ref: '#/components/messages/AccountLinesResponse'
           - $ref: '#/components/messages/LedgerEntryResponse'
+          - $ref: '#/components/messages/AccountCurrenciesResponse'
+          - $ref: '#/components/messages/AccountNftsResponse'
           # ... (Add references for additional responses)
 
 # Moved message definitions to a separate components section
@@ -100,13 +104,21 @@ components:
       payload:
         $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
 
-    # Account channels request message
+    # Account currencies request message
     AccountCurrenciesRequest:
       name: AccountCurrenciesRequest
       messageId: AccountCurrenciesRequest
       contentType: application/json
       payload:
         $ref: './requests/account_currencies_async_api.yaml#/components/schemas/AccountCurrenciesRequest'
+
+    # Account nfts request message
+    AccountNftsRequest:
+      name: AccountNftsRequest
+      messageId: AccountNftsRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_nfts_async_api.yaml#/components/schemas/AccountNftsRequest'
 
     # ... (Add definitions for additional message types)
 
@@ -149,5 +161,13 @@ components:
       contentType: application/json
       payload:
         $ref: './requests/account_currencies_async_api.yaml#/components/schemas/AccountCurrenciesResponse'
+
+    # Account nfts response message
+    AccountNftsResponse:
+      name: AccountNftsResponse
+      messageId: AccountNftsResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/account_nfts_async_api.yaml#/components/schemas/AccountNftsResponse'
 
     # ... (Add definitions for additional response types)

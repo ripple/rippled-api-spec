@@ -12,6 +12,8 @@ components:
         account:
           type: string
           description: 'Look up currencies this account can send or receive. Updated in: rippled 1.11.0'
+      required:
+        - account
 
     AccountCurrenciesSuccessResponse:
       type: object
