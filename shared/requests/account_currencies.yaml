@@ -1,0 +1,65 @@
+components:
+  schemas:
+    AccountCurrenciesRequest:
+      description: >
+        The account_currencies command retrieves a list of currencies that an account can send or receive, based
+        on its trust lines. (This is not a thoroughly confirmed list, but it can be used to populate user interfaces.)
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        account:
+          type: string
+          description: 'Look up currencies this account can send or receive. Updated in: rippled 1.11.0'
+
+    AccountCurrenciesSuccessResponse:
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+      properties:
+        ledger_hash:
+          type: string
+          description: The identifying hash of the ledger version used to retrieve this data, as hex. (May be omitted)
+        ledger_index:
+          type: integer
+          description: The ledger index of the ledger version used to retrieve this data.
+        receive_currencies:
+          type: array
+          items:
+            type: string
+          description: Array of Currency Codes for currencies that this account can receive.
+        send_currencies:
+          type: array
+          items:
+            type: string
+          description: Array of Currency Codes for currencies that this account can send.
+        validated:
+          type: boolean
+          description: If true, this data comes from a validated ledger.
+
+    AccountCurrenciesErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AccountCurrenciesRequest'
+      required:
+        - status
+        - error
+        - request

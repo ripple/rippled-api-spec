@@ -39,58 +39,115 @@ servers:
     protocol: wss
     description: Testnet (not for production usage)
 
+# Refactored channels section for better reusability
 channels:
+  # Root channel for all requests and responses
   /:
-    # In AsyncAPI 2.x 'subscribe' is from the api's perspective - so an end user sends a request to
-    # a channel where the api is 'subscribed'. This is changed in 3.0.0.
     description: The root channel for sending requests and receiving responses.
+    # Leverages operationId for clarity
     subscribe:
       operationId: subscribeToRoot
       message:
         oneOf:
-          - name: AccountChannelsRequest
-            messageId: AccountChannelsRequest
-            contentType: application/json
-            payload:
-              $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsRequest'
-          - name: AccountInfoRequest
-            messageId: AccountInfoRequest
-            contentType: application/json
-            payload:
-              $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoRequest'
-          - name: AccountLinesRequest
-            messageId: AccountLinesRequest
-            contentType: application/json
-            payload:
-              $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesRequest'
-          - name: LedgerEntryRequest
-            messageId: LedgerEntryRequest
-            contentType: application/json
-            payload:
-              $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
-          # TODO: Add additional request types for individual requests here
+          # Reusable message references
+          - $ref: '#/components/messages/AccountChannelsRequest'
+          - $ref: '#/components/messages/AccountInfoRequest'
+          - $ref: '#/components/messages/AccountLinesRequest'
+          - $ref: '#/components/messages/LedgerEntryRequest'
+          # ... (Add references for additional requests)
     publish:
       operationId: publishToRoot
       message:
         oneOf:
-          - name: AccountChannelsResponse
-            messageId: AccountChannelsResponse
-            contentType: application/json
-            payload:
-              $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsResponse'
-          - name: AccountInfoResponse
-            messageId: AccountInfoResponse
-            contentType: application/json
-            payload:
-              $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV2'
-          - name: AccountLinesResponse
-            messageId: AccountLinesResponse
-            contentType: application/json
-            payload:
-              $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesResponse'
-          - name: LedgerEntryResponse
-            messageId: LedgerEntryResponse
-            contentType: application/json
-            payload:
-              $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
-          # TODO: Add additional response types for individual requests here
+          - $ref: '#/components/messages/AccountChannelsResponse'
+          - $ref: '#/components/messages/AccountInfoResponseV2'
+          - $ref: '#/components/messages/AccountLinesResponse'
+          - $ref: '#/components/messages/LedgerEntryResponse'
+          # ... (Add references for additional responses)
+
+# Moved message definitions to a separate components section
+components:
+  messages:
+    # Account channels request message
+    AccountChannelsRequest:
+      name: AccountChannelsRequest
+      messageId: AccountChannelsRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsRequest'
+
+    # Account info request message
+    AccountInfoRequest:
+      name: AccountInfoRequest
+      messageId: AccountInfoRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoRequest'
+
+    # Account lines request message
+    AccountLinesRequest:
+      name: AccountLinesRequest
+      messageId: AccountLinesRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesRequest'
+
+    # Ledger entry request message
+    LedgerEntryRequest:
+      name: LedgerEntryRequest
+      messageId: LedgerEntryRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
+
+    # Account channels request message
+    AccountCurrenciesRequest:
+      name: AccountCurrenciesRequest
+      messageId: AccountCurrenciesRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_currencies_async_api.yaml#/components/schemas/AccountCurrenciesRequest'
+
+    # ... (Add definitions for additional message types)
+
+    # Account channels response message
+    AccountChannelsResponse:
+      name: AccountChannelsResponse
+      messageId: AccountChannelsResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/account_channels_async_api.yaml#/components/schemas/AccountChannelsResponse'
+
+    # Account info response message (version 2)
+    AccountInfoResponseV2:
+      name: AccountInfoResponse
+      messageId: AccountInfoResponseV2 # Consider using a version suffix
+      contentType: application/json
+      payload:
+        $ref: './requests/account_info_async_api.yaml#/components/schemas/AccountInfoResponseV2'
+
+    # Account lines response message
+    AccountLinesResponse:
+      name: AccountLinesResponse
+      messageId: AccountLinesResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesResponse'
+
+    # Ledger entry response message
+    LedgerEntryResponse:
+      name: LedgerEntryResponse
+      messageId: LedgerEntryResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
+
+    # Account currencies response message
+    AccountCurrenciesResponse:
+      name: AccountCurrenciesResponse
+      messageId: AccountCurrenciesResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/account_currencies_async_api.yaml#/components/schemas/AccountCurrenciesResponse'
+
+    # ... (Add definitions for additional response types)

@@ -101,6 +101,14 @@ components:
       payload:
         $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
 
+    # Account channels request message
+    AccountCurrenciesRequest:
+      name: AccountCurrenciesRequest
+      messageId: AccountCurrenciesRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_currencies_async_api.yaml#/components/schemas/AccountCurrenciesRequest'
+
     # ... (Add definitions for additional message types)
 
     # Account channels response message
@@ -134,4 +142,13 @@ components:
       contentType: application/json
       payload:
         $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
+
+    # Account currencies response message
+    AccountCurrenciesResponse:
+      name: AccountCurrenciesResponse
+      messageId: AccountCurrenciesResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/account_currencies_async_api.yaml#/components/schemas/AccountCurrenciesResponse'
+
     # ... (Add definitions for additional response types)
