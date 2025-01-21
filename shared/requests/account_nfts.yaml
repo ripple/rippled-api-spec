@@ -69,7 +69,6 @@ components:
           description: The token sequence number of this NFToken, which is unique for its issuer.
 
     AccountNftsErrorResponse:
-      description: ''
       type: object
       properties:
         error:
@@ -89,7 +88,7 @@ components:
           enum:
             - error
         request:
-          $ref: '#/components/schemas/AccountCurrenciesRequest'
+          $ref: '#/components/schemas/AccountNftsRequest'
       required:
         - status
         - error

@@ -1,0 +1,94 @@
+components:
+  schemas:
+    AccountOffersRequest:
+      description: >
+        The account_offers method retrieves a list of offers made by a given account that are outstanding as of a particular ledger version.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        account:
+          type: string
+          description: The unique identifier of an account, typically the account's Address. The request returns a list of NFTs owned by this account.
+        limit:
+          type: integer
+          description: (Optional) Limit the number of token pages to retrieve. Each page can contain up to 32 NFTs. The limit value cannot be lower than 20 or more than 400. Positive values outside this range are replaced with the closest valid option. The default is 100.
+        marker:
+          type: string
+          description: (Optional) Value from a previous paginated response. Resume retrieving data where that response left off.
+      required:
+        - account
+    AccountOffersSuccessResponse:
+      type: object
+      properties:
+        account:
+          type: string
+          description: Unique Address identifying the account that made the offers.
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+          description: Array of objects, where each object represents an offer made by this account that is outstanding as of the requested ledger version. If the number of offers is large, only returns up to limit at a time.
+        ledger_current_index:
+          type: integer
+          description: (Omitted if ledger_hash or ledger_index provided) The ledger index of the current in-progress ledger version, which was used when retrieving this data.
+        ledger_index:
+          type: integer
+          description: (Omitted if ledger_current_index provided instead) The ledger index of the ledger version that was used when retrieving this data, as requested.
+        ledger_hash:
+          type: string
+          description: (May be omitted) The identifying hash of the ledger version that was used when retrieving this data.
+        marker:
+          type: string
+          description: (May be omitted) Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off. Omitted when there are no pages of information after this one.
+    Offer:
+      type: object
+      properties:
+        flags:
+          type: integer
+          description: Options set for this offer entry as bit-flags.
+        seq:
+          type: integer
+          description: Sequence number of the transaction that created this entry. (Transaction sequence numbers are relative to accounts.)
+        taker_gets:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: The amount the account accepting the offer receives, as a String representing an amount in XRP, or a currency specification object.
+        taker_pays:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: The amount the account accepting the offer provides, as a String representing an amount in XRP, or a currency specification object.
+        quality:
+          type: string
+          description: The exchange rate of the offer, as the ratio of the original taker_pays divided by the original taker_gets. When executing offers, the offer with the most favorable (lowest) quality is consumed first; offers with the same quality are executed from oldest to newest.
+        expiration:
+          type: integer
+          description: (May be omitted) A time after which this offer is considered unfunded, as the number of seconds since the Ripple Epoch.
+
+    AccountOffersErrorResponse:
+      description: ''
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+                - actMalformed
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
+            * `actMalformed` - The marker field provided is incorrect.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AccountOffersRequest'
+      required:
+        - status
+        - error
+        - request

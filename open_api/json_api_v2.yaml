@@ -36,6 +36,7 @@ paths:
                   ledger_entry: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryRequest'
                   account_currencies: 'requests/account_currencies_open_api.yaml#/components/schemas/AccountCurrenciesRequest'
                   account_nfts: 'requests/account_nfts_open_api.yaml#/components/schemas/AccountNftsRequest'
+                  account_offers: 'requests/account_offers_open_api.yaml#/components/schemas/AccountOffersRequest'
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
                 - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
@@ -45,6 +46,7 @@ paths:
                 - $ref: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryRequest'
                 - $ref: 'requests/account_currencies_open_api.yaml#/components/schemas/AccountCurrenciesRequest'
                 - $ref: 'requests/account_nfts_open_api.yaml#/components/schemas/AccountNftsRequest'
+                - $ref: 'requests/account_offers_open_api.yaml#/components/schemas/AccountOffersRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'
@@ -61,6 +63,8 @@ paths:
                   - $ref: 'requests/account_lines_open_api.yaml#/components/schemas/AccountLinesResponse'
                   - $ref: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryResponse'
                   - $ref: 'requests/account_currencies_open_api.yaml#/components/schemas/AccountCurrenciesResponse'
+                  - $ref: 'requests/account_nfts_open_api.yaml#/components/schemas/AccountNftsResponse'
+                  - $ref: 'requests/account_offers_open_api.yaml#/components/schemas/AccountOffersResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.

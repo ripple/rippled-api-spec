@@ -57,6 +57,7 @@ channels:
           - $ref: '#/components/messages/LedgerEntryRequest'
           - $ref: '#/components/messages/AccountCurrenciesRequest'
           - $ref: '#/components/messages/AccountNftsRequest'
+          - $ref: '#/components/messages/AccountOffersRequest'
           # ... (Add references for additional requests)
     publish:
       operationId: publishToRoot
@@ -68,6 +69,7 @@ channels:
           - $ref: '#/components/messages/LedgerEntryResponse'
           - $ref: '#/components/messages/AccountCurrenciesResponse'
           - $ref: '#/components/messages/AccountNftsResponse'
+          - $ref: '#/components/messages/AccountOffersResponse'
           # ... (Add references for additional responses)
 
 # Moved message definitions to a separate components section
@@ -121,6 +123,14 @@ components:
       payload:
         $ref: './requests/account_nfts_async_api.yaml#/components/schemas/AccountNftsRequest'
 
+    # Account offers request message
+    AccountOffersRequest:
+      name: AccountOffersRequest
+      messageId: AccountOffersRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/account_offers_async_api.yaml#/components/schemas/AccountOffersRequest'
+
     # ... (Add definitions for additional message types)
 
     # Account channels response message
@@ -169,6 +179,14 @@ components:
       messageId: AccountNftsResponse
       contentType: application/json
       payload:
-        $ref: './requests/account_nfts_async_api.yaml#/components/schemas/AccountNftsResponse'
+        $ref: './requests/account_offers_async_api.yaml#/components/schemas/AccountOffersResponse'
+
+    # Account offers response message
+    AccountOffersResponse:
+      name: AccountOffersResponse
+      messageId: AccountOffersResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/account_offers_async_api.yaml#/components/schemas/AccountOffersResponse'
 
     # ... (Add definitions for additional response types)

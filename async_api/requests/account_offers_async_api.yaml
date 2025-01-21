@@ -1,0 +1,75 @@
+components:
+  schemas:
+    AccountOffersRequest:
+      type: object
+      allOf:
+        - $ref: ../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersRequest
+      properties:
+        command:
+          type: string
+          enum:
+            - account_offers
+        id:
+          description: A unique identifier for the request.
+      required:
+        - command
+        - id
+      example:
+        id: 9
+        command: account_offers
+        account: rpP2JgiMyTF5jR5hLG3xHCPi1knBb1v9cM
+    AccountOffersResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: ../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersSuccessResponse
+              error: '#/components/schemas/AccountOffersErrorResponse'
+          oneOf:
+            - $ref: ../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersSuccessResponse
+            - $ref: '#/components/schemas/AccountOffersErrorResponse'
+        id:
+          description: A unique identifier for the request.
+        type:
+          type: string
+          description:
+            The value response indicates a direct response to an API request.
+            Asynchronous notifications use a different value such as
+            `ledgerClosed` or `transaction`.
+          enum:
+            - response
+      required:
+        - id
+        - type
+      example:
+        id: 9
+        status: success
+        type: response
+        result:
+          account: rpP2JgiMyTF5jR5hLG3xHCPi1knBb1v9cM
+          ledger_current_index: 18539550
+          offers:
+            - flags: 0
+              quality: '0.00000000574666765650638'
+              seq: 6577664
+              taker_gets: '33687728098'
+              taker_pays:
+                currency: EUR
+                issuer: rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq
+                value: '193.5921774819578'
+            - flags: 0
+              quality: '7989247009094510e-27'
+              seq: 6572128
+              taker_gets: '2361918758'
+              taker_pays:
+                currency: XAU
+                issuer: rrh7rf1gV2pXAoqA8oYbpHd8TKv5ZQeo67
+                value: '0.01886995237307572'
+          validated: false
+    AccountOffersErrorResponse:
+      oneOf:
+        - $ref: ../../shared/base.yaml#/components/schemas/WebsocketErrorFields
+        - $ref: ../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersErrorResponse
