@@ -3,6 +3,8 @@ components:
     AccountDeleteTransaction:
       $id: AccountDeleteTransaction
       type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
       description: |
         An AccountDelete transaction deletes an account and any objects it owns in the XRP Ledger,
         if possible, sending the account's remaining XRP to a specified destination account.

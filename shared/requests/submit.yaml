@@ -72,12 +72,13 @@ components:
               OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+              SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
-
+            - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -98,11 +99,13 @@ components:
               OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+              SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+            - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -182,12 +185,14 @@ components:
               OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+              SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+            - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -203,12 +208,14 @@ components:
               OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+              SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+            - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:

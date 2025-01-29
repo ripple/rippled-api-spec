@@ -5,6 +5,8 @@ components:
       description: |
         An AccountSet transaction modifies the properties of an account in the XRP Ledger.
       type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
       properties:
         ClearFlag:
           type: integer
