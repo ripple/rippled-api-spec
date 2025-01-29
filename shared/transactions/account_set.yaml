@@ -1,0 +1,115 @@
+components:
+  schemas:
+    AccountSetTransaction:
+      $id: AccountSetTransaction
+      description: |
+        An AccountSet transaction modifies the properties of an account in the XRP Ledger.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      properties:
+        ClearFlag:
+          type: integer
+          format: uint32
+          description: |
+            (Optional) Unique identifier of a flag to disable for this account.
+        Domain:
+          type: string
+          description: |
+            (Optional) The domain that owns this account, as a string of hex representing the ASCII for
+            the domain in lowercase. Cannot be more than 256 bytes in length.
+          maxLength: 256
+        EmailHash:
+          type: string
+          format: hash128
+          description: |
+            (Optional) An arbitrary 128-bit value. Conventionally, clients treat this as the md5 hash of
+            an email address to use for displaying a Gravatar image.
+        MessageKey:
+          type: string
+          description: |
+            (Optional) Public key for sending encrypted messages to this account. To set the key, it must
+            be exactly 33 bytes, with the first byte indicating the key type: 0x02 or 0x03 for secp256k1
+            keys, 0xED for Ed25519 keys. To remove the key, use an empty value.
+        NFTokenMinter:
+          type: string
+          description: |
+            (Optional) Another account that can mint NFTokens for you. (Added by the NonFungibleTokensV1_1
+            amendment.)
+        SetFlag:
+          type: integer
+          format: uint32
+          description: |
+            (Optional) Integer flag to enable for this account.
+        TransferRate:
+          type: integer
+          format: uint32
+          description: |
+            (Optional) The fee to charge when users transfer this account's tokens, represented as
+            billionths of a unit. Cannot be more than 2000000000 or less than 1000000000, except for the
+            special case 0 meaning no fee.
+          minimum: 1000000000
+          maximum: 2000000000
+        TickSize:
+          type: integer
+          format: uint8
+          description: |
+            (Optional) Tick size to use for offers involving a currency issued by this address. The
+            exchange rates of those offers is rounded to this many significant digits. Valid values are 3
+            to 15 inclusive, or 0 to disable. (Added by the TickSize amendment.)
+          minimum: 3
+          maximum: 15
+        WalletLocator:
+          type: string
+          format: hash256
+          description: |
+            (Optional) An arbitrary 256-bit value. If specified, the value is stored as part of the account
+            but has no inherent meaning or requirements.
+        WalletSize:
+          type: integer
+          format: uint32
+          description: |
+            (Optional) Not used. This field is valid in AccountSet transactions but does nothing.
+      x-custom-validation:
+        specialValue:
+          - field: TransferRate
+            specialValue: 0
+          - field: TickSize
+            specialValue: 0
+
+    AccountSetFlag:
+      $id: AccountSetFlag
+      type: string
+      enum:
+        - asfAccountTxnID
+        - asfAllowTrustLineClawback
+        - asfAuthorizedNFTokenMinter
+        - asfDefaultRipple
+        - asfDepositAuth
+        - asfDisableMaster
+        - asfDisallowIncomingCheck
+        - asfDisallowIncomingNFTokenOffer
+        - asfDisallowIncomingPayChan
+        - asfDisallowIncomingTrustline
+        - asfDisallowXRP
+        - asfGlobalFreeze
+        - asfNoFreeze
+        - asfRequireAuth
+        - asfRequireDest
+      description: Enum representing AccountSet transaction flags.
+      x-enum-descriptions:
+        asfAccountTxnID: Track the ID of this account's most recent transaction. Required for AccountTxnID.
+        asfAllowTrustLineClawback: Allow account to claw back tokens it has issued. (Requires the Clawback amendment.) Can only be set if the account has an empty owner directory (no trust lines, offers, escrows, payment channels, checks, or signer lists). After you set this flag, it cannot be reverted. The account permanently gains the ability to claw back issued assets on trust lines.
+        asfAuthorizedNFTokenMinter: Enable to allow another account to mint non-fungible tokens (NFTokens) on this account's behalf. Specify the authorized account in the NFTokenMinter field of the AccountRoot object. To remove an authorized minter, enable this flag and omit the NFTokenMinter field. (Added by the NonFungibleTokensV1_1 amendment.)
+        asfDefaultRipple: Enable rippling on this account's trust lines by default.
+        asfDepositAuth: Enable Deposit Authorization on this account. (Added by the DepositAuth amendment.)
+        asfDisableMaster: Disallow use of the master key pair. Can only be enabled if the account has configured another way to sign transactions, such as a Regular Key or a Signer List.
+        asfDisallowIncomingCheck: Block incoming Checks. (Requires the DisallowIncoming amendment.)
+        asfDisallowIncomingNFTokenOffer: Block incoming NFTokenOffers. (Requires the DisallowIncoming amendment.)
+        asfDisallowIncomingPayChan: Block incoming Payment Channels. (Requires the DisallowIncoming amendment.)
+        asfDisallowIncomingTrustline: Block incoming trust lines. (Requires the DisallowIncoming amendment.)
+        asfDisallowXRP: XRP should not be sent to this account. (Advisory; not enforced by the XRP Ledger protocol.)
+        asfGlobalFreeze: Freeze all assets issued by this account.
+        asfNoFreeze: Permanently give up the ability to freeze individual trust lines or disable Global Freeze. This flag can never be disabled after being enabled.
+        asfRequireAuth: Require authorization for users to hold balances issued by this address. Can only be enabled if the address has no trust lines connected to it.
+        asfRequireDest: Require a destination tag to send transactions to this account.

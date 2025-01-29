@@ -93,9 +93,9 @@ components:
         - tecINVALID_UPDATE_TIME
         - tecTOKEN_PAIR_NOT_FOUND
         - temARRAY_TOO_LARGE
-      description: >
-        * `temARRAY_EMPTY` - The PriceDataSeries has no PriceData objects.
-        * `tecARRAY_TOO_LARGE` - The PriceDataSeries exceeds the ten PriceData objects limit.
-        * `tecINVALID_UPDATE_TIME` - The Oracle object has an invalid LastUpdateTime value.
-        * `tecTOKEN_PAIR_NOT_FOUND` - The token pair you're trying to delete doesn't exist in the Oracle object.
-        * `temARRAY_TOO_LARGE` - The PriceDataSeries exceeds the ten PriceData objects limit.
+      x-enum-descriptions:
+        temARRAY_EMPTY: The PriceDataSeries has no PriceData objects.
+        tecARRAY_TOO_LARGE: The PriceDataSeries exceeds the ten PriceData objects limit.
+        tecINVALID_UPDATE_TIME: The Oracle object has an invalid LastUpdateTime value.
+        tecTOKEN_PAIR_NOT_FOUND: The token pair you're trying to delete doesn't exist in the Oracle object.
+        temARRAY_TOO_LARGE: The PriceDataSeries exceeds the ten PriceData objects limit.
