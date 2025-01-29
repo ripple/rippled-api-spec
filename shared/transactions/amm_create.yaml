@@ -17,11 +17,11 @@ components:
         - TradingFee
       properties:
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Required) The first of the two assets to fund this AMM with. This must be a positive amount.
         Amount2:
-          $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Required) The second of the two assets to fund this AMM with. This must be a positive amount.
         TradingFee:
