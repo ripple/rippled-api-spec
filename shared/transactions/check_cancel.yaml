@@ -1,0 +1,29 @@
+components:
+  schemas:
+    CheckCancelTransaction:
+      $id: CheckCancelTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Cancels an unredeemed Check, removing it from the ledger without sending any money. The source or
+        the destination of the check can cancel a Check at any time using this transaction type. If the
+        Check has expired, any address can cancel it.
+      required:
+        - CheckID
+      properties:
+        CheckID:
+          type: string
+          format: hash256
+          description: |
+            The ID of the Check ledger object to cancel, as a 64-character hexadecimal string.
+    CheckCancelErrorCode:
+      $id: CheckCancelErrorCode
+      type: string
+      enum:
+        - tecNO_ENTRY
+        - tecNO_PERMISSION
+      description: Enum representing possible error codes for CheckCancel transactions.
+      x-enum-descriptions:
+        tecNO_ENTRY: If the object identified by the CheckID does not exist or is not a Check, the transaction fails.
+        tecNO_PERMISSION: If the Check is not expired and the sender of the CheckCancel transaction is not the source or destination of the Check, the transaction fails.
