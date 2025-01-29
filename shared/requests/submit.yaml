@@ -73,12 +73,14 @@ components:
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+              AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+            - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -100,12 +102,14 @@ components:
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+              AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+            - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -186,6 +190,7 @@ components:
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+              AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -193,6 +198,7 @@ components:
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+            - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -209,6 +215,7 @@ components:
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+              AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -216,6 +223,7 @@ components:
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+            - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -226,6 +234,7 @@ components:
           oneOf:
             - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetErrorCode'
+            - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee
@@ -237,27 +246,14 @@ components:
                 - noPath
                 - tooBusy
                 - notSupported
-          description: >
-            * `amendmentBlocked` - The transaction cannot be submitted to the network because the rippled server is amendment blocked.
-            * `highFee` - The fee_mult_max parameter was specified, but the server's current fee multiplier exceeds the specified one. (Sign-and-Submit mode only)
-            * `internalJson` - An internal error occurred when serializing the transaction to JSON. This could be caused by many aspects of the transaction, including a bad signature or some fields being malformed.
-            * `internalSubmit` - An internal error occurred when submitting the transaction. This could be caused by many aspects of the transaction, including a bad signature or some fields being malformed.
-            * `internalTransaction` - An internal error occurred when processing the transaction. This could be caused by many aspects of the transaction, including a bad signature or some fields being malformed.
-            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-            * `invalidTransaction` - The transaction is malformed or otherwise invalid.
-            * `noPath` - The transaction did not include paths, and the server was unable to find a path by which this payment can occur. (Sign-and-Submit mode only)
-            * `tooBusy` - The transaction did not include paths, but the server is too busy to do pathfinding right now. Does not occur if you are connected as an admin. (Sign-and-Submit mode only)
-            * `notSupported` - Signing is not supported by this server (Sign-and-Submit mode only.) If you are the server admin, you can still access signing when connected as an admin, or you could enable public signing.
-        status:
-          type: string
-          enum:
-            - error
-        request:
-          oneOf:
-            - $ref: '#/components/schemas/SubmitRequestV1'
-            - $ref: '#/components/schemas/SubmitRequestV2'
-
-      required:
-        - status
-        - error
-        - request
+              x-enum-descriptions:
+                amendmentBlocked: The transaction cannot be submitted to the network because the rippled server is amendment blocked.
+                highFee: The fee_mult_max parameter was specified, but the server's current fee multiplier exceeds the specified one. (Sign-and-Submit mode only)
+                internalJson: An internal error occurred when serializing the transaction to JSON. This could be caused by many aspects of the transaction, including a bad signature or some fields being malformed.
+                internalSubmit: An internal error occurred when submitting the transaction. This could be caused by many aspects of the transaction, including a bad signature or some fields being malformed.
+                internalTransaction: An internal error occurred when processing the transaction. This could be caused by many aspects of the transaction, including a bad signature or some fields being malformed.
+                invalidParams: One or more fields are specified incorrectly, or one or more required fields are missing.
+                invalidTransaction: The transaction is malformed or otherwise invalid.
+                noPath: The transaction did not include paths, and the server was unable to find a path by which this payment can occur. (Sign-and-Submit mode only)
+                tooBusy: The transaction did not include paths, but the server is too busy to do pathfinding right now. Does not occur if you are connected as an admin. (Sign-and-Submit mode only)
+                notSupported: Signing is not supported by this server (Sign-and-Submit mode only.) If you are the server admin, you can still access signing when connected as an admin, or you could enable public signing.
