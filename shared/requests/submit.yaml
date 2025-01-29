@@ -74,6 +74,7 @@ components:
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+              AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -81,6 +82,7 @@ components:
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+            - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -103,6 +105,7 @@ components:
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+              AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -110,6 +113,7 @@ components:
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+            - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -191,6 +195,7 @@ components:
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+              AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -199,6 +204,7 @@ components:
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+            - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -216,6 +222,7 @@ components:
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
               SetRegularKey: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+              AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -224,6 +231,7 @@ components:
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
             - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+            - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -235,6 +243,7 @@ components:
             - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetErrorCode'
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidErrorCode'
+            - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee

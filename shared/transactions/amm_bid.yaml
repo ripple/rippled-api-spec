@@ -1,6 +1,14 @@
 components:
   schemas:
     AMMBidTransaction:
+      description: |
+        Bid on an Automated Market Maker's (AMM's) auction slot. If you win, you can trade against the AMM 
+        at a discounted fee until you are outbid or 24 hours have passed. If you are outbid before 24 hours
+        have passed, you are refunded part of the cost of your bid based on how much time remains. If the 
+        AMM's trading fee is zero, you can still bid, but the auction slot provides no benefit unless the 
+        trading fee changes.
+        You bid using the AMM's LP Tokens; the amount of a winning bid is returned to the AMM, decreasing
+        the outstanding balance of LP Tokens.
       $id: AMMBidTransaction
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseTransaction'
