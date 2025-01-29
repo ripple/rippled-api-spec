@@ -22,11 +22,11 @@ components:
           description: |
             (Optional) An Offer to delete first, specified in the same way as OfferCancel.
         TakerGets:
-          type: object
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The amount and type of currency being sold.
         TakerPays:
-          type: object
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The amount and type of currency being bought.
     OfferCreateFlag:
