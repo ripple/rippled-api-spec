@@ -1,6 +1,9 @@
 components:
   schemas:
     AccountSetTransaction:
+      $id: AccountSetTransaction
+      description: |
+        An AccountSet transaction modifies the properties of an account in the XRP Ledger.
       type: object
       properties:
         ClearFlag:
@@ -73,6 +76,7 @@ components:
             specialValue: 0
 
     AccountSetFlag:
+      $id: AccountSetFlag
       type: string
       enum:
         - asfAccountTxnID
