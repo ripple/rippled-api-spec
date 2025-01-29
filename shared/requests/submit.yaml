@@ -79,6 +79,7 @@ components:
               AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
               AMMWithdraw: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+              CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -91,6 +92,7 @@ components:
             - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             - $ref: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+            - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -118,6 +120,7 @@ components:
               AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
               AMMWithdraw: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+              CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -130,6 +133,7 @@ components:
             - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             - $ref: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+            - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -216,6 +220,7 @@ components:
               AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
               AMMWithdraw: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+              CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -229,6 +234,7 @@ components:
             - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             - $ref: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+            - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -251,6 +257,7 @@ components:
               AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
               AMMWithdraw: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+              CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -264,6 +271,7 @@ components:
             - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             - $ref: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+            - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -280,6 +288,7 @@ components:
             - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteErrorCode'
             - $ref: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawErrorCode'
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelErrorCode'
+            - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee
