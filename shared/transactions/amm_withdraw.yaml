@@ -1,0 +1,95 @@
+components:
+  schemas:
+    AMMWithdrawTransaction:
+      $id: AMMWithdrawTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Withdraw assets from an Automated Market Maker (AMM) instance by returning the AMM's liquidity
+        provider tokens (LP Tokens).
+      required:
+        - Asset
+        - Asset2
+      properties:
+        Asset:
+          $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+          description: |
+            (Required) The definition for one of the assets in the AMM's pool. In JSON, this is an object
+            with currency and issuer fields (omit issuer for XRP).
+        Asset2:
+          $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+          description: |
+            (Required) The definition for the other asset in the AMM's pool. In JSON, this is an object
+            with currency and issuer fields (omit issuer for XRP).
+        Amount:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: |
+            (Optional) The amount of one asset to withdraw from the AMM. This must match the type of one of
+            the assets (tokens or XRP) in the AMM's pool.
+        Amount2:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: |
+            (Optional) The amount of another asset to withdraw from the AMM. If present, this must match the
+            type of the other asset in the AMM's pool and cannot be the same type as Amount.
+        EPrice:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: |
+            (Optional) The minimum effective price, in LP Token returned, to pay per unit of the asset to
+            withdraw.
+        LPTokenIn:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: |
+            (Optional) How many of the AMM's LP Tokens to redeem.
+      x-custom-validation:
+        dependentPresence:
+          - dependentField: Amount2
+            requiredField: Amount
+          - dependentField: EPrice
+            requiredField: Amount
+    AMMWithdrawFlag:
+      $id: AMMWithdrawFlag
+      type: string
+      enum:
+        - tfLPToken: 0x00010000
+        - tfWithdrawAll: 0x00020000
+        - tfOneAssetWithdrawAll: 0x00040000
+        - tfSingleAsset: 0x00080000
+        - tfTwoAsset: 0x00100000
+        - tfOneAssetLPToken: 0x00200000
+        - tfLimitLPToken: 0x00400000
+      description: Enum representing flags for AMMWithdraw transactions.
+      x-enum-descriptions:
+        tfLPToken: Perform a double-asset withdrawal and receive the specified amount of LP Tokens.
+        tfWithdrawAll: Perform a double-asset withdrawal returning all your LP Tokens.
+        tfOneAssetWithdrawAll: Perform a single-asset withdrawal returning all of your LP Tokens.
+        tfSingleAsset: Perform a single-asset withdrawal with a specified amount of the asset to withdraw.
+        tfTwoAsset: Perform a double-asset withdrawal with specified amounts of both assets.
+        tfOneAssetLPToken: Perform a single-asset withdrawal and receive the specified amount of LP Tokens.
+        tfLimitLPToken: Perform a single-asset withdrawal with a specified effective price.
+    AMMWithdrawErrorCode:
+      $id: AMMWithdrawErrorCode
+      type: string
+      enum:
+        - tecAMM_EMPTY
+        - tecAMM_BALANCE
+        - tecAMM_FAILED
+        - tecAMM_INVALID_TOKENS
+        - tecFROZEN
+        - tecINSUF_RESERVE_LINE
+        - tecNO_AUTH
+        - temMALFORMED
+        - temBAD_AMM_TOKENS
+        - terNO_AMM
+      description: Enum representing possible error codes for AMMWithdraw transactions.
+      x-enum-descriptions:
+        tecAMM_EMPTY: The AMM has no assets in its pool. In this state, you can only delete the AMM or fund it with a new deposit.
+        tecAMM_BALANCE: The transaction would withdraw all of one asset from the pool, or rounding would cause a "withdraw all" to leave a nonzero amount behind.
+        tecAMM_FAILED: The conditions on the withdrawal could not be satisfied; for example, the requested effective price in the EPrice field is too low.
+        tecAMM_INVALID_TOKENS: The AMM for this token pair does not exist, or one of the calculations resulted in a withdrawal amount rounding to zero.
+        tecFROZEN: The transaction tried to withdraw a frozen token.
+        tecINSUF_RESERVE_LINE: The sender of this transaction does not meet the increased reserve requirement of processing this transaction, probably because they need at least one new trust line to hold one of the assets to be withdrawn, and they don't have enough XRP to meet the additional owner reserve for a new trust line.
+        tecNO_AUTH: The sender is not authorized to hold one of the AMM assets.
+        temMALFORMED: The transaction specified an invalid combination of fields. See AMMWithdraw Modes. (This error can also occur if the transaction is malformed in other ways.)
+        temBAD_AMM_TOKENS: The transaction specified the LP Tokens incorrectly; for example, the issuer is not the AMM's associated AccountRoot address or the currency is not the currency code for this AMM's LP Tokens, or the transaction specified this AMM's LP Tokens in one of the asset fields.
+        terNO_AMM: The Automated Market Maker instance for the asset pair in this transaction does not exist.
