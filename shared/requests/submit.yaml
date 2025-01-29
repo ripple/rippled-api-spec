@@ -81,6 +81,7 @@ components:
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
               CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               CheckCreate: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+              OfferCancel: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -95,6 +96,7 @@ components:
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
             - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             - $ref: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+            - $ref: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -124,6 +126,7 @@ components:
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
               CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               CheckCreate: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+              OfferCancel: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -138,6 +141,7 @@ components:
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
             - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             - $ref: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+            - $ref: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -226,6 +230,7 @@ components:
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
               CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               CheckCreate: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+              OfferCancel: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -241,6 +246,7 @@ components:
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
             - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             - $ref: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+            - $ref: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -265,6 +271,7 @@ components:
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
               CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               CheckCreate: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+              OfferCancel: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -280,6 +287,7 @@ components:
             - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
             - $ref: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
             - $ref: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+            - $ref: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
