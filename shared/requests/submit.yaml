@@ -76,6 +76,7 @@ components:
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
               AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
               AMMDeposit: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+              AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -85,6 +86,7 @@ components:
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             - $ref: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+            - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -109,6 +111,7 @@ components:
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
               AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
               AMMDeposit: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+              AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -118,6 +121,7 @@ components:
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             - $ref: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+            - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -201,6 +205,7 @@ components:
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
               AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
               AMMDeposit: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+              AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -211,6 +216,7 @@ components:
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             - $ref: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+            - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -230,6 +236,7 @@ components:
               AMMBid: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
               AMMCreate: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
               AMMDeposit: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+              AMMVote: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -240,6 +247,7 @@ components:
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
             - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
             - $ref: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+            - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -253,6 +261,7 @@ components:
             - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidErrorCode'
             - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateErrorCode'
             - $ref: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositErrorCode'
+            - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee
