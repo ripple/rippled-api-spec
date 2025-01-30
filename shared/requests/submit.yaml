@@ -85,6 +85,7 @@ components:
               OfferCreate: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
               TrustSet: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
               DIDDelete: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+              DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -103,6 +104,7 @@ components:
             - $ref: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
             - $ref: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
             - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+            - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -136,6 +138,7 @@ components:
               OfferCreate: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
               TrustSet: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
               DIDDelete: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+              DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -154,6 +157,7 @@ components:
             - $ref: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
             - $ref: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
             - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+            - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -246,6 +250,7 @@ components:
               OfferCreate: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
               TrustSet: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
               DIDDelete: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+              DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -265,6 +270,7 @@ components:
             - $ref: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
             - $ref: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
             - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+            - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -293,6 +299,7 @@ components:
               OfferCreate: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
               TrustSet: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
               DIDDelete: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+              DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -312,6 +319,7 @@ components:
             - $ref: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
             - $ref: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
             - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+            - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -333,6 +341,7 @@ components:
             - $ref: '../transactions/offer_create.yaml#/components/schemas/OfferCreateErrorCode'
             - $ref: '../transactions/trust_set.yaml#/components/schemas/TrustSetErrorCode'
             - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteErrorCode'
+            - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee

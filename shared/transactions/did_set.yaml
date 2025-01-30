@@ -1,0 +1,40 @@
+components:
+  schemas:
+    DIDSetTransaction:
+      $id: DIDSetTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Creates a new DID ledger entry or updates the fields of an existing one.
+
+        To delete the Data, DIDDocument, or URI field from an existing DID ledger entry, add the field as an empty string.
+      properties:
+        Data:
+          type: string
+          description: |
+            (Optional) The public attestations of identity credentials associated with the DID.
+        DIDDocument:
+          type: string
+          description: |
+            (Optional) The DID document associated with the DID.
+        URI:
+          type: string
+          description: |
+            (Optional) The Universal Resource Identifier associated with the DID.
+      x-custom-validation:
+        requireOneOf:
+          - fields:
+              - Data
+              - DIDDocument
+              - URI
+    DIDSetErrorCode:
+      $id: DIDSetErrorCode
+      type: string
+      enum:
+        - tecEMPTY_DID
+        - temEMPTY_DID
+      description: Enum representing possible error codes for DIDSet transactions.
+      x-enum-descriptions:
+        tecEMPTY_DID: The transaction will create an empty DID ledger entry. Check that your updates don't remove the Data, DIDDocument, and URI fields.
+        temEMPTY_DID: The transaction is malformed and missing any DID information. Include either the Data, DIDDocument, or URI fields.

@@ -9,7 +9,7 @@ components:
         Delete the DID ledger entry associated with the specified Account field.
 
     DIDDeleteErrorCode:
-      $id: OfferCreateErrorCode
+      $id: DIDDeleteErrorCode
       type: string
       enum:
         - tecNO_ENTRY
