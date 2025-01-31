@@ -1,0 +1,22 @@
+components:
+  schemas:
+    EscrowCancelTransaction:
+      $id: EscrowCancelTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Return escrowed XRP to the sender.
+      required:
+        - Owner
+        - OfferSequence
+      properties:
+        Owner:
+          type: string
+          description: |
+            Address of the source account that funded the escrow payment.
+        OfferSequence:
+          type: integer
+          format: uint32
+          description: |
+            Transaction sequence (or Ticket number) of EscrowCreate transaction that created the escrow to cancel.
