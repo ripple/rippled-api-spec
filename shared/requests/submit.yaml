@@ -88,6 +88,7 @@ components:
               DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+              EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -109,6 +110,7 @@ components:
             - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+            - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -145,6 +147,7 @@ components:
               DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+              EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -166,6 +169,7 @@ components:
             - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+            - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -261,6 +265,7 @@ components:
               DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+              EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -283,6 +288,7 @@ components:
             - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+            - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -314,6 +320,7 @@ components:
               DIDSet: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+              EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -336,6 +343,7 @@ components:
             - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+            - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:

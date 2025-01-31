@@ -1,0 +1,41 @@
+components:
+  schemas:
+    EscrowFinishTransaction:
+      $id: EscrowFinishTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Deliver XRP from an escrow (held payment) to the recipient.
+      required:
+        - Owner
+        - OfferSequence
+      properties:
+        Owner:
+          type: string
+          description: |
+            (Required) Address of the source account that funded the escrow.
+        OfferSequence:
+          type: integer
+          format: uint32
+          description: |
+            (Required) Transaction sequence of EscrowCreate transaction that created the escrow to finish.
+        Condition:
+          type: string
+          description: |
+            (Optional) Hex value matching the previously-supplied PREIMAGE-SHA-256 crypto-condition of the escrow.
+        CredentialIDs:
+          type: array
+          items:
+            type: string
+          description: |
+            (Optional) Set of Credentials to authorize a deposit made by this transaction. Each member of the
+            array must be the ledger entry ID of a Credential entry in the ledger. For details, see Credential IDs.
+        Fulfillment:
+          type: string
+          description: |
+            (Optional) Hex value of the PREIMAGE-SHA-256 crypto-condition fulfillment matching the escrow's Condition.
+      x-custom-validation:
+        mutualPresence:
+          - field1: Condition
+            field2: Fulfillment
