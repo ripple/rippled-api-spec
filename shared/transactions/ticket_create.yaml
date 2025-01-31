@@ -1,0 +1,32 @@
+components:
+  schemas:
+    TicketCreateTransaction:
+      $id: TicketCreateTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        A TicketCreate transaction sets aside one or more sequence numbers as Tickets.
+      required:
+        - TicketCount
+      properties:
+        TicketCount:
+          type: integer
+          format: uint32
+          description: |
+            How many Tickets to create. This must be a positive number and cannot cause the account to own
+            more than 250 Tickets after executing this transaction.
+          minimum: 1
+          maximum: 250
+    TicketCreateErrorCode:
+      $id: TicketCreateErrorCode
+      type: string
+      enum:
+        - temINVALID_COUNT
+        - tecDIR_FULL
+        - tecINSUFFICIENT_RESERVE
+      description: Enum representing possible error codes for TicketCreate transactions.
+      x-enum-descriptions:
+        temINVALID_COUNT: The TicketCount field is invalid. It must be an integer from 1 to 250.
+        tecDIR_FULL: This transaction would cause the account to own more than the limit of 250 Tickets at a time, or more than the maximum number of ledger objects in general.
+        tecINSUFFICIENT_RESERVE: The sending account does not have enough XRP to meet the owner reserve of all the requested Tickets.
