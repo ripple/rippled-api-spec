@@ -1,0 +1,75 @@
+components:
+  schemas:
+    MPTokenIssuanceCreateTransaction:
+      $id: MPTokenIssuanceCreateTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The MPTokenIssuanceCreate transaction creates an MPTokenIssuance object and adds it to the relevant
+        directory node of the creator account. This transaction is the only opportunity an issuer has to
+        specify any token fields that are defined as immutable (for example, MPT Flags).
+
+        If the transaction is successful, the newly created token is owned by the account (the creator
+        account) that executed the transaction.
+
+        Whenever your query returns an MPTokenIssuance transaction response, there will always be an
+        mpt_issuance_id field on the Transaction Metadata page.
+      required:
+        - TransactionType
+        - Flags
+      properties:
+        AssetScale:
+          type: integer
+          format: uint8
+          description: |
+            (Optional) An asset scale is the difference, in orders of magnitude, between a standard unit
+            and a corresponding fractional unit. More formally, the asset scale is a non-negative integer
+            (0, 1, 2, …) such that one standard unit equals 10^(-scale) of a corresponding fractional unit.
+            If the fractional unit equals the standard unit, then the asset scale is 0. Note that this value
+            is optional, and will default to 0 if not supplied.
+        TransferFee:
+          type: integer
+          format: uint16
+          description: |
+            (Optional) The value specifies the fee to be charged by the issuer for secondary sales of the Token,
+            if such sales are allowed. Valid values for this field are between 0 and 50,000 inclusive, allowing
+            transfer rates of between 0.000% and 50.000% in increments of 0.001. The field must not be present
+            if the tfMPTCanTransfer flag is not set. If it is, the transaction should fail and a fee should be claimed.
+          minimum: 0
+          maximum: 50000
+        MaximumAmount:
+          type: string
+          description: |
+            (Optional) The maximum asset amount of this token that can ever be issued, as a base-10 number encoded
+            as a string. The current default maximum limit is 9,223,372,036,854,775,807 (2^63-1). This limit may
+            increase in the future. If an upper limit is required, you must specify this field.
+        MPTokenMetadata:
+          type: string
+          pattern: '^[0-9A-Fa-f]*$'
+          description: |
+            Arbitrary metadata about this issuance, in hex format. The limit for this field is 1024 bytes.
+          minLength: 0
+    x-custom-validation:
+      requiredFlag:
+        - field: TransferFee
+          flag: tfMPTCanTransfer
+
+    MPTokenIssuanceCreateFlag:
+      $id: MPTokenIssuanceCreateFlag
+      type: string
+      enum:
+        - tfMPTCanLock: 0x00000002
+        - tfMPTRequireAuth: 0x00000004
+        - tfMPTCanEscrow: 0x00000008
+        - tfMPTCanTrade: 0x00000010
+        - tfMPTCanTransfer: 0x00000020
+        - tfMPTCanClawback: 0x00000040
+      description: Enum representing flags for MPTokenIssuanceCreate transactions.
+      x-enum-descriptions:
+        tfMPTCanLock: If set, indicates that the MPT can be locked both individually and globally. If not set, the MPT cannot be locked in any way.
+        tfMPTRequireAuth: If set, indicates that individual holders must be authorized. This enables issuers to limit who can hold their assets.
+        tfMPTCanEscrow: If set, indicates that individual holders can place their balances into an escrow.
+        tfMPTCanTrade: If set, indicates that individual holders can trade their balances using the XRP Ledger DEX.
+        tfMPTCanTransfer: If set, indicates that tokens can be transferred to other accounts that are not the issuer.
+        tfMPTCanClawback: If set, indicates that the issuer can use the Clawback transaction to claw back value from individual holders.
