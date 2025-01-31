@@ -92,6 +92,7 @@ components:
               Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
               DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
               TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+              MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -117,6 +118,7 @@ components:
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+            - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -157,6 +159,7 @@ components:
               Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
               DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
               TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+              MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -182,6 +185,7 @@ components:
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+            - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -281,6 +285,7 @@ components:
               Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
               DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
               TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+              MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -307,6 +312,7 @@ components:
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+            - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -342,6 +348,7 @@ components:
               Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
               DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
               TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+              MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -368,6 +375,7 @@ components:
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+            - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
