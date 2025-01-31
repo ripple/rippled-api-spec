@@ -89,6 +89,9 @@ components:
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
               EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+              Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+              DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+              TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -111,6 +114,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+            - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+            - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -148,6 +154,9 @@ components:
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
               EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+              Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+              DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+              TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -170,6 +179,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+            - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+            - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -266,6 +278,9 @@ components:
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
               EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+              Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+              DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+              TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -289,6 +304,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+            - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+            - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -321,6 +339,9 @@ components:
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
               EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+              Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+              DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+              TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -344,6 +365,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+            - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+            - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -366,6 +390,9 @@ components:
             - $ref: '../transactions/trust_set.yaml#/components/schemas/TrustSetErrorCode'
             - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteErrorCode'
             - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetErrorCode'
+            - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackErrorCode'
+            - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthErrorCode'
+            - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee

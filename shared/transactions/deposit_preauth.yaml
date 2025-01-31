@@ -1,0 +1,78 @@
+components:
+  schemas:
+    DepositPreauthTransaction:
+      $id: DepositPreauthTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        A DepositPreauth transaction grants preauthorization to deliver payments to your account. This is
+        only useful if you are using (or plan to use) Deposit Authorization.
+      properties:
+        Authorize:
+          type: string
+          description: |
+            (Optional) An account to preauthorize.
+        AuthorizeCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorizeCredentials'
+          description: |
+            (Optional) A set of credentials to authorize. (Requires the Credentials amendment.)
+        Unauthorize:
+          type: string
+          description: |
+            (Optional) An account whose preauthorization should be revoked.
+        UnauthorizeCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorizeCredentials'
+          description: |
+            (Optional) A set of credentials whose preauthorization should be revoked. (Requires the
+            Credentials amendment.)
+      x-custom-validation:
+        requireOneOf:
+          - fields:
+              - Authorize
+              - AuthorizeCredentials
+              - Unauthorize
+              - UnauthorizeCredentials
+            message: 'You must provide exactly one of Authorize, AuthorizeCredentials, Unauthorize, or UnauthorizeCredentials.'
+    AuthorizeCredentials:
+      $id: AuthorizeCredentials
+      type: object
+      description: |
+        Represents a credential used for preauthorization.
+      required:
+        - Issuer
+        - CredentialType
+      properties:
+        Issuer:
+          type: string
+          description: |
+            (Required) The issuer of the credential.
+        CredentialType:
+          type: string
+          format: hexadecimal
+          description: |
+            (Required) The credential type of the credential.
+    DepositPreauthErrorCode:
+      $id: DepositPreauthErrorCode
+      type: string
+      enum:
+        - tecDUPLICATE
+        - tecINSUFFICIENT_RESERVE
+        - tecNO_ENTRY
+        - tecNO_ISSUER
+        - tecNO_TARGET
+        - temCANNOT_PREAUTH_SELF
+        - temDISABLED
+      description: Enum representing possible error codes for DepositPreauth transactions.
+      x-enum-descriptions:
+        tecDUPLICATE: The transaction would create a preauthorization that already exists.
+        tecINSUFFICIENT_RESERVE: The sender would not meet the reserve requirement after adding another entry to the ledger. (A DepositPreauth entry counts as one item towards the authorizer's owner reserve.)
+        tecNO_ENTRY: The transaction tried to revoke a preauthorization that does not exist in the ledger.
+        tecNO_ISSUER: One or more specified credential issuers does not exist in the ledger.
+        tecNO_TARGET: The transaction tried to authorize an account that is not a funded account in the ledger.
+        temCANNOT_PREAUTH_SELF: The address in the Authorize field is the sender of the transaction. You cannot preauthorize yourself.
+        temDISABLED: A required amendment is not enabled.
