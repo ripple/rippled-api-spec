@@ -1,0 +1,17 @@
+components:
+  schemas:
+    DIDDeleteTransaction:
+      $id: DIDDeleteTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Delete the DID ledger entry associated with the specified Account field.
+
+    DIDDeleteErrorCode:
+      $id: DIDDeleteErrorCode
+      type: string
+      enum:
+        - tecNO_ENTRY
+      x-enum-descriptions:
+        tecNO_ENTRY: The account doesn't have a DID.
