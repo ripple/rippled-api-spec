@@ -95,6 +95,7 @@ components:
               MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+              MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -123,6 +124,7 @@ components:
             - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+            - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -166,6 +168,7 @@ components:
               MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+              MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -194,6 +197,7 @@ components:
             - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+            - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -296,6 +300,7 @@ components:
               MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+              MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -325,6 +330,7 @@ components:
             - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+            - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -363,6 +369,7 @@ components:
               MPTokenAuthorize: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+              MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -392,6 +399,7 @@ components:
             - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+            - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:

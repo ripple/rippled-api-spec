@@ -1,0 +1,36 @@
+components:
+  schemas:
+    MPTokenIssuanceSetTransaction:
+      $id: MPTokenIssuanceSetTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Use this transaction to update a mutable property for a Multi-purpose Token.
+      required:
+        - MPTokenIssuanceID
+      properties:
+        MPTokenIssuanceID:
+          type: string
+          format: uint192
+          description: |
+            The MPTokenIssuance identifier.
+        Holder:
+          type: string
+          description: |
+            (Optional) XRPL Address of an individual token holder balance to lock/unlock. If omitted, this
+            transaction applies to all any accounts holding MPTs.
+      x-custom-validation:
+        flagConflict:
+          - flag1: tfMPTLock
+            flag2: tfMPTUnlock
+    MPTokenIssuanceSetFlag:
+      $id: MPTokenIssuanceSetFlag
+      type: string
+      enum:
+        - tfMPTLock: 0x00000001
+        - tfMPTUnlock: 0x00000002
+      description: Enum representing flags for MPTokenIssuanceSet transactions.
+      x-enum-descriptions:
+        tfMPTLock: If set, indicates that all MPT balances for this asset should be locked.
+        tfMPTUnlock: If set, indicates that all MPT balances for this asset should be unlocked.
