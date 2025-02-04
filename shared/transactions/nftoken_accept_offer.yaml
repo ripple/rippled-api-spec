@@ -1,0 +1,69 @@
+components:
+  schemas:
+    NFTokenAcceptOfferTransaction:
+      $id: NFTokenAcceptOfferTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The NFTokenAcceptOffer transaction is used to accept offers to buy or sell an NFToken. It can either:
+
+        - Allow one offer to be accepted. This is called direct mode.
+        - Allow two distinct offers, one offering to buy a given NFToken and the other offering to sell the same NFToken, 
+          to be accepted in an atomic fashion. This is called brokered mode.
+      properties:
+        NFTokenSellOffer:
+          type: string
+          description: |
+            (Optional) Identifies the NFTokenOffer that offers to sell the NFToken.
+        NFTokenBuyOffer:
+          type: string
+          description: |
+            (Optional) Identifies the NFTokenOffer that offers to buy the NFToken.
+        NFTokenBrokerFee:
+          type: object
+          description: |
+            (Optional) This field is only valid in brokered mode, and specifies the amount that the broker keeps
+            as part of their fee for bringing the two offers together; the remaining amount is sent to the seller
+            of the NFToken being bought. If specified, the fee must be such that, before applying the transfer fee,
+            the amount that the seller would receive is at least as much as the amount indicated in the sell offer.
+      x-custom-validation:
+        conditionalRequired:
+          - field: NFTokenBrokerFee
+            requires:
+              - NFTokenSellOffer
+              - NFTokenBuyOffer
+            message: 'Must be set if using brokered mode.'
+        requireOneOf:
+          - fields:
+              - NFTokenSellOffer
+              - NFTokenBuyOffer
+        greaterThan:
+          - field: NFTokenBrokerFee
+            value: 0
+            message: 'Must be greater than 0; omit if there is no broker fee.'
+    NFTokenAcceptOfferErrorCode:
+      $id: NFTokenAcceptOfferErrorCode
+      type: string
+      enum:
+        - temDISABLED
+        - temMALFORMED
+        - tecCANT_ACCEPT_OWN_NFTOKEN_OFFER
+        - tecEXPIRED
+        - tecINSUFFICIENT_FUNDS
+        - tecINSUFFICIENT_PAYMENT
+        - tecOBJECT_NOT_FOUND
+        - tecNFTOKEN_BUY_SELL_MISMATCH
+        - tecNFTOKEN_OFFER_TYPE_MISMATCH
+        - tecNO_PERMISSION
+      x-enum-descriptions:
+        temDISABLED: The NonFungibleTokensV1 amendment is not enabled.
+        temMALFORMED: The transaction was not validly formatted. For example, it specified neither NFTokenSellOffer nor NFTokenBuyOffer, or it specified a negative NFTokenBrokerFee.
+        tecCANT_ACCEPT_OWN_NFTOKEN_OFFER: The buyer and seller are the same account.
+        tecEXPIRED: An offer specified in the transaction has already expired.
+        tecINSUFFICIENT_FUNDS: The buyer does not have the full amount they are offering. If the buy amount is specified in XRP, this could be because of the reserve requirement. If the buy amount is a token, it could be because the token is frozen.
+        tecINSUFFICIENT_PAYMENT: In brokered mode, the buy amount offered is not high enough to pay the BrokerFee and the sell cost of the NFToken.
+        tecOBJECT_NOT_FOUND: One of the offers specified in the transaction does not exist in the ledger.
+        tecNFTOKEN_BUY_SELL_MISMATCH: In brokered mode, the two offers are not a valid match. For example, the seller is asking more than the buyer is offering, the buy and sell offer are denominated in different assets, or the seller specified a destination that is not the buyer or the broker.
+        tecNFTOKEN_OFFER_TYPE_MISMATCH: The object identified by the NFTokenBuyOffer is not actually a buy offer, or the object identified by the NFTokenSellOffer is not actually a sell offer.
+        tecNO_PERMISSION: The seller does not own the NFToken being sold; or the matching offer specifies a different Destination account than the account accepting the offer.
