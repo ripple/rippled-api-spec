@@ -1,0 +1,108 @@
+components:
+  schemas:
+    NFTokenMintTransaction:
+      $id: NFTokenMintTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The NFTokenMint transaction creates a non-fungible token and adds it to the relevant NFTokenPage
+        object of the NFTokenMinter as an NFToken object. This transaction is the only opportunity the
+        NFTokenMinter has to specify any token fields that are defined as immutable (for example, the TokenFlags).
+      required:
+        - NFTokenTaxon
+      properties:
+        NFTokenTaxon:
+          type: integer
+          format: uint32
+          description: |
+            An arbitrary taxon, or shared identifier, for a series or collection of related NFTs. To mint a
+            series of NFTs, give them all the same taxon.
+        Issuer:
+          type: string
+          description: |
+            (Optional) The issuer of the token, if the sender of the account is issuing it on behalf of another
+            account. This field must be omitted if the account sending the transaction is the issuer of the NFToken.
+            If provided, the issuer's AccountRoot object must have the NFTokenMinter field set to the sender of this
+            transaction (this transaction's Account field).
+        TransferFee:
+          type: integer
+          format: uint16
+          description: |
+            (Optional) The value specifies the fee charged by the issuer for secondary sales of the NFToken,
+            if such sales are allowed. Valid values for this field are between 0 and 50000 inclusive, allowing
+            transfer rates of between 0.00% and 50.00% in increments of 0.001. If this field is provided, the
+            transaction MUST have the tfTransferable flag enabled.
+          maximum: 50000
+        URI:
+          type: string
+          description: |
+            (Optional) Up to 256 bytes of arbitrary data. In JSON, this should be encoded as a string of hexadecimal.
+            This is intended to be a URI that points to the data or metadata associated with the NFT.
+          maxLength: 512
+        Amount:
+          type: object
+          description: |
+            (Optional) Indicates the amount expected or offered for the corresponding NFToken. The amount must be
+            non-zero, except where the asset is XRP; then, it is legal to specify an amount of zero.
+        Expiration:
+          type: integer
+          format: uint32
+          description: |
+            (Optional) Time after which the offer is no longer active, in seconds since the Ripple Epoch.
+            Results in an error if the Amount field is not specified.
+        Destination:
+          type: string
+          description: |
+            (Optional) If present, indicates that this offer may only be accepted by the specified account.
+            Attempts by other accounts to accept this offer MUST fail. Results in an error if the Amount field
+            is not specified.
+        Flags:
+          type: integer
+          format: uint32
+          description: |
+            Flags modifying the behavior of the transaction. See NFTokenMintFlag for details.
+      x-custom-validation:
+        notEqual:
+          - field: Issuer
+            toField: Account
+            message: 'Must not be the same as the account.'
+        requiredFlag:
+          - field: TransferFee
+            flag: tfTransferable
+    NFTokenMintFlag:
+      $id: NFTokenMintFlag
+      type: string
+      enum:
+        - tfBurnable: 0x00000001
+        - tfOnlyXRP: 0x00000002
+        - tfTrustLine: 0x00000004
+        - tfTransferable: 0x00000008
+      description: Enum representing flags for NFTokenMint transactions.
+      x-enum-descriptions:
+        tfBurnable: Allow the issuer (or an entity authorized by the issuer) to destroy the minted NFToken. (The NFToken's owner can always do so.)
+        tfOnlyXRP: The minted NFToken can only be bought or sold for XRP.
+        tfTrustLine: DEPRECATED Automatically create trust lines from the issuer to hold transfer fees received from transferring the minted NFToken. The fixRemoveNFTokenAutoTrustLine amendment makes it invalid to set this flag.
+        tfTransferable: The minted NFToken can be transferred to others. If this flag is not enabled, the token can still be transferred from or to the issuer, but a transfer to the issuer must be made based on a buy offer from the issuer and not a sell offer from the NFT holder.
+    NFTokenMintErrorCode:
+      $id: NFTokenMintErrorCode
+      type: string
+      enum:
+        - temDISABLED
+        - temBAD_NFTOKEN_TRANSFER_FEE
+        - temINVALID_FLAG
+        - temMALFORMED
+        - tecNO_ISSUER
+        - tecNO_PERMISSION
+        - tecINSUFFICIENT_RESERVE
+        - tecMAX_SEQUENCE_REACHED
+      description: Enum representing possible error codes for NFTokenMint transactions.
+      x-enum-descriptions:
+        temDISABLED: The NonFungibleTokensV1 amendment is not enabled.
+        temBAD_NFTOKEN_TRANSFER_FEE: The TransferFee is not within the acceptable range.
+        temINVALID_FLAG: The Flags value has bits enabled that are not allowed or valid flags. If the fixRemoveNFTokenAutoTrustLine amendment is enabled, the tfTrustLine flag causes this error.
+        temMALFORMED: The transaction was not validly specified. For example, the URI field is longer than 256 bytes.
+        tecNO_ISSUER: The Issuer refers to an account that does not exist in the ledger.
+        tecNO_PERMISSION: The account referenced by the Issuer field has not authorized this transaction's sender (using the NFTokenMinter setting) to mint on their behalf.
+        tecINSUFFICIENT_RESERVE: The owner would not meet the updated reserve requirement after minting the token.
+        tecMAX_SEQUENCE_REACHED: The Issuer's MintedNFTokens field is already at its maximum. This is only possible if 2^32-1 NFTokens have been minted in total by the issuer or on their behalf.

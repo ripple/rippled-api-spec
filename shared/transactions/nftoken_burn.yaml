@@ -1,0 +1,41 @@
+components:
+  schemas:
+    NFTokenBurnTransaction:
+      $id: NFTokenBurnTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The NFTokenBurn transaction is used to remove a NFToken object from the NFTokenPage in which it is
+        being held, effectively removing the token from the ledger (burning it).
+
+        The sender of this transaction must be the owner of the NFToken to burn; or, if the NFToken has the
+        lsfBurnable flag enabled, can be the issuer or the issuer's authorized NFTokenMinter account instead.
+
+        If this operation succeeds, the corresponding NFToken is removed. If this operation empties the
+        NFTokenPage holding the NFToken or results in consolidation, thus removing a NFTokenPage, the owner’s
+        reserve requirement is reduced by one.
+      required:
+        - NFTokenID
+      properties:
+        NFTokenID:
+          type: string
+          description: |
+            The NFToken to be removed by this transaction.
+        Owner:
+          type: string
+          description: |
+            (Optional) The owner of the NFToken to burn. Only used if that owner is different than the account
+            sending this transaction. The issuer or authorized minter can use this field to burn NFTs that have
+            the lsfBurnable flag enabled.
+    NFTokenBurnErrorCode:
+      $id: NFTokenBurnErrorCode
+      type: string
+      enum:
+        - temDISABLED
+        - tecNO_ENTRY
+        - tecNO_PERMISSION
+      x-enum-descriptions:
+        temDISABLED: The NonFungibleTokensV1 amendment is not enabled.
+        tecNO_ENTRY: The specified TokenID was not found.
+        tecNO_PERMISSION: The account does not have permission to burn the token.

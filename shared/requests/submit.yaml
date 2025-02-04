@@ -96,6 +96,11 @@ components:
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
               MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+              NFTokenAcceptOffer: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+              NFTokenBurn: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+              NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+              NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+              NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -125,6 +130,11 @@ components:
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
             - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+            - $ref: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+            - $ref: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+            - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+            - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+            - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -169,6 +179,11 @@ components:
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
               MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+              NFTokenAcceptOffer: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+              NFTokenBurn: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+              NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+              NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+              NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -198,6 +213,11 @@ components:
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
             - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+            - $ref: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+            - $ref: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+            - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+            - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+            - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -301,6 +321,11 @@ components:
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
               MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+              NFTokenAcceptOffer: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+              NFTokenBurn: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+              NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+              NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+              NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -331,6 +356,11 @@ components:
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
             - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+            - $ref: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+            - $ref: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+            - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+            - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+            - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -370,6 +400,11 @@ components:
               MPTokenIssuanceCreate: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
               MPTokenIssuanceDestroy: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
               MPTokenIssuanceSet: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+              NFTokenAcceptOffer: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+              NFTokenBurn: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+              NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+              NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+              NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -400,6 +435,11 @@ components:
             - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
             - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
             - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+            - $ref: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+            - $ref: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+            - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+            - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+            - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -425,6 +465,11 @@ components:
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackErrorCode'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthErrorCode'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateErrorCode'
+            - $ref: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferErrorCode'
+            - $ref: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnErrorCode'
+            - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferErrorCode'
+            - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferErrorCode'
+            - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee
