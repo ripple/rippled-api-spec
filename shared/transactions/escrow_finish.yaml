@@ -39,3 +39,5 @@ components:
         mutualPresence:
           - field1: Condition
             field2: Fulfillment
+        validCredentials:
+          field: CredentialIDs

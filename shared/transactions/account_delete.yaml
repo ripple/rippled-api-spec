@@ -30,7 +30,9 @@ components:
             for the recipient of the deleted account's leftover XRP.
       required:
         - Destination
-
+      x-custom-validation:
+        validCredentials:
+          field: CredentialIDs
     AccountDeleteErrorCode:
       $id: AccountDeleteErrorCode
       type: string
