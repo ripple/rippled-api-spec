@@ -63,10 +63,8 @@ components:
         notEqual:
           - field: Destination
             toField: Account
-            message: 'Must not be equal to the account.'
           - field: Owner
             toField: Account
-            message: 'Must not be equal to the account.'
     NFTokenCreateOfferFlag:
       $id: NFTokenCreateOfferFlag
       type: string
