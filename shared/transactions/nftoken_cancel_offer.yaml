@@ -1,0 +1,32 @@
+components:
+  schemas:
+    NFTokenCancelOfferTransaction:
+      $id: NFTokenCancelOfferTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The NFTokenCancelOffer transaction can be used to cancel existing token offers created using NFTokenCreateOffer.
+      required:
+        - NFTokenOffers
+      properties:
+        NFTokenOffers:
+          type: array
+          items:
+            type: string
+          description: |
+            An array of IDs of the NFTokenOffer objects to cancel (not the IDs of NFToken objects, but the IDs
+            of the NFTokenOffer objects). Each entry must be a different object ID of an NFTokenOffer object;
+            the transaction is invalid if the array contains duplicate entries.
+          minLength: 1
+    NFTokenCancelOfferErrorCode:
+      $id: NFTokenCancelOfferErrorCode
+      type: string
+      enum:
+        - temDISABLED
+        - temMALFORMED
+        - tecNO_PERMISSION
+      x-enum-descriptions:
+        temDISABLED: The NonFungibleTokensV1 amendment is not enabled.
+        temMALFORMED: The transaction was not validly formatted. For example, the NFTokenOffers array was empty or contained more than the maximum number of offers that can be canceled at one time.
+        tecNO_PERMISSION: At least one of the IDs in the NFTokenOffers field refers to an object that cannot be canceled. For example, the sender of this transaction is not the owner or Destination of the offer, or the object was not an NFTokenOffer type object.
