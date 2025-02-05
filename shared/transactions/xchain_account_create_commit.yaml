@@ -1,0 +1,32 @@
+components:
+  schemas:
+    XChainAccountCreateCommitTransaction:
+      $id: XChainAccountCreateCommitTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        This transaction can only be used for XRP-XRP bridges.
+
+        The XChainAccountCreateCommit transaction creates a new account for a witness server to submit transactions on an issuing chain.
+      required:
+        - Amount
+        - Destination
+        - XChainBridge
+      properties:
+        Amount:
+          type: string
+          description: |
+            The amount, in XRP, to use for account creation. This must be greater than or equal to
+            the MinAccountCreateAmount specified in the Bridge ledger object.
+        Destination:
+          type: string
+          description: |
+            The destination account on the destination chain.
+        SignatureReward:
+          type: string
+          description: |
+            (Optional) The amount, in XRP, to be used to reward the witness servers for providing signatures.
+            This must match the amount on the Bridge ledger object.
+        XChainBridge:
+          $ref: '../base.yaml#/components/schemas/XChainBridge'
