@@ -1,0 +1,64 @@
+components:
+  schemas:
+    PaymentChannelCreateTransaction:
+      $id: PaymentChannelCreateTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Create a payment channel and fund it with XRP. The address sending this transaction becomes
+        the "source address" of the payment channel.
+      required:
+        - Amount
+        - Destination
+        - SettleDelay
+        - PublicKey
+      properties:
+        Amount:
+          type: string
+          description: |
+            Amount of XRP, in drops, to deduct from the sender's balance and set aside in this channel.
+            While the channel is open, the XRP can only go to the Destination address. When the channel closes,
+            any unclaimed XRP is returned to the source address's balance.
+        Destination:
+          type: string
+          description: |
+            Address to receive XRP claims against this channel. This is also known as the "destination address"
+            for the channel. Cannot be the same as the sender (Account).
+        SettleDelay:
+          type: integer
+          format: uint32
+          description: |
+            Amount of time the source address must wait before closing the channel if it has unclaimed XRP.
+        PublicKey:
+          type: string
+          description: |
+            The 33-byte public key of the key pair the source will use to sign claims against this channel,
+            in hexadecimal. This can be any secp256k1 or Ed25519 public key.
+        CancelAfter:
+          type: integer
+          format: uint32
+          description: |
+            (Optional) The time, in seconds since the Ripple Epoch, when this channel expires. Any transaction
+            that would modify the channel after this time closes the channel without otherwise affecting it.
+            This value is immutable; the channel can be closed earlier than this time but cannot remain open
+            after this time.
+        DestinationTag:
+          type: integer
+          format: uint32
+          description: |
+            (Optional) Arbitrary tag to further specify the destination for this payment channel, such as a
+            hosted recipient at the destination address.
+      x-custom-validation:
+        notEqual:
+          - field: Destination
+            toField: Account
+            message: 'Destination cannot be the same as the sender.'
+    PaymentChannelCreateErrorCode:
+      $id: PaymentChannelCreateErrorCode
+      type: string
+      enum:
+        - tecNO_PERMISSION
+      description: Enum representing possible error codes for PaymentChannelCreate transactions.
+      x-enum-descriptions:
+        tecNO_PERMISSION: The Destination account is blocking incoming payment channels.

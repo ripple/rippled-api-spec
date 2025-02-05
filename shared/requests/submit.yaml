@@ -101,6 +101,9 @@ components:
               NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
               NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
               NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+              PaymentChannelClaim: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+              PaymentChannelCreate: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+              PaymentChannelFund: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -135,6 +138,9 @@ components:
             - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
             - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
             - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+            - $ref: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+            - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+            - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -184,6 +190,9 @@ components:
               NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
               NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
               NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+              PaymentChannelClaim: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+              PaymentChannelCreate: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+              PaymentChannelFund: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -218,6 +227,9 @@ components:
             - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
             - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
             - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+            - $ref: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+            - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+            - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -326,6 +338,9 @@ components:
               NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
               NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
               NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+              PaymentChannelClaim: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+              PaymentChannelCreate: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+              PaymentChannelFund: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -361,6 +376,9 @@ components:
             - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
             - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
             - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+            - $ref: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+            - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+            - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -405,6 +423,9 @@ components:
               NFTokenCancelOffer: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
               NFTokenCreateOffer: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
               NFTokenMint: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+              PaymentChannelClaim: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+              PaymentChannelCreate: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+              PaymentChannelFund: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -440,6 +461,9 @@ components:
             - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
             - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
             - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintTransaction'
+            - $ref: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+            - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+            - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -470,6 +494,8 @@ components:
             - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferErrorCode'
             - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferErrorCode'
             - $ref: '../transactions/nftoken_mint.yaml#/components/schemas/NFTokenMintErrorCode'
+            - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateErrorCode'
+            - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee
