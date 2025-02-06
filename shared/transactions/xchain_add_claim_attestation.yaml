@@ -1,0 +1,65 @@
+components:
+  schemas:
+    XChainAddClaimAttestationTransaction:
+      $id: XChainAddClaimAttestationTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The XChainAddClaimAttestation transaction provides proof from a witness server, attesting to an XChainCommit transaction.
+
+        The signature must be from one of the keys on the door's signer list at the time the signature was provided.
+        However, if the signature list changes between the time the signature was submitted and the quorum is reached,
+        the new signature set is used and some of the currently collected signatures may be removed.
+
+        Any account can submit signatures.
+      required:
+        - Amount
+        - AttestationRewardAccount
+        - AttestationSignerAccount
+        - OtherChainSource
+        - PublicKey
+        - Signature
+        - WasLockingChainSend
+        - XChainBridge
+        - XChainClaimID
+      properties:
+        Amount:
+          type: string
+          description: |
+            The amount committed by the XChainCommit transaction on the source chain.
+        AttestationRewardAccount:
+          type: string
+          description: |
+            The account that should receive this signer's share of the SignatureReward.
+        AttestationSignerAccount:
+          type: string
+          description: |
+            The account on the door account's signer list that is signing the transaction.
+        Destination:
+          type: string
+          description: |
+            (Optional) The destination account for the funds on the destination chain (taken from the XChainCommit transaction).
+        OtherChainSource:
+          type: string
+          description: |
+            The account on the source chain that submitted the XChainCommit transaction that triggered the event associated with the attestation.
+        PublicKey:
+          type: string
+          description: |
+            The public key used to verify the attestation signature.
+        Signature:
+          type: string
+          description: |
+            The signature attesting to the event on the other chain.
+        WasLockingChainSend:
+          type: integer
+          format: uint8
+          description: |
+            A boolean representing the chain where the event occurred.
+        XChainBridge:
+          $ref: '../base.yaml#/components/schemas/XChainBridge'
+        XChainClaimID:
+          type: string
+          description: |
+            The XChainClaimID associated with the transfer, which was included in the XChainCommit transaction.
