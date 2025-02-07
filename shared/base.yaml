@@ -218,8 +218,18 @@ components:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
 
-    CurrencyWithoutAmount:
-      $id: CurrencyWithoutAmount
+    Currency:
+      $id: Currency
+      description: |
+        The XRP Ledger has two kinds of money: XRP, and issued currencies. Both types have high precision, although their
+        formats are different.
+      oneOf:
+        - type: string
+          description: 'XRP represented as a string.'
+        - $ref: '#/components/schemas/IssuedCurrency'
+
+    IssuedCurrency:
+      $id: IssuedCurrency
       type: object
       properties:
         currency:
@@ -228,3 +238,33 @@ components:
         issuer:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
+
+    XChainBridge:
+      $id: XChainBridge
+      type: object
+      description: |
+        The bridge to create accounts for.
+      required:
+        - IssuingChainDoor
+        - IssuingChainIssue
+        - LockingChainDoor
+        - LockingChainIssue
+      properties:
+        IssuingChainDoor:
+          type: string
+          description: |
+            The door account on the issuing chain. For an XRP-XRP bridge, this must be the genesis account
+            (the account that is created when the network is first started, which contains all of the XRP).
+        IssuingChainIssue:
+          $ref: '#/components/schemas/Currency'
+          description: |
+            The asset that is minted and burned on the issuing chain. For an IOU-IOU bridge, the issuer of
+            the asset must be the door account on the issuing chain, to avoid supply issues.
+        LockingChainDoor:
+          type: string
+          description: |
+            The door account on the locking chain.
+        LockingChainIssue:
+          $ref: '#/components/schemas/Currency'
+          description: |
+            The asset that is locked and unlocked on the locking chain.

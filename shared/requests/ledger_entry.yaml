@@ -66,9 +66,9 @@ components:
             - type: object
               properties:
                 asset:
-                  $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+                  $ref: '../base.yaml#/components/schemas/IssuedCurrency'
                 asset2:
-                  $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+                  $ref: '../base.yaml#/components/schemas/IssuedCurrency'
               required:
                 - asset
                 - asset2
@@ -86,11 +86,11 @@ components:
             IssuingChainDoor:
               type: string
             IssuingChainIssue:
-              $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+              $ref: '../base.yaml#/components/schemas/IssuedCurrency'
             LockingChainDoor:
               type: string
             LockingChainIssue:
-              $ref: '../base.yaml#/components/schemas/CurrencyWithoutAmount'
+              $ref: '../base.yaml#/components/schemas/IssuedCurrency'
           required:
             - IssuingChainDoor
             - IssuingChainIssue
