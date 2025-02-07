@@ -22,7 +22,7 @@ components:
         - XChainClaimID
       properties:
         Amount:
-          type: string
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The amount to claim on the destination chain. This must match the amount attested to on the attestations
             associated with this XChainClaimID.

@@ -1,0 +1,33 @@
+components:
+  schemas:
+    XChainCommitTransaction:
+      $id: XChainCommitTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The XChainCommit is the second step in a cross-chain transfer. It puts assets into trust on the locking chain so that
+        they can be wrapped on the issuing chain, or burns wrapped assets on the issuing chain so that they can be returned on the locking chain.
+      required:
+        - Amount
+        - XChainBridge
+        - XChainClaimID
+      properties:
+        Amount:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: |
+            The asset to commit, and the quantity. This must match the door account's LockingChainIssue (if on the locking chain)
+            or the door account's IssuingChainIssue (if on the issuing chain).
+        OtherChainDestination:
+          type: string
+          description: |
+            (Optional) The destination account on the destination chain. If this is not specified, the account that submitted
+            the XChainCreateClaimID transaction on the destination chain will need to submit a XChainClaim transaction to claim the funds.
+        XChainBridge:
+          $ref: '../base.yaml#/components/schemas/XChainBridge'
+        XChainClaimID:
+          type: string
+          description: |
+            The unique integer ID for a cross-chain transfer. This must be acquired on the destination chain (via a XChainCreateClaimID
+            transaction) and checked from a validated ledger before submitting this transaction. If an incorrect sequence number is
+            specified, the funds will be lost.
