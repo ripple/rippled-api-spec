@@ -15,8 +15,6 @@ components:
         - Flags
         - XChainBridge
       properties:
-        Flags:
-          $ref: '#components/schemas/XChainModifyBridgeFlag'
         MinAccountCreateAmount:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
