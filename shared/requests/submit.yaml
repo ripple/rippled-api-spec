@@ -109,6 +109,7 @@ components:
               XChainAddClaimAttestation: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
               XChainClaim: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
               XChainCommit: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+              XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -151,6 +152,7 @@ components:
             - $ref: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
             - $ref: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
             - $ref: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+            - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -208,6 +210,7 @@ components:
               XChainAddClaimAttestation: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
               XChainClaim: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
               XChainCommit: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+              XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -250,6 +253,7 @@ components:
             - $ref: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
             - $ref: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
             - $ref: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+            - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -366,6 +370,7 @@ components:
               XChainAddClaimAttestation: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
               XChainClaim: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
               XChainCommit: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+              XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
@@ -409,6 +414,7 @@ components:
             - $ref: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
             - $ref: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
             - $ref: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+            - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -461,6 +467,7 @@ components:
               XChainAddClaimAttestation: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
               XChainClaim: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
               XChainCommit: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+              XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV2'
@@ -504,6 +511,7 @@ components:
             - $ref: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
             - $ref: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
             - $ref: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+            - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
