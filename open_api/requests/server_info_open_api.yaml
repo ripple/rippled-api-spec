@@ -1,0 +1,37 @@
+components:
+  schemas:
+    ServerInfoRequest:
+      type: object
+      description: |
+        The server_info command asks the server for a human-readable version of various information about the rippled server being queried.
+      properties:
+        method:
+          type: string
+          enum:
+            - server_info
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoRequest'
+      required:
+        - method
+      example:
+        method: 'server_info'
+        params:
+          - counters: true
+
+    ServerInfoResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoSuccessResponse'
+              error: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoSuccessResponse'
+            - $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoErrorResponse'
+      required:
+        - result
