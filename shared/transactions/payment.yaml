@@ -24,6 +24,7 @@ components:
         InvoiceID:
           type: string
           description: '(Optional) Arbitrary 256-bit hash representing a specific reason or identifier for this payment.'
+          maxLength: 256
         Paths:
           type: array
           items:
