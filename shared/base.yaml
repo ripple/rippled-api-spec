@@ -8,6 +8,7 @@ components:
         - account_info
         - submit
         - account_lines
+        - server_info
 
     ResponseWarning:
       $id: ResponseWarning

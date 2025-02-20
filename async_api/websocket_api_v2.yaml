@@ -68,6 +68,11 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
+          - name: ServerInfoRequest
+            messageId: ServerInfoRequest
+            contentType: application/json
+            payload:
+              $ref: './requests/server_info_async_api.yaml#/components/schemas/ServerInfoRequest'
           # TODO: Add additional request types for individual requests here
     publish:
       operationId: publishToRoot
@@ -93,4 +98,9 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
+          - name: ServerInfoResponse
+            messageId: ServerInfoResponse
+            contentType: application/json
+            payload:
+              $ref: './requests/server_info_async_api.yaml#/components/schemas/ServerInfoResponse'
           # TODO: Add additional response types for individual requests here
