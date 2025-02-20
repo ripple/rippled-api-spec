@@ -8,13 +8,319 @@ components:
           description: |
             If true, return metrics about the job queue, ledger store, and API method activity. The default is false.
 
+    PortDescriptor:
+      type: object
+      properties:
+        port:
+          type: string
+          description: >
+            A port number where the server is listening.
+        protocol:
+          type: array
+          description: >
+            A list of protocols being served on this port. 
+            Valid protocols include http or https for JSON-RPC, ws, ws2, wss, wss2 for WebSocket, grpc for [gRPC](https://xrpl.org/docs/infrastructure/configuration/configure-grpc),
+            and peer for the [XRP Ledger Peer Protocol](https://xrpl.org/docs/concepts/networks-and-servers/peer-protocol).
+          items:
+            type: string
+
+    ETLSource:
+      type: object
+      properties:
+        connected:
+          type: boolean
+          description: >
+            If true, the reporting mode server is connected to this P2P mode server. If false, the server is not connected.
+            This could be due to misconfiguration, a network outage, or it could mean that the P2P mode server is down.
+        grpc_port:
+          type: string
+          description: >
+            The port number on the P2P mode server where this reporting mode server is configured to connect and retrieve ledger data via gRPC.
+        ip:
+          type: string
+          description: >
+            The IP address (IPv4 or IPv6) of the P2P mode server.
+        last_message_arrival_time:
+          type: string
+          description: >
+            An ISO 8601 timestamp indicating the most recent time the reporting mode server received a message from this P2P server.
+        validated_ledgers_range:
+          type: string
+          description: >
+            The range of validated ledger versions this P2P mode server reports that it has available, in the same format as complete_ledgers.
+        websocket_port:
+          type: string
+          description: >
+            The port number on the P2P server where this reporting mode server is configured to forward WebSocket requests that cannot be served directly from reporting mode.
+
+    Reporting:
+      type: object
+      description: >
+        (Reporting mode servers only) Information about this server's reporting-mode specific configurations.
+      properties:
+        etl_sources:
+          type: array
+          description: >
+            (Reporting mode servers only) A list of P2P-mode servers this reporting mode is retrieving data from.
+          items:
+            $ref: '#/components/schemas/ETLSource'
+        is_writer:
+          type: boolean
+          description: >
+            (Reporting mode servers only) If true, this server is writing to the external database with ledger data.
+            If false, it is not currently writing, possibly because another reporting mode server is currently populating a shared database, or because it's configured as read-only.
+        last_publish_time:
+          type: string
+          description: >
+            (Reporting mode servers only) An ISO 8601 timestamp indicating when this server last published a validated ledger to its
+            [subscription streams](https://xrpl.org/docs/references/http-websocket-apis/public-api-methods/subscription-methods/subscribe).
+
+    StateAccountingInfo:
+      type: object
+      properties:
+        duration_us:
+          type: string
+          description: >
+            The number of microseconds the server has spent in this state. (This is updated whenever the server transitions into another state.)
+        transitions:
+          type: string
+          description: The number of times the server has changed into this state.
+
+    ValidatedLedger:
+      type: object
+      properties:
+        age:
+          type: number
+          description: The time since the ledger was closed, in seconds.
+        base_fee_xrp:
+          type: number
+          description: Base fee, in XRP. This may be represented in scientific notation such as 1e-05 for 0.00001.
+        hash:
+          type: string
+          format: hash256
+          description: Unique hash for the ledger, as hexadecimal.
+        reserve_base_xrp:
+          type: number
+          description: Minimum amount of XRP (not drops) necessary for every account to keep in reserve
+        reserve_inc_xrp:
+          type: number
+          description: Amount of XRP (not drops) added to the account reserve for each object an account owns in the ledger.
+        seq:
+          type: number
+          description: The [ledger index](https://xrpl.org/docs/references/protocol/data-types/basic-data-types#ledger-index) of the latest validated ledger.
+
+    JobQueueMetrics:
+      type: object
+      properties:
+        finished:
+          type: string
+        queued:
+          type: string
+        queued_duration_us:
+          type: string
+        running_duration_us:
+          type: string
+        started:
+          type: string
+
+    RPCMetrics:
+      type: object
+      properties:
+        duration_us:
+          type: string
+        errored:
+          type: string
+        finished:
+          type: string
+        started:
+          type: string
+
+    JobQueue:
+      type: object
+      properties:
+        RPC:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        acceptLedger:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        advanceLedger:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        batch:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        clientConsensus:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        clientFeeChange:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        clientRPC:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        clientWebsocket:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        clusterReport:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        fetchTxnData:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        heartbeat:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        ledgerData:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        ledgerRequest:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        makeFetchPack:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        manifest:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        publishAcqLedger:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        sweep:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        total:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        transaction:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        trustedProposal:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        trustedValidation:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        updatePaths:
+          $ref: '#/components/schemas/JobQueueMetrics'
+        writeAhead:
+          $ref: '#/components/schemas/JobQueueMetrics'
+
+    RPC:
+      type: object
+      properties:
+        account_channels:
+          $ref: '#/components/schemas/RPCMetrics'
+        account_currencies:
+          $ref: '#/components/schemas/RPCMetrics'
+        account_info:
+          $ref: '#/components/schemas/RPCMetrics'
+        account_lines:
+          $ref: '#/components/schemas/RPCMetrics'
+        account_nfts:
+          $ref: '#/components/schemas/RPCMetrics'
+        account_objects:
+          $ref: '#/components/schemas/RPCMetrics'
+        account_offers:
+          $ref: '#/components/schemas/RPCMetrics'
+        account_tx:
+          $ref: '#/components/schemas/RPCMetrics'
+        amm_info:
+          $ref: '#/components/schemas/RPCMetrics'
+        book_changes:
+          $ref: '#/components/schemas/RPCMetrics'
+        book_offers:
+          $ref: '#/components/schemas/RPCMetrics'
+        channel_authorize:
+          $ref: '#/components/schemas/RPCMetrics'
+        channel_verify:
+          $ref: '#/components/schemas/RPCMetrics'
+        deposit_authorized:
+          $ref: '#/components/schemas/RPCMetrics'
+        feature:
+          $ref: '#/components/schemas/RPCMetrics'
+        fee:
+          $ref: '#/components/schemas/RPCMetrics'
+        gateway_balances:
+          $ref: '#/components/schemas/RPCMetrics'
+        get_aggregate_price:
+          $ref: '#/components/schemas/RPCMetrics'
+        get_counts:
+          $ref: '#/components/schemas/RPCMetrics'
+        ledger:
+          $ref: '#/components/schemas/RPCMetrics'
+        ledger_closed:
+          $ref: '#/components/schemas/RPCMetrics'
+        ledger_current:
+          $ref: '#/components/schemas/RPCMetrics'
+        ledger_data:
+          $ref: '#/components/schemas/RPCMetrics'
+        ledger_entry:
+          $ref: '#/components/schemas/RPCMetrics'
+        log_level:
+          $ref: '#/components/schemas/RPCMetrics'
+        logrotate:
+          $ref: '#/components/schemas/RPCMetrics'
+        manifest:
+          $ref: '#/components/schemas/RPCMetrics'
+        nft_buy_offers:
+          $ref: '#/components/schemas/RPCMetrics'
+        nft_sell_offers:
+          $ref: '#/components/schemas/RPCMetrics'
+        noripple_check:
+          $ref: '#/components/schemas/RPCMetrics'
+        path_find:
+          $ref: '#/components/schemas/RPCMetrics'
+        ping:
+          $ref: '#/components/schemas/RPCMetrics'
+        ripple_path_find:
+          $ref: '#/components/schemas/RPCMetrics'
+        server_definitions:
+          $ref: '#/components/schemas/RPCMetrics'
+        server_info:
+          $ref: '#/components/schemas/RPCMetrics'
+        server_state:
+          $ref: '#/components/schemas/RPCMetrics'
+        sign:
+          $ref: '#/components/schemas/RPCMetrics'
+        submit:
+          $ref: '#/components/schemas/RPCMetrics'
+        submit_multisigned:
+          $ref: '#/components/schemas/RPCMetrics'
+        subscribe:
+          $ref: '#/components/schemas/RPCMetrics'
+        total:
+          $ref: '#/components/schemas/RPCMetrics'
+        transaction_entry:
+          $ref: '#/components/schemas/RPCMetrics'
+        tx:
+          $ref: '#/components/schemas/RPCMetrics'
+        unsubscribe:
+          $ref: '#/components/schemas/RPCMetrics'
+        version:
+          $ref: '#/components/schemas/RPCMetrics'
+
+    NodeStore:
+      type: object
+      properties:
+        node_read_bytes:
+          type: string
+        node_reads_duration_us:
+          type: string
+        node_reads_hit:
+          type: string
+        node_reads_total:
+          type: string
+        node_writes:
+          type: string
+        node_written_bytes:
+          type: string
+        read_queue:
+          type: number
+        read_request_bundle:
+          type: number
+        read_threads_running:
+          type: number
+        read_threads_total:
+          type: number
+
+    Counters:
+      type: object
+      properties:
+        job_queue:
+          $ref: '#/components/schemas/JobQueue'
+        nodestore:
+          $ref: '#/components/schemas/NodeStore'
+        rpc:
+          $ref: '#/components/schemas/RPC'
+
     Info:
       type: object
       properties:
         amendment_blocked:
           type: boolean
           description: |
-            (May be omitted) If true, this server is amendment blocked. If the server is not amendment blocked, the response omits this field.
+            (May be omitted) If true, this server is [amendment blocked](https://xrpl.org/docs/concepts/networks-and-servers/amendments#amendment-blocked-servers).
+            If the server is not amendment blocked, the response omits this field.
         build_version:
           type: string
           description: |
@@ -29,18 +335,186 @@ components:
         complete_ledgers:
           type: string
           description: >
-            Range expression indicating the sequence numbers of the ledger versions the local rippled has in its database. 
+            Range expression indicating the sequence numbers of the ledger versions the local rippled has in its database.
             This may be a disjoint sequence such as 24900901-24900984,24901116-24901158. 
             If the server does not have any complete ledgers (for example, it recently started syncing with the network), this is the string empty.
         hostid:
           type: string
-          description: |
-            On an admin request, returns the hostname of the server running the rippled instance; otherwise, returns a single RFC-1751 word based on the node public key.
+          description: >
+            On an admin request, returns the hostname of the server running the rippled instance; 
+            otherwise, returns a single [RFC-1751](https://tools.ietf.org/html/rfc1751) word based on the node [public key](https://xrpl.org/docs/concepts/networks-and-servers/peer-protocol#node-key-pair).
         io_latency_ms:
           type: number
           description: >
             Amount of time spent waiting for I/O operations, in milliseconds. 
             If this number is not very, very low, then the rippled server is probably having serious load issues.
+        jq_trans_overflow:
+          type: string
+          description: >
+            The number of times (since starting up) that this server has had over 250 transactions waiting to be processed at once. 
+            A large number here may mean that your server is unable to handle the transaction load of the XRP Ledger network. 
+            For detailed recommendations of future-proof server specifications, see [Capacity Planning](https://xrpl.org/docs/infrastructure/installation/capacity-planning).
+        last_close:
+          type: object
+          description: >
+            	Information about the last time the server closed a ledger, including the amount of time it took to reach a consensus and the number of trusted validators participating.
+          properties:
+            converge_time_s:
+              type: number
+              description: >
+                The amount of time it took to reach a consensus on the most recently validated ledger version, in seconds.
+            proposers:
+              type: number
+              description: >
+                How many trusted validators the server considered (including itself, if configured as a validator) in the consensus process for the most recently validated ledger version.
+        load:
+          type: object
+          description: >
+            	(Admin only) Detailed information about the current load state of the server.
+          properties:
+            job_types:
+              type: array
+              description: >
+                (Admin only) Information about the rate of different types of jobs the server is doing and how much time it spends on each.
+              items:
+                type: object
+                properties:
+                  in_progress:
+                    type: number
+                    #TODO: get in_progress description
+                  job_type:
+                    type: string
+                    #TODO: get in_progress description
+            threads:
+              type: number
+              description: >
+                (Admin only) The number of threads in the server's main job pool.
+        load_factor:
+          type: number
+          description: >
+            The multiplier to the [transaction cost](https://xrpl.org/docs/concepts/transactions/transaction-cost) the server is currently enforcing. 
+            For example, at 1000 load factor and a reference transaction cost of 10 drops of XRP, the load-scaled transaction cost is 10,000 drops (0.01 XRP). 
+            The load factor is determined by the highest of the individual server's load factor, the cluster's load factor, the open ledger cost, and the overall network's load factor.
+        load_factor_local:
+          type: number
+          description: >
+            (May be omitted) The current multiplier to the transaction cost based on load to this server.
+        load_factor_net:
+          type: number
+          description: >
+            (May be omitted) The current multiplier to the transaction cost being used by the rest of the network (estimated from other servers' reported load values).
+        load_factor_cluster:
+          type: number
+          description: >
+            (May be omitted) The current multiplier to the transaction cost based on load to servers in this [cluster](https://xrpl.org/docs/concepts/networks-and-servers/clustering).
+        load_factor_fee_escalation:
+          type: number
+          description: >
+            (May be omitted) The current multiplier to the transaction cost that a transaction must pay to get into the open ledger.
+        load_factor_fee_queue:
+          type: number
+          description: >
+            (May be omitted) The current multiplier to the transaction cost that a transaction must pay to get into the queue, if the queue is full.
+        load_factor_server:
+          type: number
+          description: >
+            (May be omitted) The current multiplier to the transaction cost based on load to the server, cluster, and network, but not factoring in the open ledger cost.
+        peers:
+          type: number
+          description: >
+            (Omitted by [reporting mode](https://xrpl.org/docs/concepts/networks-and-servers/rippled-server-modes#reporting-mode) servers) How many other rippled servers this one is currently connected to.
+        ports:
+          type: array
+          description: >
+            A list of ports where the server is listening for API commands.
+          items:
+            $ref: '#/components/schemas/PortDescriptor'
+        pubkey_node:
+          type: string
+          description: >
+            Public key used to verify this server for peer-to-peer communications.
+            This [node key pair](https://xrpl.org/docs/concepts/networks-and-servers/peer-protocol#node-key-pair) is automatically generated by the server the first time it starts up.
+            (If deleted, the server can create a new pair of keys.)
+            You can set a persistent value in the config file using the [node_seed] config option, which is useful for [clustering](https://xrpl.org/docs/concepts/networks-and-servers/clustering).
+        pubkey_validator:
+          type: string
+          description: >
+            (Admin only) Public key used by this node to sign ledger validations. This validation key pair is derived from the [validator_token] or [validation_seed] config field.
+        reporting:
+          $ref: '#/components/schemas/Reporting'
+        server_state:
+          $ref: '../base.yaml#/components/schemas/ServerState'
+        server_state_duration_us:
+          type: number
+          description: >
+            The number of consecutive microseconds the server has been in the current state.
+        state_accounting:
+          type: object
+          description: >
+            A map of various [server states](https://xrpl.org/docs/references/http-websocket-apis/api-conventions/rippled-server-states) with information about the time the server spends in each.
+            This can be useful for tracking the long-term health of your server's connectivity to the network.
+          properties:
+            disconnected:
+              $ref: '#/components/schemas/StateAccountingInfo'
+            connected:
+              $ref: '#/components/schemas/StateAccountingInfo'
+            syncing:
+              $ref: '#/components/schemas/StateAccountingInfo'
+            tracking:
+              $ref: '#/components/schemas/StateAccountingInfo'
+            full:
+              $ref: '#/components/schemas/StateAccountingInfo'
+            validating:
+              $ref: '#/components/schemas/StateAccountingInfo'
+            proposing:
+              $ref: '#/components/schemas/StateAccountingInfo'
+        time:
+          type: string
+          description: The current time in UTC, according to the server's clock.
+        uptime:
+          type: number
+          description: Number of consecutive seconds that the server has been operational.
+        validated_ledger:
+          description: >
+            (May be omitted) Information about the most recent fully-validated ledger.
+            If the most recent validated ledger is not available, the response omits this field and includes closed_ledger instead.
+          $ref: '#/components/schemas/ValidatedLedger'
+        validation_quorum:
+          type: number
+          description: Minimum number of trusted validations required to validate a ledger version. Some circumstances may cause the server to require more validations.
+        validator_list_expires:
+          type: string
+          description: >
+            (Admin only) Either the human readable time, in UTC, when the current validator list expires, the string unknown
+            if the server has yet to load a published validator list or the string never if the server uses a static validator list.
+        counters:
+          type: object
+          description: >
+            This object contains performance metrics pertaining to the RPC calls (currently executing calls and completed calls) and the JobQueue.
+            It also contains details of the nodestore like node_writes, node_reads_total, node_reads_hit, etc
+          $ref: '#/components/schemas/Counters'
+        current_activity:
+          type: object
+          description: This field lists the items currently being run in the job queue and contains two arrays for jobs and methods.
+          properties:
+            jobs:
+              type: array
+              items:
+                type: object
+                properties:
+                  duration_us:
+                    type: string
+                  job:
+                    type: string
+            methods:
+              type: array
+              items:
+                type: object
+                properties:
+                  duration_us:
+                    type: string
+                  method:
+                    type: string
 
     ServerInfoSuccessResponse:
       type: object
