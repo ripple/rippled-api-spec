@@ -36,6 +36,7 @@ paths:
                   account_lines: 'requests/account_lines_open_api.yaml#/components/schemas/AccountLinesRequest'
                   submit: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequestV1'
                   ledger_entry: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryRequest'
+                  server_info: 'requests/server_info_open_api.yaml#/components/schemas/ServerInfoRequest'
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
                 - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
@@ -43,6 +44,7 @@ paths:
                 - $ref: 'requests/account_lines_open_api.yaml#/components/schemas/AccountLinesRequest'
                 - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequestV1'
                 - $ref: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryRequest'
+                - $ref: 'requests/server_info_open_api.yaml#/components/schemas/ServerInfoRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'
@@ -64,6 +66,7 @@ paths:
                   - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitResponseV1'
                   - $ref: 'requests/account_lines_open_api.yaml#/components/schemas/AccountLinesResponse'
                   - $ref: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryResponse'
+                  - $ref: 'requests/server_info_open_api.yaml#/components/schemas/ServerInfoResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.
