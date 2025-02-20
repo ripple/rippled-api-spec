@@ -20,18 +20,44 @@ components:
         params:
           - counters: true
 
+    ServerInfoSuccessResponse:
+      type: object
+      allOf:
+        - $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoSuccessResponse'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - success
+          required:
+            - status
+
+    ServerInfoErrorResponse:
+      type: object
+      allOf:
+        - $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoErrorResponse'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - error
+          required:
+            - status
+
     ServerInfoResponse:
       type: object
       properties:
         result:
           type: object
+          oneOf:
+            - $ref: '#/components/schemas/ServerInfoSuccessResponse'
+            - $ref: '#/components/schemas/ServerInfoErrorResponse'
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoSuccessResponse'
-              error: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoErrorResponse'
-          oneOf:
-            - $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoSuccessResponse'
-            - $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoErrorResponse'
+              success: '#/components/schemas/ServerInfoSuccessResponse'
+              error: '#/components/schemas/ServerInfoErrorResponse'
       required:
         - result

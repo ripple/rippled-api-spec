@@ -521,10 +521,6 @@ components:
       properties:
         info:
           $ref: '#/components/schemas/Info'
-        status:
-          type: string
-          enum:
-            - success
 
     ServerInfoErrorResponse:
       type: object
@@ -535,11 +531,6 @@ components:
             - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
         request:
           $ref: '#/components/schemas/ServerInfoRequest'
-        status:
-          type: string
-          enum:
-            - error
       required:
-        - status
         - error
         - request
