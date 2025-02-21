@@ -1,0 +1,211 @@
+components:
+  schemas:
+    ServerInfoRequest:
+      $id: ServerInfoRequest
+      type: object
+      description: >
+        The server_info command asks the server for a human-readable version of various information about the rippled server being queried.
+      allOf:
+        - $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoRequest'
+        - type: object
+          properties:
+            command:
+              $ref: '../../shared/base.yaml#/components/schemas/CommandTypes'
+            id:
+              # Not specifying a type is how we express "any" value is acceptable
+              description: 'A unique identifier for the request.'
+      required:
+        - command
+        - id
+      example:
+        id: 10
+        command: server_info
+        counters: true
+
+    ServerInfoSuccessResponse:
+      $id: ServerInfoSuccessResponse
+      type: object
+      properties:
+        result:
+          $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoSuccessResponse'
+        status:
+          type: string
+          enum:
+            - success
+      required:
+        - status
+        - result
+      example:
+        id: 10
+        result:
+          info:
+            build_version: 2.3.1
+            complete_ledgers: 6-5018714
+            counters:
+              job_queue:
+                RPC:
+                  finished: '111525'
+                  queued: '111525'
+                  queued_duration_us: '5502497'
+                  running_duration_us: '39832302'
+                  started: '111525'
+                acceptLedger:
+                  finished: '599922'
+                  queued: '599922'
+                  queued_duration_us: '17085042'
+                  running_duration_us: '863801859'
+                  started: '599922'
+                advanceLedger:
+                  finished: '2429522'
+                  queued: '2429522'
+                  queued_duration_us: '97007488'
+                  running_duration_us: '1863319773'
+                  started: '2429522'
+                batch:
+                  finished: '7162273'
+                  queued: '7162273'
+                  queued_duration_us: '86442868'
+                  running_duration_us: '885709312'
+                  started: '7162273'
+                clientConsensus:
+                  finished: '1799763'
+                  queued: '1799763'
+                  queued_duration_us: '39113287'
+                  running_duration_us: '30510727'
+                  started: '1799763'
+              nodestore:
+                node_read_bytes: '1424407688'
+                node_reads_duration_us: '1354868353'
+                node_reads_hit: '365501943'
+                node_reads_total: '388064499'
+                node_writes: '30592722'
+                node_written_bytes: '22935418409'
+                read_queue: 0
+                read_request_bundle: 4
+                read_threads_running: 0
+                read_threads_total: 4
+              rpc:
+                account_channels:
+                  duration_us: '295258'
+                  errored: '0'
+                  finished: '3638'
+                  started: '3638'
+                account_currencies:
+                  duration_us: '110668'
+                  errored: '0'
+                  finished: '774'
+                  started: '774'
+                account_info:
+                  duration_us: '2410964785'
+                  errored: '0'
+                  finished: '95614662'
+                  started: '95614662'
+                account_lines:
+                  duration_us: '596819891'
+                  errored: '0'
+                  finished: '15675478'
+                  started: '15675478'
+                account_nfts:
+                  duration_us: '6965133'
+                  errored: '0'
+                  finished: '163028'
+                  started: '163028'
+            current_activities:
+              jobs:
+                - duration_us: '270'
+                  job: clientRPC
+                - duration_us: '86'
+                  job: clientRPC
+                - duration_us: '387'
+                  job: clientWebsocket
+              methods:
+                - duration_us: '226'
+                  method: ledger
+                - duration_us: '364'
+                  method: server_info
+            hostid: TUN
+            initial_sync_duration_us: '30622467'
+            io_latency_ms: 1
+            jq_trans_overflow: '0'
+            last_close:
+              converge_time_s: 3
+              proposers: 6
+            load_factor: 1
+            network_id: 1
+            peer_disconnects: '73214'
+            peer_disconnects_resources: '2518'
+            peers: 86
+            ports:
+              - port: '2459'
+                protocol:
+                  - peer
+              - port: '51233'
+                protocol:
+                  - ws2
+                  - wss2
+              - port: '50051'
+                protocol:
+                  - grpc
+            pubkey_node: n9KEk3TLMuoiTTLgrWWmfYm99hHFBZTXWzoyrHr3FbJWmRCXm96v
+            server_state: full
+            server_state_duration_us: '1828297306771'
+            state_accounting:
+              connected:
+                duration_us: '10003553'
+                transitions: '1'
+              disconnected:
+                duration_us: '17617939'
+                transitions: '1'
+              full:
+                duration_us: '1828297306771'
+                transitions: '1'
+              syncing:
+                duration_us: '3000943'
+                transitions: '1'
+              tracking:
+                duration_us: '31'
+                transitions: '1'
+            time: 2025-Feb-20 22:18:24.502102 UTC
+            uptime: 1828327
+            validated_ledger:
+              age: 3
+              base_fee_xrp: 1.0e-05
+              hash: 9CB93198941FA3A7A571ECD7B7ADAFAE3D66EF85C0F1C18A5DE56D2DA6ED7514
+              reserve_base_xrp: 1
+              reserve_inc_xrp: 0.2
+              seq: 5018714
+            validation_quorum: 5
+        status: success
+        type: response
+
+    ServerInfoErrorResponse:
+      $id: ServerInfoErrorResponse
+      type: object
+      properties:
+        result:
+          $ref: '../../shared/requests/server_info.yaml#/components/schemas/ServerInfoErrorResponse'
+        status:
+          type: string
+          enum:
+            - error
+      required:
+        - status
+        - result
+
+    ServerInfoResponse:
+      $id: ServerInfoResponse
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ServerInfoSuccessResponse'
+        - $ref: '#/components/schemas/ServerInfoErrorResponse'
+      properties:
+        id:
+          description: 'A unique identifier for the request.'
+        type:
+          type: string
+          description: The value response indicates a direct response to an API request. Asynchronous notifications use a different value such as `ledgerClosed` or `transaction`.
+          enum:
+            - response
+      required:
+        - id
+        - type

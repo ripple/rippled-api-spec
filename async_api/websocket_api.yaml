@@ -55,6 +55,7 @@ channels:
           - $ref: '#/components/messages/AccountInfoRequest'
           - $ref: '#/components/messages/AccountLinesRequest'
           - $ref: '#/components/messages/LedgerEntryRequest'
+          - $ref: '#/components/messages/ServerInfoRequest'
           # ... (Add references for additional requests)
     publish:
       operationId: publishToRoot
@@ -64,6 +65,7 @@ channels:
           - $ref: '#/components/messages/AccountInfoResponseV1'
           - $ref: '#/components/messages/AccountLinesResponse'
           - $ref: '#/components/messages/LedgerEntryResponse'
+          - $ref: '#/components/messages/ServerInfoResponse'
           # ... (Add references for additional responses)
 
 # Moved message definitions to a separate components section
@@ -101,6 +103,14 @@ components:
       payload:
         $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
 
+    # Ledger entry request message
+    ServerInfoRequest:
+      name: ServerInfoRequest
+      messageId: ServerInfoRequest
+      contentType: application/json
+      payload:
+        $ref: './requests/server_info_async_api.yaml#/components/schemas/ServerInfoRequest'
+
     # ... (Add definitions for additional message types)
 
     # Account channels response message
@@ -134,4 +144,13 @@ components:
       contentType: application/json
       payload:
         $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
+
+    # Ledger entry response message
+    ServerInfoResponse:
+      name: ServerInfoResponse
+      messageId: ServerInfoResponse
+      contentType: application/json
+      payload:
+        $ref: './requests/server_info_async_api.yaml#/components/schemas/ServerInfoResponse'
+
     # ... (Add definitions for additional response types)
