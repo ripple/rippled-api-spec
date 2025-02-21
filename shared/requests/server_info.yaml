@@ -1,6 +1,7 @@
 components:
   schemas:
     ServerInfoRequest:
+      description: The server_info command asks the server for a human-readable version of various information about the rippled server being queried.
       type: object
       properties:
         counters:
@@ -521,6 +522,12 @@ components:
       properties:
         info:
           $ref: '#/components/schemas/Info'
+        status:
+          type: string
+          enum:
+            - success
+      required:
+        - status
 
     ServerInfoErrorResponse:
       type: object
@@ -531,6 +538,11 @@ components:
             - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
         request:
           $ref: '#/components/schemas/ServerInfoRequest'
+        status:
+          type: string
+          enum:
+            - error
       required:
         - error
         - request
+        - status
