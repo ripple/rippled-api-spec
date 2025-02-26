@@ -76,8 +76,38 @@ components:
             specialValue: 0
           - field: TickSize
             specialValue: 0
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: AccountSet
+        description: AccountSet transaction flags.
+        flags:
+          - name: tfRequireDestTag
+            value: 65536
+            description: 'The same as SetFlag: asfRequireDest.'
+            hexValue: '0x00010000'
+          - name: tfOptionalDestTags
+            value: 131072
+            description: 'The same as ClearFlag: asfRequireDest.'
+            hexValue: '0x00010000'
+          - name: tfRequireAuth
+            value: 262144
+            description: 'The same as SetFlag: asfRequireAuth.'
+            hexValue: '0x00010000'
+          - name: tfOptionalAuth
+            value: 524288
+            description: 'The same as ClearFlag: asfRequireAuth.'
+            hexValue: '0x00010000'
+          - name: tfDisallowXRP
+            value: 1048576
+            description: 'The same as SetFlag: asfDisallowXRP.'
+            hexValue: '0x00010000'
+          - name: tfAllowXRP
+            value: 2097152
+            description: 'The same as ClearFlag: asfDisallowXRP.'
+            hexValue: '0x00010000'
 
-    AccountSetFlag:
+    AccountSetAsfFlag:
       $id: AccountSetFlag
       type: string
       enum:
