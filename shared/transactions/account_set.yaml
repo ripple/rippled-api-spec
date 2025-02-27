@@ -87,23 +87,23 @@ components:
           - name: tfOptionalDestTags
             value: 131072
             description: 'The same as ClearFlag: asfRequireDest.'
-            hexValue: '0x00010000'
+            hexValue: '0x00020000'
           - name: tfRequireAuth
             value: 262144
             description: 'The same as SetFlag: asfRequireAuth.'
-            hexValue: '0x00010000'
+            hexValue: '0x00040000'
           - name: tfOptionalAuth
             value: 524288
             description: 'The same as ClearFlag: asfRequireAuth.'
-            hexValue: '0x00010000'
+            hexValue: '0x00080000'
           - name: tfDisallowXRP
             value: 1048576
             description: 'The same as SetFlag: asfDisallowXRP.'
-            hexValue: '0x00010000'
+            hexValue: '0x00100000'
           - name: tfAllowXRP
             value: 2097152
             description: 'The same as ClearFlag: asfDisallowXRP.'
-            hexValue: '0x00010000'
+            hexValue: '0x00200000'
 
     AccountSetAsfFlag:
       $id: AccountSetAsfFlag
@@ -132,10 +132,16 @@ components:
           description: Track the ID of this account's most recent transaction. Required for AccountTxnID.
         - name: asfAllowTrustLineClawback
           value: 16
-          description: Allow account to claw back tokens it has issued. (Requires the Clawback amendment.) Can only be set if the account has an empty owner directory (no trust lines, offers, escrows, payment channels, checks, or signer lists). After you set this flag, it cannot be reverted. The account permanently gains the ability to claw back issued assets on trust lines.
+          description: |
+            Allow account to claw back tokens it has issued. (Requires the Clawback amendment.) 
+            Can only be set if the account has an empty owner directory (no trust lines, offers, escrows, payment channels, checks, or signer lists). 
+            After you set this flag, it cannot be reverted. The account permanently gains the ability to claw back issued assets on trust lines.
         - name: asfAuthorizedNFTokenMinter
-          value: 19
-          description: Enable to allow another account to mint non-fungible tokens (NFTokens) on this account's behalf. Specify the authorized account in the NFTokenMinter field of the AccountRoot object. To remove an authorized minter, enable this flag and omit the NFTokenMinter field. (Added by the NonFungibleTokensV1_1 amendment.)
+          value: 10
+          description: |
+            Enable to allow another account to mint non-fungible tokens (NFTokens) on this account's behalf. 
+            Specify the authorized account in the NFTokenMinter field of the AccountRoot object. 
+            To remove an authorized minter, enable this flag and omit the NFTokenMinter field. (Added by the NonFungibleTokensV1_1 amendment.)
         - name: asfDefaultRipple
           value: 8
           description: Enable rippling on this account's trust lines by default.
