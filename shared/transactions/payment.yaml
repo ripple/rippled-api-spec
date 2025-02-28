@@ -40,7 +40,7 @@ components:
       x-supported-flags:
         type: integer
         format: uint32
-        name: PaymentChannelClaimFlag
+        name: PaymentFlag
         description: Enum for Payment Transaction Flags.
         flags:
           - name: tfNoRippleDirect
