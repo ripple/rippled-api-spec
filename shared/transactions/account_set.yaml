@@ -9,8 +9,7 @@ components:
         - $ref: '../base.yaml#/components/schemas/BaseTransaction'
       properties:
         ClearFlag:
-          type: integer
-          format: uint32
+          $ref: '#/components/schemas/AccountSetAsfFlag'
           description: |
             (Optional) Unique identifier of a flag to disable for this account.
         Domain:
@@ -37,8 +36,7 @@ components:
             (Optional) Another account that can mint NFTokens for you. (Added by the NonFungibleTokensV1_1
             amendment.)
         SetFlag:
-          type: integer
-          format: uint32
+          $ref: '#/components/schemas/AccountSetAsfFlag'
           description: |
             (Optional) Integer flag to enable for this account.
         TransferRate:
@@ -76,40 +74,107 @@ components:
             specialValue: 0
           - field: TickSize
             specialValue: 0
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: AccountSetFlag
+        description: AccountSet transaction flags.
+        flags:
+          - name: tfRequireDestTag
+            value: 65536
+            description: 'The same as SetFlag: asfRequireDest.'
+            hexValue: '0x00010000'
+          - name: tfOptionalDestTags
+            value: 131072
+            description: 'The same as ClearFlag: asfRequireDest.'
+            hexValue: '0x00020000'
+          - name: tfRequireAuth
+            value: 262144
+            description: 'The same as SetFlag: asfRequireAuth.'
+            hexValue: '0x00040000'
+          - name: tfOptionalAuth
+            value: 524288
+            description: 'The same as ClearFlag: asfRequireAuth.'
+            hexValue: '0x00080000'
+          - name: tfDisallowXRP
+            value: 1048576
+            description: 'The same as SetFlag: asfDisallowXRP.'
+            hexValue: '0x00100000'
+          - name: tfAllowXRP
+            value: 2097152
+            description: 'The same as ClearFlag: asfDisallowXRP.'
+            hexValue: '0x00200000'
 
-    AccountSetFlag:
-      $id: AccountSetFlag
-      type: string
-      enum:
-        - asfAccountTxnID
-        - asfAllowTrustLineClawback
-        - asfAuthorizedNFTokenMinter
-        - asfDefaultRipple
-        - asfDepositAuth
-        - asfDisableMaster
-        - asfDisallowIncomingCheck
-        - asfDisallowIncomingNFTokenOffer
-        - asfDisallowIncomingPayChan
-        - asfDisallowIncomingTrustline
-        - asfDisallowXRP
-        - asfGlobalFreeze
-        - asfNoFreeze
-        - asfRequireAuth
-        - asfRequireDest
+    AccountSetAsfFlag:
+      $id: AccountSetAsfFlag
+      type: integer
+      format: uint32
       description: Enum representing AccountSet transaction flags.
-      x-enum-descriptions:
-        asfAccountTxnID: Track the ID of this account's most recent transaction. Required for AccountTxnID.
-        asfAllowTrustLineClawback: Allow account to claw back tokens it has issued. (Requires the Clawback amendment.) Can only be set if the account has an empty owner directory (no trust lines, offers, escrows, payment channels, checks, or signer lists). After you set this flag, it cannot be reverted. The account permanently gains the ability to claw back issued assets on trust lines.
-        asfAuthorizedNFTokenMinter: Enable to allow another account to mint non-fungible tokens (NFTokens) on this account's behalf. Specify the authorized account in the NFTokenMinter field of the AccountRoot object. To remove an authorized minter, enable this flag and omit the NFTokenMinter field. (Added by the NonFungibleTokensV1_1 amendment.)
-        asfDefaultRipple: Enable rippling on this account's trust lines by default.
-        asfDepositAuth: Enable Deposit Authorization on this account. (Added by the DepositAuth amendment.)
-        asfDisableMaster: Disallow use of the master key pair. Can only be enabled if the account has configured another way to sign transactions, such as a Regular Key or a Signer List.
-        asfDisallowIncomingCheck: Block incoming Checks. (Requires the DisallowIncoming amendment.)
-        asfDisallowIncomingNFTokenOffer: Block incoming NFTokenOffers. (Requires the DisallowIncoming amendment.)
-        asfDisallowIncomingPayChan: Block incoming Payment Channels. (Requires the DisallowIncoming amendment.)
-        asfDisallowIncomingTrustline: Block incoming trust lines. (Requires the DisallowIncoming amendment.)
-        asfDisallowXRP: XRP should not be sent to this account. (Advisory; not enforced by the XRP Ledger protocol.)
-        asfGlobalFreeze: Freeze all assets issued by this account.
-        asfNoFreeze: Permanently give up the ability to freeze individual trust lines or disable Global Freeze. This flag can never be disabled after being enabled.
-        asfRequireAuth: Require authorization for users to hold balances issued by this address. Can only be enabled if the address has no trust lines connected to it.
-        asfRequireDest: Require a destination tag to send transactions to this account.
+      enum:
+        - 5
+        - 16
+        - 10
+        - 8
+        - 9
+        - 4
+        - 13
+        - 12
+        - 14
+        - 15
+        - 3
+        - 7
+        - 6
+        - 2
+        - 1
+      x-flags:
+        - name: asfAccountTxnID
+          value: 5
+          description: Track the ID of this account's most recent transaction. Required for AccountTxnID.
+        - name: asfAllowTrustLineClawback
+          value: 16
+          description: |
+            Allow account to claw back tokens it has issued. (Requires the Clawback amendment.) 
+            Can only be set if the account has an empty owner directory (no trust lines, offers, escrows, payment channels, checks, or signer lists). 
+            After you set this flag, it cannot be reverted. The account permanently gains the ability to claw back issued assets on trust lines.
+        - name: asfAuthorizedNFTokenMinter
+          value: 10
+          description: |
+            Enable to allow another account to mint non-fungible tokens (NFTokens) on this account's behalf. 
+            Specify the authorized account in the NFTokenMinter field of the AccountRoot object. 
+            To remove an authorized minter, enable this flag and omit the NFTokenMinter field. (Added by the NonFungibleTokensV1_1 amendment.)
+        - name: asfDefaultRipple
+          value: 8
+          description: Enable rippling on this account's trust lines by default.
+        - name: asfDepositAuth
+          value: 9
+          description: Enable Deposit Authorization on this account. (Added by the DepositAuth amendment.)
+        - name: asfDisableMaster
+          value: 4
+          description: Disallow use of the master key pair. Can only be enabled if the account has configured another way to sign transactions, such as a Regular Key or a Signer List.
+        - name: asfDisallowIncomingCheck
+          value: 13
+          description: Block incoming Checks. (Requires the DisallowIncoming amendment.)
+        - name: asfDisallowIncomingNFTokenOffer
+          value: 12
+          description: Block incoming NFTokenOffers. (Requires the DisallowIncoming amendment.)
+        - name: asfDisallowIncomingPayChan
+          value: 14
+          description: Block incoming Payment Channels. (Requires the DisallowIncoming amendment.)
+        - name: asfDisallowIncomingTrustline
+          value: 15
+          description: Block incoming trust lines. (Requires the DisallowIncoming amendment.)
+        - name: asfDisallowXRP
+          value: 3
+          description: XRP should not be sent to this account. (Advisory; not enforced by the XRP Ledger protocol.)
+        - name: asfGlobalFreeze
+          value: 7
+          description: Freeze all assets issued by this account.
+        - name: asfNoFreeze
+          value: 6
+          description: Permanently give up the ability to freeze individual trust lines or disable Global Freeze. This flag can never be disabled after being enabled.
+        - name: asfRequireAuth
+          value: 2
+          description: Require authorization for users to hold balances issued by this address. Can only be enabled if the address has no trust lines connected to it.
+        - name: asfRequireDest
+          value: 1
+          description: Require a destination tag to send transactions to this account.
