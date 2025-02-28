@@ -24,13 +24,15 @@ components:
         flagConflict:
           - flag1: tfMPTLock
             flag2: tfMPTUnlock
-    MPTokenIssuanceSetFlag:
-      $id: MPTokenIssuanceSetFlag
-      type: string
-      enum:
-        - tfMPTLock: 0x00000001
-        - tfMPTUnlock: 0x00000002
-      description: Enum representing flags for MPTokenIssuanceSet transactions.
-      x-enum-descriptions:
-        tfMPTLock: If set, indicates that all MPT balances for this asset should be locked.
-        tfMPTUnlock: If set, indicates that all MPT balances for this asset should be unlocked.
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: MPTokenIssuanceSetFlag
+        description: Enum for MPTokenIssuanceSet Transaction Flags.
+        flags:
+          - name: tfMPTLock
+            description: If set, indicates that all MPT balances for this asset should be locked.
+            hexValue: '0x00000001'
+          - name: tfMPTUnlock
+            description: If set, indicates that all MPT balances for this asset should be unlocked.
+            hexValue: '0x00000002'

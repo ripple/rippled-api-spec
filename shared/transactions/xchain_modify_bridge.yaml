@@ -46,12 +46,12 @@ components:
           fields:
             - MinAccountCreateAmount
             - SignatureReward
-
-    XChainModifyBridgeFlag:
-      $id: XChainModifyBridgeFlag
-      type: string
-      description: Flags for the XChainModifyBridge transaction.
-      enum:
-        - name: tfClearAccountCreateAmount
-          value: 0x00010000
-          description: Clears the MinAccountCreateAmount of the bridge.
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: XChainModifyBridgeFlag
+        description: Flags for the XChainModifyBridge transaction.
+        flags:
+          - name: tfClearAccountCreateAmount
+            description: Clears the MinAccountCreateAmount of the bridge.
+            hexValue: '0x00010000'

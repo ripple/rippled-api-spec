@@ -59,13 +59,15 @@ components:
       x-custom-validation:
         validCredentials:
           field: CredentialIDs
-    PaymentChannelClaimFlag:
-      $id: PaymentChannelClaimFlag
-      type: string
-      enum:
-        - tfRenew: 0x00010000
-        - tfClose: 0x00020000
-      description: Enum representing flags for PaymentChannelClaim transactions.
-      x-enum-descriptions:
-        tfRenew: Clear the channel's Expiration time. Only the source address of the payment channel can use this flag.
-        tfClose: Request to close the channel. Only the channel source and destination addresses can use this flag. This flag closes the channel immediately if it has no more XRP allocated after processing the current claim, or if the destination address uses it. If the source address uses this flag when the channel still holds XRP, this schedules the channel to close after SettleDelay seconds have passed.
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: PaymentChannelClaimFlag
+        description: Enum for PaymentChannelClaim Transaction Flags.
+        flags:
+          - name: tfRenew
+            description: Clear the channel's Expiration time. Only the source address of the payment channel can use this flag.
+            hexValue: '0x00010000'
+          - name: tfClose
+            description: Request to close the channel. Only the channel source and destination addresses can use this flag. This flag closes the channel immediately if it has no more XRP allocated after processing the current claim, or if the destination address uses it. If the source address uses this flag when the channel still holds XRP, this schedules the channel to close after SettleDelay seconds have passed.
+            hexValue: '0x00020000'

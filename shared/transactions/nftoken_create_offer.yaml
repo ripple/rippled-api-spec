@@ -65,13 +65,16 @@ components:
             toField: Account
           - field: Owner
             toField: Account
-    NFTokenCreateOfferFlag:
-      $id: NFTokenCreateOfferFlag
-      type: string
-      enum:
-        - tfSellNFToken: 0x00000001
-      x-enum-descriptions:
-        tfSellNFToken: If enabled, indicates that the offer is a sell offer. Otherwise, it is a buy offer.
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: NFTokenCreateOfferFlag
+        description: Enum for NFTokenCreateOffer Transaction Flags.
+        flags:
+          - name: tfSellNFToken
+            description: If enabled, indicates that the offer is a sell offer. Otherwise, it is a buy offer.
+            hexValue: '0x00000001'
+
     NFTokenCreateOfferErrorCode:
       $id: NFTokenCreateOfferErrorCode
       type: string

@@ -70,20 +70,25 @@ components:
         requiredFlag:
           - field: TransferFee
             flag: tfTransferable
-    NFTokenMintFlag:
-      $id: NFTokenMintFlag
-      type: string
-      enum:
-        - tfBurnable: 0x00000001
-        - tfOnlyXRP: 0x00000002
-        - tfTrustLine: 0x00000004
-        - tfTransferable: 0x00000008
-      description: Enum representing flags for NFTokenMint transactions.
-      x-enum-descriptions:
-        tfBurnable: Allow the issuer (or an entity authorized by the issuer) to destroy the minted NFToken. (The NFToken's owner can always do so.)
-        tfOnlyXRP: The minted NFToken can only be bought or sold for XRP.
-        tfTrustLine: DEPRECATED Automatically create trust lines from the issuer to hold transfer fees received from transferring the minted NFToken. The fixRemoveNFTokenAutoTrustLine amendment makes it invalid to set this flag.
-        tfTransferable: The minted NFToken can be transferred to others. If this flag is not enabled, the token can still be transferred from or to the issuer, but a transfer to the issuer must be made based on a buy offer from the issuer and not a sell offer from the NFT holder.
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: NFTokenMintFlag
+        description: Enum for NFTokenMint Transaction Flags.
+        flags:
+          - name: tfBurnable
+            description: Allow the issuer (or an entity authorized by the issuer) to destroy the minted NFToken. (The NFToken's owner can always do so.)
+            hexValue: '0x00000001'
+          - name: tfOnlyXRP
+            description: The minted NFToken can only be bought or sold for XRP.
+            hexValue: '0x00000002'
+          - name: tfTrustLine
+            description: DEPRECATED Automatically create trust lines from the issuer to hold transfer fees received from transferring the minted NFToken. The fixRemoveNFTokenAutoTrustLine amendment makes it invalid to set this flag.
+            hexValue: '0x00000004'
+          - name: tfTransferable
+            description: The minted NFToken can be transferred to others. If this flag is not enabled, the token can still be transferred from or to the issuer, but a transfer to the issuer must be made based on a buy offer from the issuer and not a sell offer from the NFT holder.
+            hexValue: '0x00000008'
+
     NFTokenMintErrorCode:
       $id: NFTokenMintErrorCode
       type: string

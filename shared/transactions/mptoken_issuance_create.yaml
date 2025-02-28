@@ -50,26 +50,31 @@ components:
           description: |
             Arbitrary metadata about this issuance, in hex format. The limit for this field is 1024 bytes.
           minLength: 0
-    x-custom-validation:
-      requiredFlag:
-        - field: TransferFee
-          flag: tfMPTCanTransfer
-
-    MPTokenIssuanceCreateFlag:
-      $id: MPTokenIssuanceCreateFlag
-      type: string
-      enum:
-        - tfMPTCanLock: 0x00000002
-        - tfMPTRequireAuth: 0x00000004
-        - tfMPTCanEscrow: 0x00000008
-        - tfMPTCanTrade: 0x00000010
-        - tfMPTCanTransfer: 0x00000020
-        - tfMPTCanClawback: 0x00000040
-      description: Enum representing flags for MPTokenIssuanceCreate transactions.
-      x-enum-descriptions:
-        tfMPTCanLock: If set, indicates that the MPT can be locked both individually and globally. If not set, the MPT cannot be locked in any way.
-        tfMPTRequireAuth: If set, indicates that individual holders must be authorized. This enables issuers to limit who can hold their assets.
-        tfMPTCanEscrow: If set, indicates that individual holders can place their balances into an escrow.
-        tfMPTCanTrade: If set, indicates that individual holders can trade their balances using the XRP Ledger DEX.
-        tfMPTCanTransfer: If set, indicates that tokens can be transferred to other accounts that are not the issuer.
-        tfMPTCanClawback: If set, indicates that the issuer can use the Clawback transaction to claw back value from individual holders.
+      x-custom-validation:
+        requiredFlag:
+          - field: TransferFee
+            flag: tfMPTCanTransfer
+      x-supported-flags:
+        type: integer
+        format: uint32
+        name: MPTokenIssuanceCreateFlag
+        description: Enum for MPTokenIssuanceCreate Transaction Flags.
+        flags:
+          - name: tfMPTCanLock
+            description: If set, indicates that the MPT can be locked both individually and globally. If not set, the MPT cannot be locked in any way.
+            hexValue: '0x00000002'
+          - name: tfMPTRequireAuth
+            description: If set, indicates that individual holders must be authorized. This enables issuers to limit who can hold their assets.
+            hexValue: '0x00000004'
+          - name: tfMPTCanEscrow
+            description: If set, indicates that individual holders can place their balances into an escrow.
+            hexValue: '0x00000008'
+          - name: tfMPTCanTrade
+            description: If set, indicates that individual holders can trade their balances using the XRP Ledger DEX.
+            hexValue: '0x00000010'
+          - name: tfMPTCanTransfer
+            description: If set, indicates that tokens can be transferred to other accounts that are not the issuer.
+            hexValue: '0x00000020'
+          - name: tfMPTCanClawback
+            description: If set, indicates that the issuer can use the Clawback transaction to claw back value from individual holders.
+            hexValue: '0x00000040'
