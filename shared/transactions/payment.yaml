@@ -1,7 +1,7 @@
 components:
   schemas:
-    PaymentTransactionBase:
-      $id: PaymentTransactionBase
+    PaymentTransaction:
+      $id: PaymentTransaction
       description: >
         A Payment transaction represents a transfer of value from one account to another. (Depending on the path taken, this can involve additional exchanges of value, which occur atomically.) This transaction type can be used for several types of payments.
         Payments are also the only way to create accounts.
@@ -9,9 +9,9 @@ components:
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseTransaction'
       properties:
-        TransactionType:
-          type: string
-          enum: [Payment]
+        Amount:
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
+          description: 'The maximum amount of currency to deliver. Partial payments can deliver less than this amount and still succeed; other payments fail unless they deliver the exact amount.'
         DeliverMin:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: '(Optional) Minimum amount of destination currency this transaction should deliver. Only valid if this is a partial payment. For non-XRP amounts, the nested field names are lower-case.'
@@ -37,32 +37,7 @@ components:
       required:
         - TransactionType
         - Destination
-
-    PaymentTransactionV1:
-      $id: PaymentTransactionV1
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/PaymentTransactionBase'
-      properties:
-        Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
-          description: 'Only available in API v1. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead.'
-      required:
         - Amount
-      x-supported-flags:
-        $ref: '#/components/schemas/PaymentFlag'
-
-    PaymentTransactionV2:
-      $id: PaymentTransactionV2
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/PaymentTransactionBase'
-      properties:
-        DeliverMax:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
-          description: 'Only available in API v2. The maximum amount of currency to deliver. For non-XRP amounts, the nested field names MUST be lower-case. If the tfPartialPayment flag is set, deliver up to this amount instead. New in: rippled 2.0.0'
-      required:
-        - DeliverMax
       x-supported-flags:
         $ref: '#/components/schemas/PaymentFlag'
 

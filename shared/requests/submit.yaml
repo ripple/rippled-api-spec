@@ -68,7 +68,7 @@ components:
           discriminator:
             propertyName: TransactionType
             mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
               OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
@@ -115,7 +115,7 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
           oneOf:
-            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
@@ -345,7 +345,7 @@ components:
           discriminator:
             propertyName: TransactionType
             mapping:
-              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+              Payment: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
               OracleSet: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
               AccountSet: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
               AccountDelete: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
@@ -393,7 +393,7 @@ components:
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               # TODO: Add other transaction types here
           oneOf:
-            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransactionV1'
+            - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
             - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
             - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
