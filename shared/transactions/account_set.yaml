@@ -68,63 +68,51 @@ components:
           format: uint32
           description: |
             (Optional) Not used. This field is valid in AccountSet transactions but does nothing.
+        Flags:
+          $ref: '#/components/schemas/AccountSetFlag'
       x-custom-validation:
         specialValue:
           - field: TransferRate
             specialValue: 0
           - field: TickSize
             specialValue: 0
-      x-supported-flags:
-        type: integer
-        format: uint32
-        name: AccountSetFlag
-        description: Enum for AccountSet Transaction Flags.
-        flags:
-          - name: tfRequireDestTag
-            value: 65536
-            description: 'The same as SetFlag: asfRequireDest.'
-            hexValue: '0x00010000'
-          - name: tfOptionalDestTags
-            value: 131072
-            description: 'The same as ClearFlag: asfRequireDest.'
-            hexValue: '0x00020000'
-          - name: tfRequireAuth
-            value: 262144
-            description: 'The same as SetFlag: asfRequireAuth.'
-            hexValue: '0x00040000'
-          - name: tfOptionalAuth
-            value: 524288
-            description: 'The same as ClearFlag: asfRequireAuth.'
-            hexValue: '0x00080000'
-          - name: tfDisallowXRP
-            value: 1048576
-            description: 'The same as SetFlag: asfDisallowXRP.'
-            hexValue: '0x00100000'
-          - name: tfAllowXRP
-            value: 2097152
-            description: 'The same as ClearFlag: asfDisallowXRP.'
-            hexValue: '0x00200000'
+      x-generate-enum-in-model:
+        - AccountSetFlag
+        - AccountSetAsfFlag
+
+    AccountSetFlag:
+      type: integer
+      format: uint32
+      description: Enum for AccountSet Transaction Flags.
+      enum:
+        - 0x00010000
+        - 0x00020000
+        - 0x00040000
+        - 0x00080000
+        - 0x00100000
+        - 0x00200000
+      x-enum-varnames:
+        - tfRequireDestTag
+        - tfOptionalDestTags
+        - tfRequireAuth
+        - tfOptionalAuth
+        - tfDisallowXRP
+        - tfAllowXRP
+      x-enum-descriptions:
+        - 'The same as SetFlag: asfRequireDest.'
+        - 'The same as ClearFlag: asfRequireDest.'
+        - 'The same as SetFlag: asfRequireAuth.'
+        - 'The same as ClearFlag: asfRequireAuth.'
+        - 'The same as SetFlag: asfDisallowXRP.'
+        - 'The same as ClearFlag: asfDisallowXRP.'
+      x-generate-hex: true
+      x-generate-flag-interface: true
 
     AccountSetAsfFlag:
       type: integer
       format: uint32
       description: Enum for AccountSet Flags.
-      enum:
-        - 5
-        - 16
-        - 10
-        - 8
-        - 9
-        - 4
-        - 13
-        - 12
-        - 14
-        - 15
-        - 3
-        - 7
-        - 6
-        - 2
-        - 1
+      enum: [5, 16, 10, 8, 9, 4, 13, 12, 14, 15, 3, 7, 6, 2, 1]
       x-enum-varnames:
         - asfAccountTxnID
         - asfAllowTrustLineClawback

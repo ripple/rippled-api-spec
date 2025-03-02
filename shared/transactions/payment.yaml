@@ -34,12 +34,14 @@ components:
         SendMax:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: '(Optional) Highest amount of source currency this transaction is allowed to cost, including transfer fees, exchange rates, and slippage. Does not include the XRP destroyed as a cost for submitting the transaction. For non-XRP amounts, the nested field names MUST be lower-case. Must be supplied for cross-currency/cross-issue payments. Must be omitted for XRP-to-XRP payments.'
+        Flags:
+          $ref: '#/components/schemas/PaymentFlag'
       required:
         - TransactionType
         - Destination
         - Amount
-      x-supported-flags:
-        $ref: '#/components/schemas/PaymentFlag'
+      x-generate-enum-in-model:
+        - PaymentFlag
 
     PathStep:
       $id: PathStep
@@ -67,15 +69,18 @@ components:
     PaymentFlag:
       type: integer
       format: uint32
-      name: PaymentFlag
       description: Enum for Payment Transaction Flags.
-      flags:
-        - name: tfNoRippleDirect
-          description: Do not use the default path; only use paths included in the Paths field. This is intended to force the transaction to take arbitrage opportunities. Most clients do not need this.
-          hexValue: '0x00010000'
-        - name: tfPartialPayment
-          description: If the specified Amount cannot be sent without spending more than SendMax, reduce the received amount instead of failing outright. See Partial Payments for more details.
-          hexValue: '0x00020000'
-        - name: tfLimitQuality
-          description: Only take paths where all the conversions have an input:output ratio that is equal or better than the ratio of Amount:SendMax. See Limit Quality for details.
-          hexValue: '0x00040000'
+      enum:
+        - 0x00010000
+        - 0x00020000
+        - 0x00040000
+      x-enum-varnames:
+        - tfNoRippleDirect
+        - tfPartialPayment
+        - tfLimitQuality
+      x-enum-descriptions:
+        - Do not use the default path; only use paths included in the Paths field. This is intended to force the transaction to take arbitrage opportunities. Most clients do not need this.
+        - If the specified Amount cannot be sent without spending more than SendMax, reduce the received amount instead of failing outright. See Partial Payments for more details.
+        - Only take paths where all the conversions have an input:output ratio that is equal or better than the ratio of Amount:SendMax. See Limit Quality for details.
+      x-generate-hex: true
+      x-generate-flag-interface: true
