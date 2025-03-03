@@ -41,32 +41,48 @@ components:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) How many of the AMM's LP Tokens to redeem.
+        Flags:
+          $ref: '#/components/schemas/AMMWithdrawFlag'
       x-custom-validation:
         dependentPresence:
           - dependentField: Amount2
             requiredField: Amount
           - dependentField: EPrice
             requiredField: Amount
+      x-generate-enum-in-model:
+        - AMMWithdrawFlag
+
     AMMWithdrawFlag:
-      $id: AMMWithdrawFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for AMMWithdraw Transaction Flags.
       enum:
-        - tfLPToken: 0x00010000
-        - tfWithdrawAll: 0x00020000
-        - tfOneAssetWithdrawAll: 0x00040000
-        - tfSingleAsset: 0x00080000
-        - tfTwoAsset: 0x00100000
-        - tfOneAssetLPToken: 0x00200000
-        - tfLimitLPToken: 0x00400000
-      description: Enum representing flags for AMMWithdraw transactions.
+        - 0x00010000
+        - 0x00020000
+        - 0x00040000
+        - 0x00080000
+        - 0x00100000
+        - 0x00200000
+        - 0x00400000
+      x-enum-varnames:
+        - tfLPToken
+        - tfWithdrawAll
+        - tfOneAssetWithdrawAll
+        - tfSingleAsset
+        - tfTwoAsset
+        - tfOneAssetLPToken
+        - tfLimitLPToken
       x-enum-descriptions:
-        tfLPToken: Perform a double-asset withdrawal and receive the specified amount of LP Tokens.
-        tfWithdrawAll: Perform a double-asset withdrawal returning all your LP Tokens.
-        tfOneAssetWithdrawAll: Perform a single-asset withdrawal returning all of your LP Tokens.
-        tfSingleAsset: Perform a single-asset withdrawal with a specified amount of the asset to withdraw.
-        tfTwoAsset: Perform a double-asset withdrawal with specified amounts of both assets.
-        tfOneAssetLPToken: Perform a single-asset withdrawal and receive the specified amount of LP Tokens.
-        tfLimitLPToken: Perform a single-asset withdrawal with a specified effective price.
+        - Perform a double-asset withdrawal and receive the specified amount of LP Tokens.
+        - Perform a double-asset withdrawal returning all your LP Tokens.
+        - Perform a single-asset withdrawal returning all of your LP Tokens.
+        - Perform a single-asset withdrawal with a specified amount of the asset to withdraw.
+        - Perform a double-asset withdrawal with specified amounts of both assets.
+        - Perform a single-asset withdrawal and receive the specified amount of LP Tokens.
+        - Perform a single-asset withdrawal with a specified effective price.
+      x-generate-hex: true
+      x-generate-flag-interface: true
+
     AMMWithdrawErrorCode:
       $id: AMMWithdrawErrorCode
       type: string

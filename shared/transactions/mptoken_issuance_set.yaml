@@ -20,17 +20,27 @@ components:
           description: |
             (Optional) XRPL Address of an individual token holder balance to lock/unlock. If omitted, this
             transaction applies to all any accounts holding MPTs.
+        Flags:
+          $ref: '#/components/schemas/MPTokenIssuanceSetFlag'
       x-custom-validation:
         flagConflict:
           - flag1: tfMPTLock
             flag2: tfMPTUnlock
+      x-generate-enum-in-model:
+        - MPTokenIssuanceSetFlag
+
     MPTokenIssuanceSetFlag:
-      $id: MPTokenIssuanceSetFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for MPTokenIssuanceSet Transaction Flags.
       enum:
-        - tfMPTLock: 0x00000001
-        - tfMPTUnlock: 0x00000002
-      description: Enum representing flags for MPTokenIssuanceSet transactions.
+        - 0x00000001
+        - 0x00000002
+      x-enum-varnames:
+        - tfMPTLock
+        - tfMPTUnlock
       x-enum-descriptions:
-        tfMPTLock: If set, indicates that all MPT balances for this asset should be locked.
-        tfMPTUnlock: If set, indicates that all MPT balances for this asset should be unlocked.
+        - If set, indicates that all MPT balances for this asset should be locked.
+        - If set, indicates that all MPT balances for this asset should be unlocked.
+      x-generate-hex: true
+      x-generate-flag-interface: true

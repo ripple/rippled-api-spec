@@ -27,6 +27,8 @@ components:
             (Optional) The signature reward split between the witnesses for submitting attestations.
         XChainBridge:
           $ref: '../base.yaml#/components/schemas/XChainBridge'
+        Flags:
+          $ref: '#/components/schemas/XChainModifyBridgeFlag'
       x-custom-validation:
         flagRequireOneOf:
           flag: tfClearAccountCreateAmount
@@ -46,12 +48,18 @@ components:
           fields:
             - MinAccountCreateAmount
             - SignatureReward
+      x-generate-enum-in-model:
+        - XChainModifyBridgeFlag
 
     XChainModifyBridgeFlag:
-      $id: XChainModifyBridgeFlag
-      type: string
+      type: integer
+      format: uint32
       description: Flags for the XChainModifyBridge transaction.
       enum:
-        - name: tfClearAccountCreateAmount
-          value: 0x00010000
-          description: Clears the MinAccountCreateAmount of the bridge.
+        - 0x00010000
+      x-enum-varnames:
+        - tfClearAccountCreateAmount
+      x-enum-descriptions:
+        - Clears the MinAccountCreateAmount of the bridge.
+      x-generate-hex: true
+      x-generate-flag-interface: true

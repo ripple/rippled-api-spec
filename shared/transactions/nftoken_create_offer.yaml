@@ -43,6 +43,8 @@ components:
           description: |
             (Optional) If present, indicates that this offer may only be accepted by the specified account.
             Attempts by other accounts to accept this offer MUST fail.
+        Flags:
+          $ref: '#/components/schemas/NFTokenCreateOfferFlag'
       x-custom-validation:
         conditionalRequired:
           - field: Owner
@@ -65,13 +67,22 @@ components:
             toField: Account
           - field: Owner
             toField: Account
+      x-generate-enum-in-model:
+        - NFTokenCreateOfferFlag
+
     NFTokenCreateOfferFlag:
-      $id: NFTokenCreateOfferFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for NFTokenCreateOffer Transaction Flags.
       enum:
-        - tfSellNFToken: 0x00000001
+        - 0x00000001
+      x-enum-varnames:
+        - tfSellNFToken
       x-enum-descriptions:
-        tfSellNFToken: If enabled, indicates that the offer is a sell offer. Otherwise, it is a buy offer.
+        - If enabled, indicates that the offer is a sell offer. Otherwise, it is a buy offer.
+      x-generate-hex: true
+      x-generate-flag-interface: true
+
     NFTokenCreateOfferErrorCode:
       $id: NFTokenCreateOfferErrorCode
       type: string

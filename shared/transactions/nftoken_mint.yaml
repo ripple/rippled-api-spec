@@ -58,10 +58,7 @@ components:
             Attempts by other accounts to accept this offer MUST fail. Results in an error if the Amount field
             is not specified.
         Flags:
-          type: integer
-          format: uint32
-          description: |
-            Flags modifying the behavior of the transaction. See NFTokenMintFlag for details.
+          $ref: '#/components/schemas/NFTokenMintFlag'
       x-custom-validation:
         notEqual:
           - field: Issuer
@@ -70,20 +67,31 @@ components:
         requiredFlag:
           - field: TransferFee
             flag: tfTransferable
+      x-generate-enum-in-model:
+        - NFTokenMintFlag
+
     NFTokenMintFlag:
-      $id: NFTokenMintFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for NFTokenMint Transaction Flags.
       enum:
-        - tfBurnable: 0x00000001
-        - tfOnlyXRP: 0x00000002
-        - tfTrustLine: 0x00000004
-        - tfTransferable: 0x00000008
-      description: Enum representing flags for NFTokenMint transactions.
+        - 0x00000001
+        - 0x00000002
+        - 0x00000004
+        - 0x00000008
+      x-enum-varnames:
+        - tfBurnable
+        - tfOnlyXRP
+        - tfTrustLine
+        - tfTransferable
       x-enum-descriptions:
-        tfBurnable: Allow the issuer (or an entity authorized by the issuer) to destroy the minted NFToken. (The NFToken's owner can always do so.)
-        tfOnlyXRP: The minted NFToken can only be bought or sold for XRP.
-        tfTrustLine: DEPRECATED Automatically create trust lines from the issuer to hold transfer fees received from transferring the minted NFToken. The fixRemoveNFTokenAutoTrustLine amendment makes it invalid to set this flag.
-        tfTransferable: The minted NFToken can be transferred to others. If this flag is not enabled, the token can still be transferred from or to the issuer, but a transfer to the issuer must be made based on a buy offer from the issuer and not a sell offer from the NFT holder.
+        - Allow the issuer (or an entity authorized by the issuer) to destroy the minted NFToken. (The NFToken's owner can always do so.)
+        - The minted NFToken can only be bought or sold for XRP.
+        - DEPRECATED Automatically create trust lines from the issuer to hold transfer fees received from transferring the minted NFToken. The fixRemoveNFTokenAutoTrustLine amendment makes it invalid to set this flag.
+        - The minted NFToken can be transferred to others. If this flag is not enabled, the token can still be transferred from or to the issuer, but a transfer to the issuer must be made based on a buy offer from the issuer and not a sell offer from the NFT holder.
+      x-generate-hex: true
+      x-generate-flag-interface: true
+
     NFTokenMintErrorCode:
       $id: NFTokenMintErrorCode
       type: string

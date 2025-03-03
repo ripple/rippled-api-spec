@@ -52,6 +52,8 @@ components:
             equivalent to 0.001%. The maximum value is 1000, indicating a 1% fee.
           minimum: 0
           maximum: 1000
+        Flags:
+          $ref: '#/components/schemas/AMMDepositFlag'
       x-custom-validation:
         dependentPresence:
           - dependentField: Amount2
@@ -62,25 +64,37 @@ components:
           - fields:
               - LPTokenOut
               - Amount
+      x-generate-enum-in-model:
+        - AMMDepositFlag
 
     AMMDepositFlag:
-      $id: AMMDepositFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for AMMDeposit Transaction Flags.
       enum:
-        - tfLPToken: 0x00010000
-        - tfTwoAsset: 0x00100000
-        - tfTwoAssetIfEmpty: 0x00800000
-        - tfSingleAsset: 0x00080000
-        - tfOneAssetLPToken: 0x00200000
-        - tfLimitLPToken: 0x00400000
-      description: Enum representing flags for AMMDeposit transactions.
+        - 0x00010000
+        - 0x00100000
+        - 0x00800000
+        - 0x00080000
+        - 0x00200000
+        - 0x00400000
+      x-enum-varnames:
+        - tfLPToken
+        - tfTwoAsset
+        - tfTwoAssetIfEmpty
+        - tfSingleAsset
+        - tfOneAssetLPToken
+        - tfLimitLPToken
       x-enum-descriptions:
-        tfLPToken: Deposit both of this AMM's assets, in amounts calculated so that you receive the specified amount of LP Tokens in return. The amounts deposited maintain the relative proportions of the two assets the AMM already holds.
-        tfTwoAsset: Deposit both of this AMM's assets, up to the specified amounts. The actual amounts deposited must maintain the same balance of assets as the AMM already holds, so the amount of either one deposited MAY be less than specified. The amount of LP Tokens you get in return is based on the total value deposited.
-        tfTwoAssetIfEmpty: Deposit both of this AMM's assets, in exactly the specified amounts, to an AMM with an empty asset pool. The amount of LP Tokens you get in return is based on the total value deposited.
-        tfSingleAsset: Deposit exactly the specified amount of one asset, and receive an amount of LP Tokens based on the resulting share of the pool (minus fees).
-        tfOneAssetLPToken: Deposit up to the specified amount of one asset, so that you receive exactly the specified amount of LP Tokens in return (after fees).
-        tfLimitLPToken: Deposit up to the specified amount of one asset, but pay no more than the specified effective price per LP Token (after fees).
+        - Deposit both of this AMM's assets, in amounts calculated so that you receive the specified amount of LP Tokens in return. The amounts deposited maintain the relative proportions of the two assets the AMM already holds.
+        - Deposit both of this AMM's assets, up to the specified amounts. The actual amounts deposited must maintain the same balance of assets as the AMM already holds, so the amount of either one deposited MAY be less than specified. The amount of LP Tokens you get in return is based on the total value deposited.
+        - Deposit both of this AMM's assets, in exactly the specified amounts, to an AMM with an empty asset pool. The amount of LP Tokens you get in return is based on the total value deposited.
+        - Deposit exactly the specified amount of one asset, and receive an amount of LP Tokens based on the resulting share of the pool (minus fees).
+        - Deposit up to the specified amount of one asset, so that you receive exactly the specified amount of LP Tokens in return (after fees).
+        - Deposit up to the specified amount of one asset, but pay no more than the specified effective price per LP Token (after fees).
+      x-generate-hex: true
+      x-generate-flag-interface: true
+
     AMMDepositErrorCode:
       $id: AMMDepositErrorCode
       type: string
