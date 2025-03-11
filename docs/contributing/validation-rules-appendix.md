@@ -274,27 +274,33 @@ x-custom-validation:
         - Amount
 ```
 
-### **conditionalRequired / conditionalForbidden**
+### **conditionalRequiredFlag / conditionalForbiddenFlag**
 
-Verifies a set of fields must (must not) be set if a field/flag is set.
+Verifies a field must (must not) be set if a flag is set/not set.
 
 **Example (conditionalRequired):**
 
+If tfSellNFToken is not set then Owner field must be present.
+
 ```yaml
-conditionalRequired:
-  - field: NFTokenBrokerFee
-    requires:
-      - NFTokenSellOffer
-      - NFTokenBuyOffer
+conditionalRequiredFlag:
+  - requiresFlag: tfSellNFToken
+    condition: false
+    field: Owner
+    message: 'Must be present for buy offers.'
 ```
 
-**Example (conditionalForbidden):**
+**Example (conditionalForbiddenFlag):**
+
+
+If tfSellNFToken is set then Owner field must be absent.
 
 ```yaml
-conditionalForbidden:
-  - field: Flags.tfSellNFToken
-    forbids:
-      - field: Owner
+conditionalForbiddenFlag:
+  - requiresFlag: tfSellNFToken
+    condition: true
+    field: Owner
+    message: 'Must not be present for sell offers.'
 ```
 
 ### **greaterThan / lessThan**
