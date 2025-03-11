@@ -27,7 +27,7 @@ components:
           description: |
             Identifies the NFToken object that the offer references.
         Amount:
-          type: object
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             Indicates the amount expected or offered for the corresponding NFToken. The amount must be non-zero,
             except where this is an offer to sell and the asset is XRP; then, it is legal to specify an amount of zero,
@@ -56,7 +56,7 @@ components:
             requiresFlag: tfSellNFToken
             condition: true
             message: 'Must not be present for sell offers.'
-        greaterThan:
+        conditionalGreaterThan:
           - field: Amount
             requiresFlag: tfSellNFToken
             condition: false
