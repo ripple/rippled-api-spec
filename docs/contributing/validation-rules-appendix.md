@@ -274,29 +274,6 @@ x-custom-validation:
         - Amount
 ```
 
-### **conditionalRequired / conditionalForbidden**
-
-Verifies a set of fields must (must not) be set if a field/flag is set.
-
-**Example (conditionalRequired):**
-
-```yaml
-conditionalRequired:
-  - field: NFTokenBrokerFee
-    requires:
-      - NFTokenSellOffer
-      - NFTokenBuyOffer
-```
-
-**Example (conditionalForbidden):**
-
-```yaml
-conditionalForbidden:
-  - field: Flags.tfSellNFToken
-    forbids:
-      - field: Owner
-```
-
 ### **greaterThan / lessThan**
 
 Ensures a field is strictly greater or less than a value.
