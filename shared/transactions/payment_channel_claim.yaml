@@ -52,20 +52,25 @@ components:
           description: |
             (Optional) The signature of this claim, as hexadecimal. The signed message contains the channel ID and the amount of the claim. Required unless the sender of the transaction is the source address of the channel.
         Flags:
-          type: integer
-          format: uint32
-          description: |
-            Flags modifying the behavior of the transaction. See PaymentChannelClaimFlag for details.
+          $ref: '#/components/schemas/PaymentChannelClaimFlag'
       x-custom-validation:
         validCredentials:
           field: CredentialIDs
+      x-generate-enum-in-model:
+        - PaymentChannelClaimFlag
+
     PaymentChannelClaimFlag:
-      $id: PaymentChannelClaimFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for PaymentChannelClaim Transaction Flags.
       enum:
-        - tfRenew: 0x00010000
-        - tfClose: 0x00020000
-      description: Enum representing flags for PaymentChannelClaim transactions.
+        - 0x00010000
+        - 0x00020000
+      x-enum-varnames:
+        - tfRenew
+        - tfClose
       x-enum-descriptions:
-        tfRenew: Clear the channel's Expiration time. Only the source address of the payment channel can use this flag.
-        tfClose: Request to close the channel. Only the channel source and destination addresses can use this flag. This flag closes the channel immediately if it has no more XRP allocated after processing the current claim, or if the destination address uses it. If the source address uses this flag when the channel still holds XRP, this schedules the channel to close after SettleDelay seconds have passed.
+        - Clear the channel's Expiration time. Only the source address of the payment channel can use this flag.
+        - Request to close the channel. Only the channel source and destination addresses can use this flag. This flag closes the channel immediately if it has no more XRP allocated after processing the current claim, or if the destination address uses it. If the source address uses this flag when the channel still holds XRP, this schedules the channel to close after SettleDelay seconds have passed.
+      x-generate-hex: true
+      x-generate-flag-interface: true

@@ -25,16 +25,25 @@ components:
           description: |
             (Optional) Specifies the holder's address that the issuer wants to authorize. Only used for
             authorization/allow-listing; must be empty if submitted by the holder.
+        Flags:
+          $ref: '#/components/schemas/MPTokenAuthorizeFlag'
+      x-generate-enum-in-model:
+        - MPTokenAuthorizeFlag
+
     MPTokenAuthorizeFlag:
-      $id: MPTokenAuthorizeFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for MPTokenAuthorize Transaction Flags.
       enum:
-        - tfMPTUnauthorize: 0x00000001
-      description: Enum representing flags for MPTokenAuthorize transactions.
+        - 0x00000001
+      x-enum-varnames:
+        - tfMPTUnauthorize
       x-enum-descriptions:
-        tfMPTUnauthorize: |
+        - |
           If set, and transaction is submitted by a holder, it indicates that the holder no longer wants to
           hold the MPToken, which will be deleted as a result. If the holder's MPToken has a non-zero balance
           while trying to set this flag, the transaction fails. On the other hand, if set, and transaction is
           submitted by an issuer, it would mean that the issuer wants to unauthorize the holder (only applicable
           for allow-listing), which would unset the lsfMPTAuthorized flag on the MPToken.
+      x-generate-hex: true
+      x-generate-flag-interface: true

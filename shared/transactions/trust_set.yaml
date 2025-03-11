@@ -26,22 +26,36 @@ components:
           description: |
             (Optional) Value outgoing balances on this trust line at the ratio of this number per
             1,000,000,000 units. A value of 0 is shorthand for treating balances at face value.
+        Flags:
+          $ref: '#/components/schemas/TrustSetFlag'
+      x-generate-enum-in-model:
+        - TrustSetFlag
+
     TrustSetFlag:
-      $id: TrustSetFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for TrustSet Transaction Flags.
       enum:
-        - tfSetfAuth: 0x00010000
-        - tfSetNoRipple: 0x00020000
-        - tfClearNoRipple: 0x00040000
-        - tfSetFreeze: 0x00100000
-        - tfClearFreeze: 0x00200000
-      description: Enum representing flags for TrustSet transactions.
+        - 0x00010000
+        - 0x00020000
+        - 0x00040000
+        - 0x00100000
+        - 0x00200000
+      x-enum-varnames:
+        - tfSetfAuth
+        - tfSetNoRipple
+        - tfClearNoRipple
+        - tfSetFreeze
+        - tfClearFreeze
       x-enum-descriptions:
-        tfSetfAuth: Authorize the other party to hold currency issued by this account. (No effect unless using the asfRequireAuth AccountSet flag.) Cannot be unset.
-        tfSetNoRipple: Enable the No Ripple flag, which blocks rippling between two trust lines of the same currency if this flag is enabled on both.
-        tfClearNoRipple: Disable the No Ripple flag, allowing rippling on this trust line.
-        tfSetFreeze: Freeze the trust line.
-        tfClearFreeze: Unfreeze the trust line.
+        - Authorize the other party to hold currency issued by this account. (No effect unless using the asfRequireAuth AccountSet flag.) Cannot be unset.
+        - Enable the No Ripple flag, which blocks rippling between two trust lines of the same currency if this flag is enabled on both.
+        - Disable the No Ripple flag, allowing rippling on this trust line.
+        - Freeze the trust line.
+        - Unfreeze the trust line.
+      x-generate-hex: true
+      x-generate-flag-interface: true
+
     TrustSetErrorCode:
       $id: TrustSetErrorCode
       type: string

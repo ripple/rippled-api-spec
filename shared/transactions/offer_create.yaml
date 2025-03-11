@@ -29,20 +29,33 @@ components:
           $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The amount and type of currency being bought.
+        Flags:
+          $ref: '#/components/schemas/OfferCreateFlag'
+      x-generate-enum-in-model:
+        - OfferCreateFlag
+
     OfferCreateFlag:
-      $id: OfferCreateFlag
-      type: string
+      type: integer
+      format: uint32
+      description: Enum for OfferCreate Transaction Flags.
       enum:
-        - tfPassive: 0x00010000
-        - tfImmediateOrCancel: 0x00020000
-        - tfFillOrKill: 0x00040000
-        - tfSell: 0x00080000
-      description: Enum representing flags for OfferCreate transactions.
+        - 0x00010000
+        - 0x00020000
+        - 0x00040000
+        - 0x00080000
+      x-enum-varnames:
+        - tfPassive
+        - tfImmediateOrCancel
+        - tfFillOrKill
+        - tfSell
       x-enum-descriptions:
-        tfPassive: If enabled, the Offer does not consume Offers that exactly match it, and instead becomes an Offer object in the ledger. It still consumes Offers that cross it.
-        tfImmediateOrCancel: 'Treat the Offer as an Immediate or Cancel order. The Offer never creates an Offer object in the ledger: it only trades as much as it can by consuming existing Offers at the time the transaction is processed. If no Offers match, it executes "successfully" without trading anything. In this case, the transaction still uses the result code tesSUCCESS.'
-        tfFillOrKill: Treat the offer as a Fill or Kill order. The Offer never creates an Offer object in the ledger, and is canceled if it cannot be fully filled at the time of execution. By default, this means that the owner must receive the full TakerPays amount; if the tfSell flag is enabled, the owner must be able to spend the entire TakerGets amount instead.
-        tfSell: Exchange the entire TakerGets amount, even if it means obtaining more than the TakerPays amount in exchange.
+        - If enabled, the Offer does not consume Offers that exactly match it, and instead becomes an Offer object in the ledger. It still consumes Offers that cross it.
+        - 'Treat the Offer as an Immediate or Cancel order. The Offer never creates an Offer object in the ledger: it only trades as much as it can by consuming existing Offers at the time the transaction is processed. If no Offers match, it executes "successfully" without trading anything. In this case, the transaction still uses the result code tesSUCCESS.'
+        - Treat the offer as a Fill or Kill order. The Offer never creates an Offer object in the ledger, and is canceled if it cannot be fully filled at the time of execution. By default, this means that the owner must receive the full TakerPays amount; if the tfSell flag is enabled, the owner must be able to spend the entire TakerGets amount instead.
+        - Exchange the entire TakerGets amount, even if it means obtaining more than the TakerPays amount in exchange.
+      x-generate-hex: true
+      x-generate-flag-interface: true
+
     OfferCreateErrorCode:
       $id: OfferCreateErrorCode
       type: string
