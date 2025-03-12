@@ -46,12 +46,12 @@ components:
         Flags:
           $ref: '#/components/schemas/NFTokenCreateOfferFlag'
       x-custom-validation:
-        conditionalRequiredFlag:
+        conditionalRequiredOnFlag:
           - requiresFlag: tfSellNFToken
             condition: false
             field: Owner
             message: 'Must be present for buy offers.'
-        conditionalForbiddenFlag:
+        conditionalForbiddenOnFlag:
           - requiresFlag: tfSellNFToken
             condition: true
             field: Owner

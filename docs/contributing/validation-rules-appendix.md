@@ -124,7 +124,7 @@ x-custom-validation:
 
 ### **dependentPresence**
 
-Verifies one field must be specified if the other is not empty.
+Verifies requiredFields must be specified if dependentField is not empty.
 
 **Structure:**
 
@@ -132,7 +132,9 @@ Verifies one field must be specified if the other is not empty.
 x-custom-validation:
   dependentPresence:
     - dependentField: { { fieldname } }
-      requiredField: { { fieldname } }
+      requiredFields: 
+        - { { fieldname } }
+        - { { fieldname } }
 ```
 
 **Example:**
@@ -140,8 +142,10 @@ x-custom-validation:
 ```yaml
 x-custom-validation:
   dependentPresence:
-    - dependentField: Amount2
-      requiredField: Amount
+    - dependentField: NFTokenBrokerFee
+      requiredFields:
+        - NFTokenSellOffer
+        - NFTokenBuyOffer
 ```
 
 ### **mutualExclusion**
@@ -272,29 +276,29 @@ x-custom-validation:
         - Amount
 ```
 
-### **conditionalRequiredFlag / conditionalForbiddenFlag**
+### **conditionalRequiredOnFlag / conditionalForbiddenOnFlag**
 
 Verifies a field must (must not) be set if a flag is set/not set.
 
-**Example (conditionalRequired):**
+**Example (conditionalRequiredOnFlag):**
 
 If tfSellNFToken is not set then Owner field must be present.
 
 ```yaml
-conditionalRequiredFlag:
+conditionalRequiredOnFlag:
   - requiresFlag: tfSellNFToken
     condition: false
     field: Owner
     message: 'Must be present for buy offers.'
 ```
 
-**Example (conditionalForbiddenFlag):**
+**Example (conditionalForbiddenOnFlag):**
 
 
 If tfSellNFToken is set then Owner field must be absent.
 
 ```yaml
-conditionalForbiddenFlag:
+conditionalForbiddenOnFlag:
   - requiresFlag: tfSellNFToken
     condition: true
     field: Owner

@@ -46,9 +46,11 @@ components:
       x-custom-validation:
         dependentPresence:
           - dependentField: Amount2
-            requiredField: Amount
+            requiredFields:
+              - Amount
           - dependentField: EPrice
-            requiredField: Amount
+            requiredFields:
+              - Amount
       x-generate-enum-in-model:
         - AMMWithdrawFlag
 

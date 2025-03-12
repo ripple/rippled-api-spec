@@ -28,9 +28,9 @@ components:
             of the NFToken being bought. If specified, the fee must be such that, before applying the transfer fee,
             the amount that the seller would receive is at least as much as the amount indicated in the sell offer.
       x-custom-validation:
-        conditionalRequired:
-          - field: NFTokenBrokerFee
-            requires:
+        dependentPresence:
+          - dependentField: NFTokenBrokerFee
+            requiredFields:
               - NFTokenSellOffer
               - NFTokenBuyOffer
             message: 'Must be set if using brokered mode.'

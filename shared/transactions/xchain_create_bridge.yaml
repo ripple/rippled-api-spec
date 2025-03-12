@@ -44,10 +44,6 @@ components:
           fields:
             - XChainBridge.IssuingChainIssue
             - XChainBridge.LockingChainIssue
-        conditionalRequire:
-          - field: MinAccountCreateAmount
-            condition:
-              - isIOU: XChainBridge.LockingChainIssue
         isNumericString:
           fields:
             - MinAccountCreateAmount
