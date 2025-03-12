@@ -124,7 +124,7 @@ x-custom-validation:
 
 ### **dependentPresence**
 
-Verifies one field must be specified if the other is not empty.
+Verifies requiredFields must be specified if dependentField is not empty.
 
 **Structure:**
 
@@ -132,7 +132,9 @@ Verifies one field must be specified if the other is not empty.
 x-custom-validation:
   dependentPresence:
     - dependentField: { { fieldname } }
-      requiredField: { { fieldname } }
+      requiredFields: 
+        - { { fieldname } }
+        - { { fieldname } }
 ```
 
 **Example:**
@@ -140,8 +142,10 @@ x-custom-validation:
 ```yaml
 x-custom-validation:
   dependentPresence:
-    - dependentField: Amount2
-      requiredField: Amount
+    - dependentField: NFTokenBrokerFee
+      requiredFields:
+        - NFTokenSellOffer
+        - NFTokenBuyOffer
 ```
 
 ### **mutualExclusion**
@@ -260,8 +264,6 @@ x-custom-validation:
         - fields:
             - {{fieldname}}
             - {{fieldname}}
-            …
-
 ```
 
 **Example:**
@@ -272,6 +274,35 @@ x-custom-validation:
     - fields:
         - LPTokenOut
         - Amount
+```
+
+### **conditionalRequiredOnFlag / conditionalForbiddenOnFlag**
+
+Verifies a field must (must not) be set if a flag is set/not set.
+
+**Example (conditionalRequiredOnFlag):**
+
+If tfSellNFToken is not set then Owner field must be present.
+
+```yaml
+conditionalRequiredOnFlag:
+  - requiresFlag: tfSellNFToken
+    condition: false
+    field: Owner
+    message: 'Must be present for buy offers.'
+```
+
+**Example (conditionalForbiddenOnFlag):**
+
+
+If tfSellNFToken is set then Owner field must be absent.
+
+```yaml
+conditionalForbiddenOnFlag:
+  - requiresFlag: tfSellNFToken
+    condition: true
+    field: Owner
+    message: 'Must not be present for sell offers.'
 ```
 
 ### **greaterThan / lessThan**
@@ -294,6 +325,37 @@ x-custom-validation:
   lessThan:
     - field: Amount
       value: 1000
+```
+
+### **conditionalGreaterThanOnFlag / conditionalLessThanOnFlag**
+
+Verifies a field must be greater than or less than if a flag is set/not set.
+
+**Example (conditionalGreaterThanOnFlag):**
+
+If tfSellNFToken is not set then Amount field must be greater than 0.
+
+```yaml
+conditionalGreaterThanOnFlag:
+  - requiresFlag: tfSellNFToken
+    condition: false
+    field: Amount
+    value: 0
+    message: 'Must be greater than 0 for a buy offer.'
+```
+
+**Example (conditionalLessThanOnFlag):**
+
+
+If tfSellNFToken is set then Amount field must be less than 0.
+
+```yaml
+conditionalLessThanOnFlag:
+  - requiresFlag: tfSellNFToken
+    condition: true
+    field: Amount
+    value: 0
+    message: 'Must be less than 0.'
 ```
 
 ### **matchingCurrencyType**
@@ -336,7 +398,7 @@ x-custom-validation:
 ```yaml
 x-custom-validation:
     specialValue:
-        - field: TransferRate
+      - field: TransferRate
         specialValue: 0
 ```
 

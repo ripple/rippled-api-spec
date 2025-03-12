@@ -40,10 +40,6 @@ components:
           options:
             - XChainBridge.IssuingChainDoor
             - XChainBridge.LockingChainDoor
-        dependentPresence:
-          - dependentField: MinAccountCreateAmount
-            requiredField:
-              - isIOU: XChainBridge.LockingChainIssue
         isNumericString:
           fields:
             - MinAccountCreateAmount

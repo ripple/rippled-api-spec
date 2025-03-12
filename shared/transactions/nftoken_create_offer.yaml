@@ -27,7 +27,7 @@ components:
           description: |
             Identifies the NFToken object that the offer references.
         Amount:
-          type: object
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             Indicates the amount expected or offered for the corresponding NFToken. The amount must be non-zero,
             except where this is an offer to sell and the asset is XRP; then, it is legal to specify an amount of zero,
@@ -46,20 +46,20 @@ components:
         Flags:
           $ref: '#/components/schemas/NFTokenCreateOfferFlag'
       x-custom-validation:
-        conditionalRequired:
-          - field: Owner
-            requiresFlag: tfSellNFToken
+        conditionalRequiredOnFlag:
+          - requiresFlag: tfSellNFToken
             condition: false
+            field: Owner
             message: 'Must be present for buy offers.'
-        conditionalForbidden:
-          - field: Owner
-            requiresFlag: tfSellNFToken
+        conditionalForbiddenOnFlag:
+          - requiresFlag: tfSellNFToken
             condition: true
+            field: Owner
             message: 'Must not be present for sell offers.'
-        greaterThan:
-          - field: Amount
-            requiresFlag: tfSellNFToken
+        conditionalGreaterThanOnFlag:
+          - requiresFlag: tfSellNFToken
             condition: false
+            field: Amount
             value: 0
             message: 'Must be greater than 0 for a buy offer.'
         notEqual:

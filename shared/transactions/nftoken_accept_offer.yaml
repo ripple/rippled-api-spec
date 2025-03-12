@@ -21,7 +21,7 @@ components:
           description: |
             (Optional) Identifies the NFTokenOffer that offers to buy the NFToken.
         NFTokenBrokerFee:
-          type: object
+          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) This field is only valid in brokered mode, and specifies the amount that the broker keeps
             as part of their fee for bringing the two offers together; the remaining amount is sent to the seller
@@ -30,7 +30,7 @@ components:
       x-custom-validation:
         dependentPresence:
           - dependentField: NFTokenBrokerFee
-            requiredField:
+            requiredFields:
               - NFTokenSellOffer
               - NFTokenBuyOffer
             message: 'Must be set if using brokered mode.'
