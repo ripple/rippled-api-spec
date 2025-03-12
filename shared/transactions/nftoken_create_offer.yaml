@@ -56,10 +56,10 @@ components:
             condition: true
             field: Owner
             message: 'Must not be present for sell offers.'
-        conditionalGreaterThan:
-          - field: Amount
-            requiresFlag: tfSellNFToken
+        conditionalGreaterThanOnFlag:
+          - requiresFlag: tfSellNFToken
             condition: false
+            field: Amount
             value: 0
             message: 'Must be greater than 0 for a buy offer.'
         notEqual:

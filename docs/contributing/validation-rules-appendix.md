@@ -325,6 +325,37 @@ x-custom-validation:
       value: 1000
 ```
 
+### **conditionalGreaterThanOnFlag / conditionalLessThanOnFlag**
+
+Verifies a field must be greater than or less than if a flag is set/not set.
+
+**Example (conditionalGreaterThanOnFlag):**
+
+If tfSellNFToken is not set then Amount field must be greater than 0.
+
+```yaml
+conditionalGreaterThanOnFlag:
+  - requiresFlag: tfSellNFToken
+    condition: false
+    field: Amount
+    value: 0
+    message: 'Must be greater than 0 for a buy offer.'
+```
+
+**Example (conditionalLessThanOnFlag):**
+
+
+If tfSellNFToken is set then Amount field must be less than 0.
+
+```yaml
+conditionalLessThanOnFlag:
+  - requiresFlag: tfSellNFToken
+    condition: true
+    field: Amount
+    value: 0
+    message: 'Must be less than 0.'
+```
+
 ### **matchingCurrencyType**
 
 Verifies two amount fields must be XRP-XRP or IOU-IOU.
