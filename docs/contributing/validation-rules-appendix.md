@@ -260,8 +260,6 @@ x-custom-validation:
         - fields:
             - {{fieldname}}
             - {{fieldname}}
-            …
-
 ```
 
 **Example:**
@@ -396,7 +394,7 @@ x-custom-validation:
 ```yaml
 x-custom-validation:
     specialValue:
-        - field: TransferRate
+      - field: TransferRate
         specialValue: 0
 ```
 
