@@ -94,7 +94,7 @@ components:
         - 0x00200000
       x-enum-varnames:
         - tfRequireDestTag
-        - tfOptionalDestTags
+        - tfOptionalDestTag
         - tfRequireAuth
         - tfOptionalAuth
         - tfDisallowXRP
