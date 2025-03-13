@@ -17,6 +17,8 @@ components:
             (Optional) Set of Credentials to authorize a deposit made by this transaction. Each member
             of the array must be the ledger entry ID of a Credential entry in the ledger. For details,
             see Credential IDs.
+          minItems: 1
+          maxItems: 8
         Destination:
           type: string
           description: |
