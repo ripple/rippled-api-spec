@@ -48,16 +48,19 @@ components:
       x-custom-validation:
         conditionalRequiredOnFlag:
           - requiresFlag: tfSellNFToken
+            flagField: Flags
             condition: false
             field: Owner
             message: 'Must be present for buy offers.'
         conditionalForbiddenOnFlag:
           - requiresFlag: tfSellNFToken
+            flagField: Flags
             condition: true
             field: Owner
             message: 'Must not be present for sell offers.'
         conditionalGreaterThanOnFlag:
           - requiresFlag: tfSellNFToken
+            flagField: Flags
             condition: false
             field: Amount
             value: 0

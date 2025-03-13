@@ -84,6 +84,23 @@ components:
         isDifferent:
           - field1: SetFlag
             field2: ClearFlag
+        conditionalForbiddenOnFlag:
+          - requiresFlag: asfAuthorizedNFTokenMinter
+            flagField: SetFlag
+            condition: false
+            field: NFTokenMinter
+            message: 'NFTokenMinter must not be set if asfAuthorizedNFTokenMinter is not present.'
+          - requiresFlag: asfAuthorizedNFTokenMinter
+            flagField: ClearFlag
+            condition: true
+            field: NFTokenMinter
+            message: 'NFTokenMinter must not be set if asfAuthorizedNFTokenMinter is not present.'
+        conditionalRequiredOnFlag:
+          - requiresFlag: asfAuthorizedNFTokenMinter
+            flagField: SetFlag
+            condition: true
+            field: NFTokenMinter
+            message: 'NFTokenMinter must be set if asfAuthorizedNFTokenMinter is present.'
 
     AccountSetFlag:
       type: integer

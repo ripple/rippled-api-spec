@@ -282,11 +282,12 @@ Verifies a field must (must not) be set if a flag is set/not set.
 
 **Example (conditionalRequiredOnFlag):**
 
-If tfSellNFToken is not set then Owner field must be present.
+If tfSellNFToken is not set on Flags then Owner field must be present.
 
 ```yaml
 conditionalRequiredOnFlag:
   - requiresFlag: tfSellNFToken
+    flagField: Flags
     condition: false
     field: Owner
     message: 'Must be present for buy offers.'
@@ -295,14 +296,15 @@ conditionalRequiredOnFlag:
 **Example (conditionalForbiddenOnFlag):**
 
 
-If tfSellNFToken is set then Owner field must be absent.
+If asfAuthorizedNFTokenMinter is not set on SetFlag then NFTokenMinter field must be absent.
 
 ```yaml
 conditionalForbiddenOnFlag:
-  - requiresFlag: tfSellNFToken
-    condition: true
-    field: Owner
-    message: 'Must not be present for sell offers.'
+  - requiresFlag: asfAuthorizedNFTokenMinter
+      flagField: SetFlag
+      condition: false
+      field: NFTokenMinter
+      message: 'NFTokenMinter must not be set if asfAuthorizedNFTokenMinter is not present.'
 ```
 
 ### **greaterThan / lessThan**
@@ -333,11 +335,12 @@ Verifies a field must be greater than or less than if a flag is set/not set.
 
 **Example (conditionalGreaterThanOnFlag):**
 
-If tfSellNFToken is not set then Amount field must be greater than 0.
+If tfSellNFToken is not set on Flags then Amount field must be greater than 0.
 
 ```yaml
 conditionalGreaterThanOnFlag:
   - requiresFlag: tfSellNFToken
+    flagField: Flags
     condition: false
     field: Amount
     value: 0
@@ -347,11 +350,12 @@ conditionalGreaterThanOnFlag:
 **Example (conditionalLessThanOnFlag):**
 
 
-If tfSellNFToken is set then Amount field must be less than 0.
+If tfSellNFToken is set on Flags then Amount field must be less than 0.
 
 ```yaml
 conditionalLessThanOnFlag:
   - requiresFlag: tfSellNFToken
+    flagField: Flags
     condition: true
     field: Amount
     value: 0
