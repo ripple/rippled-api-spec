@@ -80,6 +80,10 @@ components:
       x-generate-enum-in-model:
         - AccountSetFlag
         - AccountSetAsfFlag
+      x-custom-validation:
+        isDifferent:
+          - field1: SetFlag
+            field2: ClearFlag
 
     AccountSetFlag:
       type: integer
