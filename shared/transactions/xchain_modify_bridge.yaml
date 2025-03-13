@@ -40,10 +40,6 @@ components:
           options:
             - XChainBridge.IssuingChainDoor
             - XChainBridge.LockingChainDoor
-        isNumericString:
-          fields:
-            - MinAccountCreateAmount
-            - SignatureReward
       x-generate-enum-in-model:
         - XChainModifyBridgeFlag
 

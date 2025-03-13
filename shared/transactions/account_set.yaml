@@ -14,10 +14,13 @@ components:
             (Optional) Unique identifier of a flag to disable for this account.
         Domain:
           type: string
+          format: hex
           description: |
             (Optional) The domain that owns this account, as a string of hex representing the ASCII for
             the domain in lowercase. Cannot be more than 256 bytes in length.
           maxLength: 256
+          x-custom-validation:
+            isLowerCase: true
         EmailHash:
           type: string
           format: hash128
@@ -48,6 +51,8 @@ components:
             special case 0 meaning no fee.
           minimum: 1000000000
           maximum: 2000000000
+          x-custom-validation:
+            specialValue: 0
         TickSize:
           type: integer
           format: uint8
@@ -57,6 +62,8 @@ components:
             to 15 inclusive, or 0 to disable. (Added by the TickSize amendment.)
           minimum: 3
           maximum: 15
+          x-custom-validation:
+            specialValue: 0
         WalletLocator:
           type: string
           format: hash256
@@ -70,12 +77,6 @@ components:
             (Optional) Not used. This field is valid in AccountSet transactions but does nothing.
         Flags:
           $ref: '#/components/schemas/AccountSetFlag'
-      x-custom-validation:
-        specialValue:
-          - field: TransferRate
-            specialValue: 0
-          - field: TickSize
-            specialValue: 0
       x-generate-enum-in-model:
         - AccountSetFlag
         - AccountSetAsfFlag
