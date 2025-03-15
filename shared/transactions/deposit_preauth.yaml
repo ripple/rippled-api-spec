@@ -53,7 +53,7 @@ components:
             (Required) The issuer of the credential.
         CredentialType:
           type: string
-          format: hexadecimal
+          format: hex
           description: |
             (Required) The credential type of the credential.
     DepositPreauthErrorCode:
