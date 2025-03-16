@@ -50,10 +50,9 @@ components:
             (Optional) Arbitrary tag to further specify the destination for this payment channel, such as a
             hosted recipient at the destination address.
       x-custom-validation:
-        notEqual:
-          - field: Destination
-            toField: Account
-            message: 'Destination cannot be the same as the sender.'
+        isDifferent:
+          - field1: Destination
+            field2: Account
     PaymentChannelCreateErrorCode:
       $id: PaymentChannelCreateErrorCode
       type: string

@@ -42,6 +42,13 @@ components:
         - Amount
       x-generate-enum-in-model:
         - PaymentFlag
+      x-custom-validation:
+        conditionalForbiddenOnFlag:
+          - requiresFlag: tfPartialPayment
+            flagField: Flags
+            condition: false
+            field: DeliverMin
+            message: 'DeliverMin must not be set if tfPartialPayment is not present.'
 
     PathStep:
       $id: PathStep

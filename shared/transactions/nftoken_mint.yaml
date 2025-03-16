@@ -60,13 +60,15 @@ components:
         Flags:
           $ref: '#/components/schemas/NFTokenMintFlag'
       x-custom-validation:
-        notEqual:
-          - field: Issuer
-            toField: Account
-            message: 'Must not be the same as the account.'
-        requiredFlag:
-          - field: TransferFee
-            flag: tfTransferable
+        isDifferent:
+          - field1: Issuer
+            field2: Account
+        conditionalRequiredOnFlag:
+          - requiresFlag: tfTransferable
+            flagField: Flags
+            condition: true
+            field: TransferFee
+            message: 'TransferFee must be present if tfTransferable is set.'
       x-generate-enum-in-model:
         - NFTokenMintFlag
 
