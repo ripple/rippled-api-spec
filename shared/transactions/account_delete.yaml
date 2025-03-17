@@ -19,6 +19,7 @@ components:
             see Credential IDs.
           minItems: 1
           maxItems: 8
+          uniqueItems: true
         Destination:
           type: string
           description: |
