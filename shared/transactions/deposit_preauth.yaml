@@ -31,7 +31,7 @@ components:
             (Optional) A set of credentials whose preauthorization should be revoked. (Requires the
             Credentials amendment.)
       x-custom-validation:
-        requireOneOf:
+        requireExactlyOne:
           - fields:
               - Authorize
               - AuthorizeCredentials

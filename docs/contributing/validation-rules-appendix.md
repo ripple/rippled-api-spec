@@ -261,9 +261,10 @@ Verify at least one within a set of fields is required.
 ```yaml
 x-custom-validation:
     requireOneOf:
-        - fields:
-            - {{fieldname}}
-            - {{fieldname}}
+      - fields:
+          - {{fieldname}}
+          - {{fieldname}}
+        message: 'Require at-least one of these fields.'
 ```
 
 **Example:**
@@ -274,7 +275,38 @@ x-custom-validation:
     - fields:
         - LPTokenOut
         - Amount
+      message: 'Require at-least one of these LPTokenOut or Amount.'
 ```
+
+
+### **requireExactlyOne**
+
+Verifies that exactly one field is present.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+    requireExactlyOne:
+      - fields:
+          - {{fieldname}}
+          - {{fieldname}}
+        message: 'Exactly one field must be present.'
+```
+
+**Example:**
+
+```yaml
+x-custom-validation:
+  requireExactlyOne:
+    - fields:
+        - Authorize
+        - AuthorizeCredentials
+        - Unauthorize
+        - UnauthorizeCredentials
+      message: 'You must provide exactly one of Authorize, AuthorizeCredentials, Unauthorize, or UnauthorizeCredentials.'
+```
+
 
 ### **conditionalRequiredOnFlag / conditionalForbiddenOnFlag**
 
@@ -301,10 +333,10 @@ If asfAuthorizedNFTokenMinter is not set on SetFlag then NFTokenMinter field mus
 ```yaml
 conditionalForbiddenOnFlag:
   - requiresFlag: asfAuthorizedNFTokenMinter
-      flagField: SetFlag
-      condition: false
-      field: NFTokenMinter
-      message: 'NFTokenMinter must not be set if asfAuthorizedNFTokenMinter is not present.'
+    flagField: SetFlag
+    condition: false
+    field: NFTokenMinter
+    message: 'NFTokenMinter must not be set if asfAuthorizedNFTokenMinter is not present.'
 ```
 
 ### **greaterThan / lessThan**
