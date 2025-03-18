@@ -30,7 +30,7 @@ components:
             (Optional) Specifies the holder's address from which to claw back. The holder must already own
             an MPToken object with a non-zero balance. (Requires the MPToken amendment.)
       x-custom-validation:
-        fieldMismatch:
+        isDifferent:
           - field1: Account
             field2: Amount.Issuer
     ClawbackErrorCode:
