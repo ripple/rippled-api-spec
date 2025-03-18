@@ -62,7 +62,7 @@ components:
           - dependentField: EPrice
             requiredFields:
               - Amount
-        requireAtLeastOne:
+        requireOneOf:
           - fields:
               - LPTokenOut
               - Amount

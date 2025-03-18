@@ -49,6 +49,11 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/PriceData'
+      x-custom-validation:
+        greaterThan:
+          - field: LastUpdateTime
+            value: 946684799
+            message: 'Must be greater than 946684799'
 
     PriceData:
       $id: PriceData
@@ -72,6 +77,8 @@ components:
             The asset price after applying the Scale precision level. 
             Recommended to be provided as a hexadecimal, but decimal numbers are accepted.
             Not included if the last update transaction didn't include the BaseAsset/QuoteAsset pair.
+          x-custom-validation:
+            isNumericString: true
         Scale:
           type: integer
           description: |

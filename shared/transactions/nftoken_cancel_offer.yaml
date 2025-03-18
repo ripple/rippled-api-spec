@@ -18,7 +18,7 @@ components:
             An array of IDs of the NFTokenOffer objects to cancel (not the IDs of NFToken objects, but the IDs
             of the NFTokenOffer objects). Each entry must be a different object ID of an NFTokenOffer object;
             the transaction is invalid if the array contains duplicate entries.
-          minLength: 1
+          minItems: 1
     NFTokenCancelOfferErrorCode:
       $id: NFTokenCancelOfferErrorCode
       type: string

@@ -44,7 +44,3 @@ components:
           fields:
             - XChainBridge.IssuingChainIssue
             - XChainBridge.LockingChainIssue
-        isNumericString:
-          fields:
-            - MinAccountCreateAmount
-            - SignatureReward

@@ -15,9 +15,6 @@ components:
 
         Whenever your query returns an MPTokenIssuance transaction response, there will always be an
         mpt_issuance_id field on the Transaction Metadata page.
-      required:
-        - TransactionType
-        - Flags
       properties:
         AssetScale:
           type: integer
@@ -46,16 +43,18 @@ components:
             increase in the future. If an upper limit is required, you must specify this field.
         MPTokenMetadata:
           type: string
-          pattern: '^[0-9A-Fa-f]*$'
+          format: hex
           description: |
             Arbitrary metadata about this issuance, in hex format. The limit for this field is 1024 bytes.
-          minLength: 0
         Flags:
           $ref: '#/components/schemas/MPTokenIssuanceCreateFlag'
       x-custom-validation:
-        requiredFlag:
-          - field: TransferFee
-            flag: tfMPTCanTransfer
+        conditionalForbiddenOnFlag:
+          - requiresFlag: tfMPTCanTransfer
+            flagField: Flags
+            condition: false
+            field: TransferFee
+            message: TransferFee must not be set if tfMPTCanTransfer is not present.
       x-generate-enum-in-model:
         - MPTokenIssuanceCreateFlag
 

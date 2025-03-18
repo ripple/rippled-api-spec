@@ -12,7 +12,6 @@ components:
       properties:
         MPTokenIssuanceID:
           type: string
-          format: uint192
           description: |
             The MPTokenIssuance identifier.
         Holder:

@@ -119,6 +119,8 @@ components:
         Account:
           type: string
           description: The unique address of the account that initiated the transaction.
+          x-custom-validation:
+            isAccount: true
         TransactionType:
           type: string
           description: >
@@ -201,6 +203,8 @@ components:
       oneOf:
         - type: string
           description: 'The amount of XRP (drops), represented as a string.'
+          x-custom-validation:
+            isNumericString: true
         - $ref: '#/components/schemas/TokenAmount'
 
     TokenAmount:
@@ -215,6 +219,8 @@ components:
           type: string
           pattern: '^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'
           description: 'Quoted decimal representation of the amount of the token. This can include scientific notation, such as 1.23e11 meaning 123,000,000,000. Both e and E may be used. This can be negative when displaying balances, but negative values are disallowed in other contexts such as specifying how much to send.'
+          x-custom-validation:
+            isNumericString: true
         issuer:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'

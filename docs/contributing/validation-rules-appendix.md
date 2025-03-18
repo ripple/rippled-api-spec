@@ -51,6 +51,7 @@ TradingFee:
 ### **Array Constraints**
 
 - `minItems`, `maxItems`: Define the allowed array length.
+- `uniqueItems`: Defines the elements must be unique in the array.
 
 **Example:**
 
@@ -72,6 +73,10 @@ Reference: [Swagger OpenAPI Extensions](https://swagger.io/docs/specification/v3
 
 Users can define custom validations using vendor extensions (`x-custom-validation`), which allow adding extra constraints beyond standard OpenAPI rules.
 
+Custom validations can be applied on:
+1. Specific property
+2. Rules involving combinations of properties
+
 ### **Custom Validation Rules**
 
 Below are the available validation rules in **`x-custom-validation`**, designed based on the current `rippled` API. These rules may evolve as the API expands.
@@ -79,6 +84,8 @@ Below are the available validation rules in **`x-custom-validation`**, designed 
 ---
 
 ## **Validation Rule Definitions**
+
+## Custom Property Validations
 
 ### **isAccount**
 
@@ -88,17 +95,127 @@ Verifies a valid XRPL base58 account.
 
 ```yaml
 x-custom-validation:
-  isAccount:
-    - field: { { fieldname } }
+  isAccount: true
 ```
 
 **Example:**
 
 ```yaml
-x-custom-validation:
-  isAccount:
-    - field: OtherChainSource
+BaseTransaction:
+  type: object
+  properties:
+    Account:
+      type: string
+      x-custom-validation:
+        isAccount: true
 ```
+
+### **isNumericString**
+
+Verifies a string field must be numeric.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+  isNumericString: true
+```
+
+**Example:**
+
+```yaml
+SignatureReward:
+  type: string
+  x-custom-validation:
+    isNumericString: true
+```
+
+### **specialValue**
+
+Verifies a field can have a special value outside its range.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+  specialValue: 0
+```
+
+**Example:**
+
+```yaml
+TransferRate:
+  type: integer
+  minimum: 1000000000
+  maximum: 2000000000
+  x-custom-validation:
+    specialValue: 0
+```
+
+### **isLowerCase**
+
+Verifies a field is in lower case.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+  isLowerCase: true
+```
+
+**Example:**
+
+```yaml
+Domain:
+  type: string
+  format: hex
+  maxLength: 256
+  x-custom-validation:
+    isLowerCase: true
+```
+
+### **amountGreaterThan**
+
+Verifies Amount property is greater than a specified value.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+  amountGreaterThan: 0
+```
+
+**Example:**
+
+```yaml
+Amount:
+  type: string
+  x-custom-validation:
+    amountGreaterThan: 0
+```
+
+### **greaterThan / lessThan**
+
+Ensures a field is strictly greater or less than a value. It applies only to integer fields.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+  greaterThan: 0
+  lessThan: 1000
+```
+
+**Example (greaterThan):**
+
+```yaml
+LastUpdateTime:
+  type: integer
+  x-custom-validation:
+    greaterThan: 946684799
+```
+
+## Custom Validations Involving Multiple Properties
 
 ### **mutualPresence**
 
@@ -170,26 +287,6 @@ x-custom-validation:
       field2: DeliverMin
 ```
 
-### **validCredentials**
-
-Verifies a valid set of Credential IDs.
-
-**Structure:**
-
-```yaml
-x-custom-validation:
-  validCredentials:
-    field: { { fieldname } }
-```
-
-**Example:**
-
-```yaml
-x-custom-validation:
-  validCredentials:
-    field: CredentialIDs
-```
-
 ### **isDifferent**
 
 Verifies two fields must have different values.
@@ -212,46 +309,6 @@ x-custom-validation:
       field2: Account
 ```
 
-### **isNumericString**
-
-Verifies a string field must be numeric.
-
-**Structure:**
-
-```yaml
-x-custom-validation:
-  isNumericString:
-    - field: { { fieldname } }
-```
-
-**Example:**
-
-```yaml
-x-custom-validation:
-  isNumericString:
-    - field: Amount
-```
-
-### **notXRPAmount**
-
-Verifies an amount field must not be XRP.
-
-**Structure:**
-
-```yaml
-x-custom-validation:
-  notXRPAmount:
-    field: { { fieldname } }
-```
-
-**Example:**
-
-```yaml
-x-custom-validation:
-  notXRPAmount:
-    - field: Amount
-```
-
 ### **requireOneOf**
 
 Verify at least one within a set of fields is required.
@@ -261,9 +318,10 @@ Verify at least one within a set of fields is required.
 ```yaml
 x-custom-validation:
     requireOneOf:
-        - fields:
-            - {{fieldname}}
-            - {{fieldname}}
+      - fields:
+          - {{fieldname}}
+          - {{fieldname}}
+        message: 'Require at-least one of these fields.'
 ```
 
 **Example:**
@@ -274,7 +332,38 @@ x-custom-validation:
     - fields:
         - LPTokenOut
         - Amount
+      message: 'Require at-least one of these LPTokenOut or Amount.'
 ```
+
+
+### **requireExactlyOne**
+
+Verifies that exactly one field is present.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+    requireExactlyOne:
+      - fields:
+          - {{fieldname}}
+          - {{fieldname}}
+        message: 'Exactly one field must be present.'
+```
+
+**Example:**
+
+```yaml
+x-custom-validation:
+  requireExactlyOne:
+    - fields:
+        - Authorize
+        - AuthorizeCredentials
+        - Unauthorize
+        - UnauthorizeCredentials
+      message: 'You must provide exactly one of Authorize, AuthorizeCredentials, Unauthorize, or UnauthorizeCredentials.'
+```
+
 
 ### **conditionalRequiredOnFlag / conditionalForbiddenOnFlag**
 
@@ -282,11 +371,12 @@ Verifies a field must (must not) be set if a flag is set/not set.
 
 **Example (conditionalRequiredOnFlag):**
 
-If tfSellNFToken is not set then Owner field must be present.
+If tfSellNFToken is not set on Flags then Owner field must be present.
 
 ```yaml
 conditionalRequiredOnFlag:
   - requiresFlag: tfSellNFToken
+    flagField: Flags
     condition: false
     field: Owner
     message: 'Must be present for buy offers.'
@@ -295,36 +385,15 @@ conditionalRequiredOnFlag:
 **Example (conditionalForbiddenOnFlag):**
 
 
-If tfSellNFToken is set then Owner field must be absent.
+If asfAuthorizedNFTokenMinter is not set on SetFlag then NFTokenMinter field must be absent.
 
 ```yaml
 conditionalForbiddenOnFlag:
-  - requiresFlag: tfSellNFToken
-    condition: true
-    field: Owner
-    message: 'Must not be present for sell offers.'
-```
-
-### **greaterThan / lessThan**
-
-Ensures a field is strictly greater or less than a value.
-
-**Example (greaterThan):**
-
-```yaml
-x-custom-validation:
-  greaterThan:
-    - field: Amount
-      value: 0
-```
-
-**Example (lessThan):**
-
-```yaml
-x-custom-validation:
-  lessThan:
-    - field: Amount
-      value: 1000
+  - requiresFlag: asfAuthorizedNFTokenMinter
+    flagField: SetFlag
+    condition: false
+    field: NFTokenMinter
+    message: 'NFTokenMinter must not be set if asfAuthorizedNFTokenMinter is not present.'
 ```
 
 ### **conditionalGreaterThanOnFlag / conditionalLessThanOnFlag**
@@ -333,11 +402,12 @@ Verifies a field must be greater than or less than if a flag is set/not set.
 
 **Example (conditionalGreaterThanOnFlag):**
 
-If tfSellNFToken is not set then Amount field must be greater than 0.
+If tfSellNFToken is not set on Flags then Amount field must be greater than 0.
 
 ```yaml
 conditionalGreaterThanOnFlag:
   - requiresFlag: tfSellNFToken
+    flagField: Flags
     condition: false
     field: Amount
     value: 0
@@ -347,11 +417,12 @@ conditionalGreaterThanOnFlag:
 **Example (conditionalLessThanOnFlag):**
 
 
-If tfSellNFToken is set then Amount field must be less than 0.
+If tfSellNFToken is set on Flags then Amount field must be less than 0.
 
 ```yaml
 conditionalLessThanOnFlag:
   - requiresFlag: tfSellNFToken
+    flagField: Flags
     condition: true
     field: Amount
     value: 0
@@ -380,26 +451,24 @@ x-custom-validation:
       field2: XChainBridge.LockingChainIssue
 ```
 
-### **specialValue**
+### **notXRPAmount**
 
-Verifies a field can have a special value outside of its range.
+Verifies an amount field must not be XRP.
 
 **Structure:**
 
 ```yaml
 x-custom-validation:
-  specialValue:
-    - field: { { fieldname } }
-      specialValue: { { value } }
+  notXRPAmount:
+    field: { { fieldname } }
 ```
 
 **Example:**
 
 ```yaml
 x-custom-validation:
-    specialValue:
-      - field: TransferRate
-        specialValue: 0
+  notXRPAmount:
+    - field: Amount
 ```
 
 ---

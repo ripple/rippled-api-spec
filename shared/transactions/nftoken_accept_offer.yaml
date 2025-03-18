@@ -27,6 +27,8 @@ components:
             as part of their fee for bringing the two offers together; the remaining amount is sent to the seller
             of the NFToken being bought. If specified, the fee must be such that, before applying the transfer fee,
             the amount that the seller would receive is at least as much as the amount indicated in the sell offer.
+          x-custom-validation:
+            amountGreaterThan: 0
       x-custom-validation:
         dependentPresence:
           - dependentField: NFTokenBrokerFee
@@ -38,10 +40,6 @@ components:
           - fields:
               - NFTokenSellOffer
               - NFTokenBuyOffer
-        greaterThan:
-          - field: NFTokenBrokerFee
-            value: 0
-            message: 'Must be greater than 0; omit if there is no broker fee.'
     NFTokenAcceptOfferErrorCode:
       $id: NFTokenAcceptOfferErrorCode
       type: string

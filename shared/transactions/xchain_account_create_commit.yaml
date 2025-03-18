@@ -19,6 +19,8 @@ components:
           description: |
             The amount, in XRP, to use for account creation. This must be greater than or equal to
             the MinAccountCreateAmount specified in the Bridge ledger object.
+          x-custom-validation:
+            isNumericString: true
         Destination:
           type: string
           description: |
@@ -28,5 +30,7 @@ components:
           description: |
             (Optional) The amount, in XRP, to be used to reward the witness servers for providing signatures.
             This must match the amount on the Bridge ledger object.
+          x-custom-validation:
+            isNumericString: true
         XChainBridge:
           $ref: '../base.yaml#/components/schemas/XChainBridge'
