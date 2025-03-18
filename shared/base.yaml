@@ -119,6 +119,8 @@ components:
         Account:
           type: string
           description: The unique address of the account that initiated the transaction.
+          x-custom-validation:
+            isAccount: true
         TransactionType:
           type: string
           description: >
