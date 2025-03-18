@@ -20,6 +20,8 @@ components:
           type: string
           description: |
             Amount of XRP, in drops, to add to the channel. Must be a positive amount of XRP.
+          x-custom-validation:
+            amountGreaterThan: 0
         Expiration:
           type: integer
           format: uint32
@@ -29,11 +31,6 @@ components:
             existing Expiration of the channel. After the Expiration time, any transaction that would access
             the channel closes the channel without taking its normal action. Any unspent XRP is returned to
             the source address when the channel closes.
-      x-custom-validation:
-        greaterThan:
-          - field: Amount
-            value: 0
-            message: 'Amount must be a positive number.'
     PaymentChannelFundErrorCode:
       $id: PaymentChannelFundErrorCode
       type: string

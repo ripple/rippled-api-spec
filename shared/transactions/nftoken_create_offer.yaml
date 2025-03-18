@@ -65,11 +65,11 @@ components:
             field: Amount
             value: 0
             message: 'Must be greater than 0 for a buy offer.'
-        notEqual:
-          - field: Destination
-            toField: Account
-          - field: Owner
-            toField: Account
+        isDifferent:
+          - field1: Destination
+            field2: Account
+          - field1: Owner
+            field2: Account
       x-generate-enum-in-model:
         - NFTokenCreateOfferFlag
 
