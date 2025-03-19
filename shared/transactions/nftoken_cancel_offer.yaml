@@ -19,14 +19,21 @@ components:
             of the NFTokenOffer objects). Each entry must be a different object ID of an NFTokenOffer object;
             the transaction is invalid if the array contains duplicate entries.
           minItems: 1
+
     NFTokenCancelOfferErrorCode:
       $id: NFTokenCancelOfferErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the NFTokenCancelOffer transaction.
       enum:
+        - -273
+        - -299
+        - 139
+      x-enum-varnames:
         - temDISABLED
         - temMALFORMED
         - tecNO_PERMISSION
       x-enum-descriptions:
-        temDISABLED: The NonFungibleTokensV1 amendment is not enabled.
-        temMALFORMED: The transaction was not validly formatted. For example, the NFTokenOffers array was empty or contained more than the maximum number of offers that can be canceled at one time.
-        tecNO_PERMISSION: At least one of the IDs in the NFTokenOffers field refers to an object that cannot be canceled. For example, the sender of this transaction is not the owner or Destination of the offer, or the object was not an NFTokenOffer type object.
+        - The NonFungibleTokensV1 amendment is not enabled.
+        - The transaction was not validly formatted. For example, the NFTokenOffers array was empty or contained more than the maximum number of offers that can be canceled at one time.
+        - At least one of the IDs in the NFTokenOffers field refers to an object that cannot be canceled. For example, the sender of this transaction is not the owner or Destination of the offer, or the object was not an NFTokenOffer type object.

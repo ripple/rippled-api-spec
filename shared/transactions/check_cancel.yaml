@@ -17,13 +17,18 @@ components:
           format: hash256
           description: |
             The ID of the Check ledger object to cancel, as a 64-character hexadecimal string.
+
     CheckCancelErrorCode:
       $id: CheckCancelErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for CheckCancel transactions.
       enum:
+        - 140
+        - 139
+      x-enum-varnames:
         - tecNO_ENTRY
         - tecNO_PERMISSION
-      description: Enum representing possible error codes for CheckCancel transactions.
       x-enum-descriptions:
-        tecNO_ENTRY: If the object identified by the CheckID does not exist or is not a Check, the transaction fails.
-        tecNO_PERMISSION: If the Check is not expired and the sender of the CheckCancel transaction is not the source or destination of the Check, the transaction fails.
+        - If the object identified by the CheckID does not exist or is not a Check, the transaction fails.
+        - If the Check is not expired and the sender of the CheckCancel transaction is not the source or destination of the Check, the transaction fails.

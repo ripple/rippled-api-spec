@@ -94,15 +94,24 @@ components:
 
     OracleSetErrorCode:
       $id: OracleSetErrorCode
+      type: integer
+      format: uint32
+      description: Error codes for the OracleSet transaction.
       enum:
+        - -253
+        - 191
+        - 188
+        - 189
+        - -252
+      x-enum-varnames:
         - temARRAY_EMPTY
         - tecARRAY_TOO_LARGE
         - tecINVALID_UPDATE_TIME
         - tecTOKEN_PAIR_NOT_FOUND
         - temARRAY_TOO_LARGE
       x-enum-descriptions:
-        temARRAY_EMPTY: The PriceDataSeries has no PriceData objects.
-        tecARRAY_TOO_LARGE: The PriceDataSeries exceeds the ten PriceData objects limit.
-        tecINVALID_UPDATE_TIME: The Oracle object has an invalid LastUpdateTime value.
-        tecTOKEN_PAIR_NOT_FOUND: The token pair you're trying to delete doesn't exist in the Oracle object.
-        temARRAY_TOO_LARGE: The PriceDataSeries exceeds the ten PriceData objects limit.
+        - The PriceDataSeries has no PriceData objects.
+        - The PriceDataSeries exceeds the ten PriceData objects limit.
+        - The Oracle object has an invalid LastUpdateTime value.
+        - The token pair you're trying to delete doesn't exist in the Oracle object.
+        - The PriceDataSeries exceeds the ten PriceData objects limit.

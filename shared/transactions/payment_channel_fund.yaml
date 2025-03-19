@@ -31,10 +31,21 @@ components:
             existing Expiration of the channel. After the Expiration time, any transaction that would access
             the channel closes the channel without taking its normal action. Any unspent XRP is returned to
             the source address when the channel closes.
+
     PaymentChannelFundErrorCode:
       $id: PaymentChannelFundErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the PaymentChannelFund transaction.
       enum:
+        - 141
+        - 124
+        - 140
+        - 139
+        - 129
+        - -298
+        - -296
+      x-enum-varnames:
         - tecINSUFFICIENT_RESERVE
         - tecNO_DST
         - tecNO_ENTRY
@@ -42,12 +53,11 @@ components:
         - tecUNFUNDED
         - temBAD_AMOUNT
         - temBAD_EXPIRATION
-      description: Enum representing possible error codes for PaymentChannelFund transactions.
       x-enum-descriptions:
-        tecINSUFFICIENT_RESERVE: The sending account has less XRP than the reserve requirement.
-        tecNO_DST: The destination account of the channel has been deleted. This is only possible if the payment channel was created before the fixPayChanRecipientOwnerDir amendment became enabled (on 2020-05-01).
-        tecNO_ENTRY: The Payment Channel identified by the Channel field does not exist.
-        tecNO_PERMISSION: The sender of the transaction is not the source address for the channel.
-        tecUNFUNDED: The sending account does not have enough XRP to fund the channel with the requested amount and still meet the reserve requirement.
-        temBAD_AMOUNT: The Amount field of the transaction is invalid. The amount must be XRP and it cannot be zero or negative.
-        temBAD_EXPIRATION: The Expiration field is invalid.
+        - The sending account has less XRP than the reserve requirement.
+        - The destination account of the channel has been deleted. This is only possible if the payment channel was created before the fixPayChanRecipientOwnerDir amendment became enabled (on 2020-05-01).
+        - The Payment Channel identified by the Channel field does not exist.
+        - The sender of the transaction is not the source address for the channel.
+        - The sending account does not have enough XRP to fund the channel with the requested amount and still meet the reserve requirement.
+        - The Amount field of the transaction is invalid. The amount must be XRP and it cannot be zero or negative.
+        - The Expiration field is invalid.

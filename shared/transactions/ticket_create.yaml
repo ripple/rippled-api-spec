@@ -18,15 +18,21 @@ components:
             more than 250 Tickets after executing this transaction.
           minimum: 1
           maximum: 250
+
     TicketCreateErrorCode:
       $id: TicketCreateErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the TicketCreate transaction.
       enum:
+        - -266
+        - 121
+        - 141
+      x-enum-varnames:
         - temINVALID_COUNT
         - tecDIR_FULL
         - tecINSUFFICIENT_RESERVE
-      description: Enum representing possible error codes for TicketCreate transactions.
       x-enum-descriptions:
-        temINVALID_COUNT: The TicketCount field is invalid. It must be an integer from 1 to 250.
-        tecDIR_FULL: This transaction would cause the account to own more than the limit of 250 Tickets at a time, or more than the maximum number of ledger objects in general.
-        tecINSUFFICIENT_RESERVE: The sending account does not have enough XRP to meet the owner reserve of all the requested Tickets.
+        - The TicketCount field is invalid. It must be an integer from 1 to 250.
+        - This transaction would cause the account to own more than the limit of 250 Tickets at a time, or more than the maximum number of ledger objects in general.
+        - The sending account does not have enough XRP to meet the owner reserve of all the requested Tickets.

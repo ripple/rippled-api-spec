@@ -56,10 +56,21 @@ components:
           format: hex
           description: |
             (Required) The credential type of the credential.
+
     DepositPreauthErrorCode:
       $id: DepositPreauthErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the DepositPreauth transaction.
       enum:
+        - 149
+        - 141
+        - 140
+        - 133
+        - 138
+        - -267
+        - -273
+      x-enum-varnames:
         - tecDUPLICATE
         - tecINSUFFICIENT_RESERVE
         - tecNO_ENTRY
@@ -67,12 +78,11 @@ components:
         - tecNO_TARGET
         - temCANNOT_PREAUTH_SELF
         - temDISABLED
-      description: Enum representing possible error codes for DepositPreauth transactions.
       x-enum-descriptions:
-        tecDUPLICATE: The transaction would create a preauthorization that already exists.
-        tecINSUFFICIENT_RESERVE: The sender would not meet the reserve requirement after adding another entry to the ledger. (A DepositPreauth entry counts as one item towards the authorizer's owner reserve.)
-        tecNO_ENTRY: The transaction tried to revoke a preauthorization that does not exist in the ledger.
-        tecNO_ISSUER: One or more specified credential issuers does not exist in the ledger.
-        tecNO_TARGET: The transaction tried to authorize an account that is not a funded account in the ledger.
-        temCANNOT_PREAUTH_SELF: The address in the Authorize field is the sender of the transaction. You cannot preauthorize yourself.
-        temDISABLED: A required amendment is not enabled.
+        - The transaction would create a preauthorization that already exists.
+        - The sender would not meet the reserve requirement after adding another entry to the ledger. (A DepositPreauth entry counts as one item towards the authorizer's owner reserve.)
+        - The transaction tried to revoke a preauthorization that does not exist in the ledger.
+        - One or more specified credential issuers does not exist in the ledger.
+        - The transaction tried to authorize an account that is not a funded account in the ledger.
+        - The address in the Authorize field is the sender of the transaction. You cannot preauthorize yourself.
+        - A required amendment is not enabled.

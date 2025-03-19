@@ -60,8 +60,19 @@ components:
 
     AMMBidErrorCode:
       $id: AMMBidErrorCodes
-      type: string
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for AMMBid transactions.
       enum:
+        - 166
+        - 164
+        - 165
+        - -261
+        - -273
+        - -299
+        - -96
+        - -87
+      x-enum-varnames:
         - tecAMM_EMPTY
         - tecAMM_FAILED
         - tecAMM_INVALID_TOKENS
@@ -70,13 +81,12 @@ components:
         - temMALFORMED
         - terNO_ACCOUNT
         - terNO_AMM
-      description: Enum representing possible error codes for AMMBid transactions.
       x-enum-descriptions:
-        tecAMM_EMPTY: The AMM has no assets in its pool. In this state, you can only delete the AMM or fund it with a new deposit.
-        tecAMM_FAILED: This transaction could not win the auction, either because the sender does not hold enough LP Tokens to pay the necessary bid or because the price to win the auction was higher than the transaction's specified BidMax value.
-        tecAMM_INVALID_TOKENS: The sender of this transaction does not hold enough LP Tokens to meet the slot price.
-        temBAD_AMM_TOKENS: The specified BidMin or BidMax were not specified as the correct LP Tokens for this AMM.
-        temDISABLED: The AMM feature is not enabled on this network.
-        temMALFORMED: The transaction specified invalid options, such as a list of AuthAccounts that is too long.
-        terNO_ACCOUNT: One of the accounts specified in this request do not exist.
-        terNO_AMM: The Automated Market Maker instance for the asset pair in this transaction does not exist.
+        - The AMM has no assets in its pool. In this state, you can only delete the AMM or fund it with a new deposit.
+        - This transaction could not win the auction, either because the sender does not hold enough LP Tokens to pay the necessary bid or because the price to win the auction was higher than the transaction's specified BidMax value.
+        - The sender of this transaction does not hold enough LP Tokens to meet the slot price.
+        - The specified BidMin or BidMax were not specified as the correct LP Tokens for this AMM.
+        - The AMM feature is not enabled on this network.
+        - The transaction specified invalid options, such as a list of AuthAccounts that is too long.
+        - One of the accounts specified in this request does not exist.
+        - The Automated Market Maker instance for the asset pair in this transaction does not exist.

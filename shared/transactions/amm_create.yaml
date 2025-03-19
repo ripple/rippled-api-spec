@@ -36,8 +36,23 @@ components:
 
     AMMCreateErrorCode:
       $id: AMMCreateErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for AMMCreate transactions.
       enum:
+        - 165
+        - 149
+        - 137
+        - 122
+        - 134
+        - 135
+        - 139
+        - 162
+        - -90
+        - 0
+        - -295
+        - -273
+      x-enum-varnames:
         - tecAMM_INVALID_TOKENS
         - tecDUPLICATE
         - tecFROZEN
@@ -50,17 +65,16 @@ components:
         - temAMM_BAD_TOKENS
         - temBAD_FEE
         - temDISABLED
-      description: Enum representing possible error codes for AMMCreate transactions.
       x-enum-descriptions:
-        tecAMM_INVALID_TOKENS: Either Amount or Amount2 has a currency code that is the same as this AMM's LP Tokens would use. (This is very unlikely to occur.)
-        tecDUPLICATE: There is already another AMM for this currency pair.
-        tecFROZEN: At least one of the deposit assets (Amount or Amount2) is currently frozen.
-        tecINSUF_RESERVE_LINE: The sender of this transaction does meet the increased reserve requirement of processing this transaction, probably because they need a new trust line to hold the LP Tokens, and they don't have enough XRP to meet the additional owner reserve for a new trust line.
-        tecNO_AUTH: At least one of the deposit assets uses authorized trust lines and the sender does not have authorization to hold that asset.
-        tecNO_LINE: The sender does not have a trust line for at least one of the deposit assets.
-        tecNO_PERMISSION: At least one of the deposit assets cannot be used in an AMM. For example, the issuer has enabled Clawback support.
-        tecUNFUNDED_AMM: The sender does not hold enough of the assets specified in Amount and Amount2 to fund the AMM.
-        terNO_RIPPLE: The issuer of at least one of the assets has not enabled the Default Ripple flag.
-        temAMM_BAD_TOKENS: 'The values of Amount and Amount2 are not valid: for example, both refer to the same token.'
-        temBAD_FEE: The TradingFee value is invalid. It must be zero or a positive integer and cannot be over 1000.
-        temDISABLED: The AMM feature is not enabled on this network.
+        - Either Amount or Amount2 has a currency code that is the same as this AMM's LP Tokens would use. (This is very unlikely to occur.)
+        - There is already another AMM for this currency pair.
+        - At least one of the deposit assets (Amount or Amount2) is currently frozen.
+        - The sender of this transaction does meet the increased reserve requirement of processing this transaction, probably because they need a new trust line to hold the LP Tokens, and they don't have enough XRP to meet the additional owner reserve for a new trust line.
+        - At least one of the deposit assets uses authorized trust lines and the sender does not have authorization to hold that asset.
+        - The sender does not have a trust line for at least one of the deposit assets.
+        - At least one of the deposit assets cannot be used in an AMM. For example, the issuer has enabled Clawback support.
+        - The sender does not hold enough of the assets specified in Amount and Amount2 to fund the AMM.
+        - The issuer of at least one of the assets has not enabled the Default Ripple flag.
+        - 'The values of Amount and Amount2 are not valid: for example, both refer to the same token.'
+        - The TradingFee value is invalid. It must be zero or a positive integer and cannot be over 1000.
+        - The AMM feature is not enabled on this network.

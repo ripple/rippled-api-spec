@@ -39,21 +39,30 @@ components:
         mutualExclusion:
           - field1: Amount
             field2: DeliverMin
+
     CheckCashErrorCode:
       $id: CheckCashErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for CheckCash transactions.
       enum:
+        - 139
+        - 140
+        - 148
+        - 143
+        - -299
+        - -297
+      x-enum-varnames:
         - tecNO_PERMISSION
         - tecNO_ENTRY
         - tecEXPIRED
         - tecDST_TAG_NEEDED
         - temMALFORMED
         - temBAD_CURRENCY
-      description: Enum representing possible error codes for CheckCash transactions.
       x-enum-descriptions:
-        tecNO_PERMISSION: If the sender of the CheckCash transaction is not the Destination of the check, the transaction fails.
-        tecNO_ENTRY: If the Check identified by the CheckID field does not exist, the transaction fails.
-        tecEXPIRED: If the Check identified by the CheckID field has already expired, the transaction fails.
-        tecDST_TAG_NEEDED: If the destination of the Check has the RequireDest flag enabled but the Check, as created, does not have a destination tag, the transaction fails.
-        temMALFORMED: If the transaction specifies both Amount and DeliverMin, or omits both, the transaction fails.
-        temBAD_CURRENCY: If the Amount or DeliverMin does not match the currency (and issuer, if not XRP) of the Check, the transaction fails.
+        - If the sender of the CheckCash transaction is not the Destination of the check, the transaction fails.
+        - If the Check identified by the CheckID field does not exist, the transaction fails.
+        - If the Check identified by the CheckID field has already expired, the transaction fails.
+        - If the destination of the Check has the RequireDest flag enabled but the Check, as created, does not have a destination tag, the transaction fails.
+        - If the transaction specifies both Amount and DeliverMin, or omits both, the transaction fails.
+        - If the Amount or DeliverMin does not match the currency (and issuer, if not XRP) of the Check, the transaction fails.

@@ -58,8 +58,27 @@ components:
 
     OfferCreateErrorCode:
       $id: OfferCreateErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the OfferCreate transaction.
       enum:
+        - -276
+        - 148
+        - 150
+        - -296
+        - -283
+        - -292
+        - -275
+        - -297
+        - -294
+        - 133
+        - 137
+        - 103
+        - 135
+        - 134
+        - 123
+        - 121
+      x-enum-varnames:
         - temINVALID_FLAG
         - tecEXPIRED
         - tecKILLED
@@ -76,21 +95,20 @@ components:
         - tecNO_AUTH
         - tecINSUF_RESERVE_OFFER
         - tecDIR_FULL
-      description: Enum representing possible error codes for OfferCreate transactions.
       x-enum-descriptions:
-        temINVALID_FLAG: Occurs if the transaction specifies both tfImmediateOrCancel and tfFillOrKill.
-        tecEXPIRED: Occurs if the transaction specifies an Expiration time that has already passed.
-        tecKILLED: Occurs if the transaction specifies tfFillOrKill, and the full amount cannot be filled. If the ImmediateOfferKilled amendment is enabled, this result code also occurs when the transaction specifies tfImmediateOrCancel and executes without moving funds (previously, this would return tesSUCCESS).
-        temBAD_EXPIRATION: Occurs if the transaction contains an Expiration field that is not validly formatted.
-        temBAD_SEQUENCE: Occurs if the transaction contains an OfferSequence that is not validly formatted, or is higher than the transaction's own Sequence number.
-        temBAD_OFFER: Occurs if the Offer tries to trade XRP for XRP, or tries to trade an invalid or negative amount of a token.
-        temREDUNDANT: Occurs if the transaction specifies a token for the same token (same issuer and currency code).
-        temBAD_CURRENCY: Occurs if the transaction specifies a token with the currency code "XRP".
-        temBAD_ISSUER: Occurs if the transaction specifies a token with an invalid issuer value.
-        tecNO_ISSUER: Occurs if the transaction specifies a token whose issuer value is not a funded account in the ledger.
-        tecFROZEN: Occurs if the transaction involves a token on a frozen trust line (including local and global freezes).
-        tecUNFUNDED_OFFER: 'Occurs if the owner does not hold a positive amount of the TakerGets currency. (Exception: if TakerGets specifies a token that the owner issues, the transaction can succeed.)'
-        tecNO_LINE: Occurs if the transaction involves a token whose issuer uses Authorized Trust Lines and the necessary trust line does not exist.
-        tecNO_AUTH: Occurs if the transaction involves a token whose issuer uses Authorized Trust Lines and the trust line that would receive the tokens exists but has not been authorized.
-        tecINSUF_RESERVE_OFFER: Occurs if the owner does not have enough XRP to meet the reserve requirement of adding a new Offer object to the ledger, and the transaction did not convert any currency. (If the transaction successfully traded any amount, the transaction succeeds with the result code tesSUCCESS, but does not create an Offer object in the ledger for the rest.)
-        tecDIR_FULL: Occurs if the owner owns too many items in the ledger, or the order book contains too many Offers at the same exchange rate already.
+        - Occurs if the transaction specifies both tfImmediateOrCancel and tfFillOrKill.
+        - Occurs if the transaction specifies an Expiration time that has already passed.
+        - Occurs if the transaction specifies tfFillOrKill, and the full amount cannot be filled. If the ImmediateOfferKilled amendment is enabled, this result code also occurs when the transaction specifies tfImmediateOrCancel and executes without moving funds (previously, this would return tesSUCCESS).
+        - Occurs if the transaction contains an Expiration field that is not validly formatted.
+        - Occurs if the transaction contains an OfferSequence that is not validly formatted, or is higher than the transaction's own Sequence number.
+        - Occurs if the Offer tries to trade XRP for XRP, or tries to trade an invalid or negative amount of a token.
+        - Occurs if the transaction specifies a token for the same token (same issuer and currency code).
+        - Occurs if the transaction specifies a token with the currency code "XRP".
+        - Occurs if the transaction specifies a token with an invalid issuer value.
+        - Occurs if the transaction specifies a token whose issuer value is not a funded account in the ledger.
+        - Occurs if the transaction involves a token on a frozen trust line (including local and global freezes).
+        - 'Occurs if the owner does not hold a positive amount of the TakerGets currency. (Exception: if TakerGets specifies a token that the owner issues, the transaction can succeed.)'
+        - Occurs if the transaction involves a token whose issuer uses Authorized Trust Lines and the necessary trust line does not exist.
+        - Occurs if the transaction involves a token whose issuer uses Authorized Trust Lines and the trust line that would receive the tokens exists but has not been authorized.
+        - Occurs if the owner does not have enough XRP to meet the reserve requirement of adding a new Offer object to the ledger, and the transaction did not convert any currency. (If the transaction successfully traded any amount, the transaction succeeds with the result code tesSUCCESS, but does not create an Offer object in the ledger for the rest.)
+        - Occurs if the owner owns too many items in the ledger, or the order book contains too many Offers at the same exchange rate already.
