@@ -99,8 +99,23 @@ components:
 
     AMMDepositErrorCode:
       $id: AMMDepositErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for AMMDeposit transactions.
       enum:
+        - 166
+        - 167
+        - 164
+        - 137
+        - 122
+        - 162
+        - -261
+        - -298
+        - -295
+        - -299
+        - -96
+        - -87
+      x-enum-varnames:
         - tecAMM_EMPTY
         - tecAMM_NOT_EMPTY
         - tecAMM_FAILED
@@ -114,15 +129,15 @@ components:
         - terNO_ACCOUNT
         - terNO_AMM
       x-enum-descriptions:
-        tecAMM_EMPTY: The AMM currently holds no assets, so you cannot do a normal deposit. You must use the Empty AMM Special Case deposit instead.
-        tecAMM_NOT_EMPTY: The transaction specified tfTwoAssetIfEmpty, but the AMM was not empty.
-        tecAMM_FAILED: The conditions on the deposit could not be satisfied. For example, the requested effective price in the EPrice field is too low.
-        tecFROZEN: The transaction tried to deposit a frozen token.
-        tecINSUF_RESERVE_LINE: The sender of this transaction does meet the increased reserve requirement of processing this transaction, probably because they need a new trust line to hold the LP Tokens, and they don't have enough XRP to meet the additional owner reserve for a new trust line.
-        tecUNFUNDED_AMM: The sender does not have a high enough balance to make the specified deposit.
-        temBAD_AMM_TOKENS: The transaction specified the LP Tokens incorrectly. For example, the issuer is not the AMM's associated AccountRoot address or the currency is not the currency code for this AMM's LP Tokens, or the transaction specified this AMM's LP Tokens in one of the asset fields.
-        temBAD_AMOUNT: An amount specified in the transaction is invalid. For example, a deposit amount is negative.
-        temBAD_FEE: A fee value specified in the transaction is invalid. For example, the trading fee is outside the allowable range.
-        temMALFORMED: The transaction specified an invalid combination of fields. See AMMDeposit Modes.
-        terNO_ACCOUNT: An account specified in the request does not exist.
-        terNO_AMM: The Automated Market Maker instance for the asset pair in this transaction does not exist.
+        - The AMM currently holds no assets, so you cannot do a normal deposit. You must use the Empty AMM Special Case deposit instead.
+        - The transaction specified tfTwoAssetIfEmpty, but the AMM was not empty.
+        - The conditions on the deposit could not be satisfied. For example, the requested effective price in the EPrice field is too low.
+        - The transaction tried to deposit a frozen token.
+        - The sender of this transaction does meet the increased reserve requirement of processing this transaction, probably because they need a new trust line to hold the LP Tokens, and they don't have enough XRP to meet the additional owner reserve for a new trust line.
+        - The sender does not have a high enough balance to make the specified deposit.
+        - The transaction specified the LP Tokens incorrectly. For example, the issuer is not the AMM's associated AccountRoot address or the currency is not the currency code for this AMM's LP Tokens, or the transaction specified this AMM's LP Tokens in one of the asset fields.
+        - An amount specified in the transaction is invalid. For example, a deposit amount is negative.
+        - A fee value specified in the transaction is invalid. For example, the trading fee is outside the allowable range.
+        - The transaction specified an invalid combination of fields. See AMMDeposit Modes.
+        - An account specified in the request does not exist.
+        - The Automated Market Maker instance for the asset pair in this transaction does not exist.

@@ -28,14 +28,21 @@ components:
             (Optional) The owner of the NFToken to burn. Only used if that owner is different than the account
             sending this transaction. The issuer or authorized minter can use this field to burn NFTs that have
             the lsfBurnable flag enabled.
+
     NFTokenBurnErrorCode:
       $id: NFTokenBurnErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the NFTokenBurn transaction.
       enum:
+        - -273
+        - 160
+        - 139
+      x-enum-varnames:
         - temDISABLED
         - tecNO_ENTRY
         - tecNO_PERMISSION
       x-enum-descriptions:
-        temDISABLED: The NonFungibleTokensV1 amendment is not enabled.
-        tecNO_ENTRY: The specified TokenID was not found.
-        tecNO_PERMISSION: The account does not have permission to burn the token.
+        - The NonFungibleTokensV1 amendment is not enabled.
+        - The specified TokenID was not found.
+        - The account does not have permission to burn the token.

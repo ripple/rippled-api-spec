@@ -55,9 +55,12 @@ components:
             field2: Account
     PaymentChannelCreateErrorCode:
       $id: PaymentChannelCreateErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the PaymentChannelCreate transaction.
       enum:
+        - 139
+      x-enum-varnames:
         - tecNO_PERMISSION
-      description: Enum representing possible error codes for PaymentChannelCreate transactions.
       x-enum-descriptions:
-        tecNO_PERMISSION: The Destination account is blocking incoming payment channels.
+        - The Destination account is blocking incoming payment channels.

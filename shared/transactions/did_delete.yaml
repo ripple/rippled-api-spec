@@ -10,8 +10,12 @@ components:
 
     DIDDeleteErrorCode:
       $id: DIDDeleteErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the DIDDelete transaction.
       enum:
+        - 140
+      x-enum-varnames:
         - tecNO_ENTRY
       x-enum-descriptions:
-        tecNO_ENTRY: The account doesn't have a DID.
+        - The account doesn't have a DID.

@@ -58,9 +58,12 @@ components:
 
     TrustSetErrorCode:
       $id: TrustSetErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Error codes for the TrustSet transaction.
       enum:
+        - 139
+      x-enum-varnames:
         - tecNO_PERMISSION
-      description: Enum representing possible error codes for TrustSet transactions.
       x-enum-descriptions:
-        tecNO_PERMISSION: If the account specified in LimitAmount.issuer is blocking incoming trust lines, the transaction fails.
+        - If the account specified in LimitAmount.issuer is blocking incoming trust lines, the transaction fails.

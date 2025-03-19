@@ -38,10 +38,22 @@ components:
           format: hash256
           description: |
             (Optional) Arbitrary 256-bit hash representing a specific reason or identifier for this Check.
+
     CheckCreateErrorCode:
       $id: CheckCreateErrorCode
-      type: string
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for CheckCreate transactions.
       enum:
+        - 139
+        - -275
+        - 124
+        - 143
+        - 137
+        - 148
+        - 141
+        - 121
+      x-enum-varnames:
         - tecNO_PERMISSION
         - temREDUNDANT
         - tecNO_DST
@@ -50,13 +62,12 @@ components:
         - tecEXPIRED
         - tecINSUFFICIENT_RESERVE
         - tecDIR_FULL
-      description: Enum representing possible error codes for CheckCreate transactions.
       x-enum-descriptions:
-        tecNO_PERMISSION: If the Destination account is blocking incoming Checks, the transaction fails. (Requires the DisallowIncoming amendment)
-        temREDUNDANT: If the Destination is the sender of the transaction, the transaction fails.
-        tecNO_DST: If the Destination account does not exist in the ledger, the transaction fails.
-        tecDST_TAG_NEEDED: If the Destination account has the RequireDest flag enabled but the transaction does not include a DestinationTag field, the transaction fails.
-        tecFROZEN: If SendMax specifies a token which is frozen, the transaction fails.
-        tecEXPIRED: If the Expiration of the transaction is in the past, the transaction fails.
-        tecINSUFFICIENT_RESERVE: If the sender does not have enough XRP to meet the owner reserve after adding the Check, the transaction fails.
-        tecDIR_FULL: If either the sender or the destination of the Check cannot own more objects in the ledger, the transaction fails.
+        - If the Destination account is blocking incoming Checks, the transaction fails. (Requires the DisallowIncoming amendment)
+        - If the Destination is the sender of the transaction, the transaction fails.
+        - If the Destination account does not exist in the ledger, the transaction fails.
+        - If the Destination account has the RequireDest flag enabled but the transaction does not include a DestinationTag field, the transaction fails.
+        - If SendMax specifies a token which is frozen, the transaction fails.
+        - If the Expiration of the transaction is in the past, the transaction fails.
+        - If the sender does not have enough XRP to meet the owner reserve after adding the Check, the transaction fails.
+        - If either the sender or the destination of the Check cannot own more objects in the ledger, the transaction fails.
