@@ -35,6 +35,8 @@ components:
           description: |
             The timestamp indicating the last time the data was updated, 
             in seconds since the UNIX Epoch.
+          x-custom-validation:
+            greaterThan: 946684799
         AssetClass:
           type: string
           description: |
@@ -49,11 +51,6 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/PriceData'
-      x-custom-validation:
-        greaterThan:
-          - field: LastUpdateTime
-            value: 946684799
-            message: 'Must be greater than 946684799'
 
     PriceData:
       $id: PriceData
