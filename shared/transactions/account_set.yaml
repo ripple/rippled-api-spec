@@ -29,6 +29,7 @@ components:
             an email address to use for displaying a Gravatar image.
         MessageKey:
           type: string
+          format: hex
           description: |
             (Optional) Public key for sending encrypted messages to this account. To set the key, it must
             be exactly 33 bytes, with the first byte indicating the key type: 0x02 or 0x03 for secp256k1

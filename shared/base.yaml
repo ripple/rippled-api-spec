@@ -224,6 +224,8 @@ components:
         issuer:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
+          x-custom-validation:
+            isAccount: true
 
     Currency:
       $id: Currency
@@ -245,6 +247,8 @@ components:
         issuer:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
+          x-custom-validation:
+            isAccount: true
 
     XChainBridge:
       $id: XChainBridge

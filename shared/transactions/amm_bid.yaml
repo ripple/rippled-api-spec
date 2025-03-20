@@ -57,6 +57,8 @@ components:
           type: string
           description: |
             (Required) The address of the account to authorize.
+          x-custom-validation:
+            isAccount: true
 
     AMMBidErrorCode:
       $id: AMMBidErrorCodes
