@@ -29,11 +29,12 @@ components:
             an email address to use for displaying a Gravatar image.
         MessageKey:
           type: string
-          format: hex
           description: |
             (Optional) Public key for sending encrypted messages to this account. To set the key, it must
             be exactly 33 bytes, with the first byte indicating the key type: 0x02 or 0x03 for secp256k1
             keys, 0xED for Ed25519 keys. To remove the key, use an empty value.
+          x-custom-validation:
+            isPublicKey: true
         NFTokenMinter:
           type: string
           description: |
