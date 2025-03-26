@@ -21,12 +21,17 @@ components:
           description: |
             (Optional) Identifies the NFTokenOffer that offers to buy the NFToken.
         NFTokenBrokerFee:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) This field is only valid in brokered mode, and specifies the amount that the broker keeps
             as part of their fee for bringing the two offers together; the remaining amount is sent to the seller
             of the NFToken being bought. If specified, the fee must be such that, before applying the transfer fee,
             the amount that the seller would receive is at least as much as the amount indicated in the sell offer.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
           x-custom-validation:
             amountGreaterThan: 0
       x-custom-validation:

@@ -21,6 +21,7 @@ components:
           description: |
             Amount of XRP, in drops, to add to the channel. Must be a positive amount of XRP.
           x-custom-validation:
+            isNumericString: true
             amountGreaterThan: 0
         Expiration:
           type: integer

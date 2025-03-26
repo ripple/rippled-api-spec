@@ -17,13 +17,23 @@ components:
         - TradingFee
       properties:
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Required) The first of the two assets to fund this AMM with. This must be a positive amount.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Amount2:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Required) The second of the two assets to fund this AMM with. This must be a positive amount.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         TradingFee:
           type: integer
           format: uint16

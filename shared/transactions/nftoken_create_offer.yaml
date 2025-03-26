@@ -27,12 +27,17 @@ components:
           description: |
             Identifies the NFToken object that the offer references.
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             Indicates the amount expected or offered for the corresponding NFToken. The amount must be non-zero,
             except where this is an offer to sell and the asset is XRP; then, it is legal to specify an amount of zero,
             which means that the current owner of the token is giving it away, gratis, either to anyone at all, or to
             the account identified by the Destination field.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Expiration:
           type: integer
           format: uint32

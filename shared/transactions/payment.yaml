@@ -10,11 +10,21 @@ components:
         - $ref: '../base.yaml#/components/schemas/BaseTransaction'
       properties:
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: 'The maximum amount of currency to deliver. Partial payments can deliver less than this amount and still succeed; other payments fail unless they deliver the exact amount.'
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         DeliverMin:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: '(Optional) Minimum amount of destination currency this transaction should deliver. Only valid if this is a partial payment. For non-XRP amounts, the nested field names are lower-case.'
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Destination:
           type: string
           description: 'The unique address of the account receiving the payment.'
@@ -32,8 +42,13 @@ components:
               $ref: '#/components/schemas/PathStep'
           description: '(Optional, auto-fillable) Array of payment paths to be used for this transaction. Must be omitted for XRP-to-XRP transactions.'
         SendMax:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: '(Optional) Highest amount of source currency this transaction is allowed to cost, including transfer fees, exchange rates, and slippage. Does not include the XRP destroyed as a cost for submitting the transaction. For non-XRP amounts, the nested field names MUST be lower-case. Must be supplied for cross-currency/cross-issue payments. Must be omitted for XRP-to-XRP payments.'
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Flags:
           $ref: '#/components/schemas/PaymentFlag'
       required:

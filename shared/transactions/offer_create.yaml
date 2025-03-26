@@ -22,13 +22,23 @@ components:
           description: |
             (Optional) An Offer to delete first, specified in the same way as OfferCancel.
         TakerGets:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The amount and type of currency being sold.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         TakerPays:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The amount and type of currency being bought.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Flags:
           $ref: '#/components/schemas/OfferCreateFlag'
       x-generate-enum-in-model:

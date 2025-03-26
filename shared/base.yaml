@@ -195,18 +195,6 @@ components:
           type: string
           description: Hex value representing characters allowed in URLs. Conventionally, a unique relation (according to [RFC 5988](https://datatracker.ietf.org/doc/html/rfc5988#section-4)) that defines the format of this memo.
 
-    CurrencyAmount:
-      $id: CurrencyAmount
-      description: >
-        A CurrencyAmount is an object specifying a currency, a quantity of that currency, and the
-        counterparty (issuer) on the trustline that holds the value. For XRP, there is no counterparty.
-      oneOf:
-        - type: string
-          description: 'The amount of XRP (drops), represented as a string.'
-          x-custom-validation:
-            isNumericString: true
-        - $ref: '#/components/schemas/TokenAmount'
-
     TokenAmount:
       $id: TokenAmount
       type: object
@@ -224,6 +212,8 @@ components:
         issuer:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
+          x-custom-validation:
+            isAccount: true
 
     Currency:
       $id: Currency
@@ -245,6 +235,8 @@ components:
         issuer:
           type: string
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
+          x-custom-validation:
+            isAccount: true
 
     XChainBridge:
       $id: XChainBridge

@@ -24,17 +24,27 @@ components:
           description: |
             The ID of the Check ledger object to cash, as a 64-character hexadecimal string.
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) Redeem the Check for exactly this amount, if possible. The currency must match that
             of the SendMax of the corresponding CheckCreate transaction. You must provide either this field
             or DeliverMin.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         DeliverMin:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) Redeem the Check for at least this amount and for as much as possible. The currency
             must match that of the SendMax of the corresponding CheckCreate transaction. You must provide
             either this field or Amount.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
       x-custom-validation:
         mutualExclusion:
           - field1: Amount
