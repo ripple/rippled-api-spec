@@ -43,6 +43,9 @@ components:
             type: string
           description: |
             (Optional) Set of Credentials to authorize a deposit made by this transaction. Each member of the array must be the ledger entry ID of a Credential entry in the ledger.
+          minItems: 1
+          maxItems: 8
+          uniqueItems: true
         PublicKey:
           type: string
           description: |
@@ -53,9 +56,6 @@ components:
             (Optional) The signature of this claim, as hexadecimal. The signed message contains the channel ID and the amount of the claim. Required unless the sender of the transaction is the source address of the channel.
         Flags:
           $ref: '#/components/schemas/PaymentChannelClaimFlag'
-      x-custom-validation:
-        validCredentials:
-          field: CredentialIDs
       x-generate-enum-in-model:
         - PaymentChannelClaimFlag
 

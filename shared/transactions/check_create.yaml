@@ -17,12 +17,17 @@ components:
           description: |
             The unique address of the account that can cash the Check.
         SendMax:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             Maximum amount of source currency the Check is allowed to debit the sender, including transfer
             fees on non-XRP currencies. The Check can only credit the destination with the same currency
             (from the same issuer, for non-XRP currencies). For non-XRP amounts, the nested field names
             MUST be lower-case.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         DestinationTag:
           type: integer
           format: uint32

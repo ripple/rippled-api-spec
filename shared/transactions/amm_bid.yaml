@@ -29,15 +29,25 @@ components:
             (Required) The definition for the other asset in the AMM's pool. In JSON, this is an object
             with currency and issuer fields (omit issuer for XRP).
         BidMin:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) Pay at least this amount for the slot. Setting this value higher makes it harder
             for others to outbid you. If omitted, pay the minimum necessary to win the bid.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         BidMax:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) Pay at most this amount for the slot. If the cost to win the bid is higher than this
             amount, the transaction fails. If omitted, pay as much as necessary to win the bid.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         AuthAccounts:
           type: array
           description: |

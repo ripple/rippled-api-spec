@@ -14,10 +14,15 @@ components:
         - XChainClaimID
       properties:
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The asset to commit, and the quantity. This must match the door account's LockingChainIssue (if on the locking chain)
             or the door account's IssuingChainIssue (if on the issuing chain).
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         OtherChainDestination:
           type: string
           description: |

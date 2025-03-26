@@ -22,10 +22,15 @@ components:
         - XChainClaimID
       properties:
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The amount to claim on the destination chain. This must match the amount attested to on the attestations
             associated with this XChainClaimID.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Destination:
           type: string
           description: |

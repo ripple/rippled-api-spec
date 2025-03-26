@@ -23,24 +23,44 @@ components:
             (Required) The definition for the other asset in the AMM's pool. In JSON, this is an object
             with currency and issuer fields (omit issuer for XRP).
         Amount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) The amount of one asset to withdraw from the AMM. This must match the type of one of
             the assets (tokens or XRP) in the AMM's pool.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Amount2:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) The amount of another asset to withdraw from the AMM. If present, this must match the
             type of the other asset in the AMM's pool and cannot be the same type as Amount.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         EPrice:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) The minimum effective price, in LP Token returned, to pay per unit of the asset to
             withdraw.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         LPTokenIn:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) How many of the AMM's LP Tokens to redeem.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Flags:
           $ref: '#/components/schemas/AMMWithdrawFlag'
       x-custom-validation:

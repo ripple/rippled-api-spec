@@ -31,6 +31,9 @@ components:
           description: |
             (Optional) Set of Credentials to authorize a deposit made by this transaction. Each member of the
             array must be the ledger entry ID of a Credential entry in the ledger. For details, see Credential IDs.
+          minItems: 1
+          maxItems: 8
+          uniqueItems: true
         Fulfillment:
           type: string
           description: |
@@ -39,5 +42,3 @@ components:
         mutualPresence:
           - field1: Condition
             field2: Fulfillment
-        validCredentials:
-          field: CredentialIDs

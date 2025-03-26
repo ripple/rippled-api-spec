@@ -20,14 +20,24 @@ components:
         - XChainBridge
       properties:
         MinAccountCreateAmount:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             (Optional) The minimum amount, in XRP, required for a XChainAccountCreateCommit transaction. If this isn't present,
             the XChainAccountCreateCommit transaction will fail. This field can only be present on XRP-XRP bridges.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         SignatureReward:
-          $ref: '../base.yaml#/components/schemas/CurrencyAmount'
           description: |
             The total amount to pay the witness servers for their signatures. This amount will be split among the signers.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         XChainBridge:
           $ref: '../base.yaml#/components/schemas/XChainBridge'
       x-custom-validation:
