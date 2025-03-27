@@ -17,6 +17,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizeCredentials'
+          minItems: 1
+          maxItems: 8
+          uniqueItems: true
           description: |
             (Optional) A set of credentials to authorize. (Requires the Credentials amendment.)
         Unauthorize:
@@ -27,6 +30,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizeCredentials'
+          minItems: 1
+          maxItems: 8
+          uniqueItems: true
           description: |
             (Optional) A set of credentials whose preauthorization should be revoked. (Requires the
             Credentials amendment.)

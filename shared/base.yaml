@@ -221,9 +221,22 @@ components:
         The XRP Ledger has two kinds of money: XRP, and issued currencies. Both types have high precision, although their
         formats are different.
       oneOf:
-        - type: string
-          description: 'XRP represented as a string.'
+        - $ref: '#/components/schemas/XRP'
         - $ref: '#/components/schemas/IssuedCurrency'
+
+    XRP:
+      $id: XRP
+      properties:
+        currency:
+          type: string
+          description: ^
+            Specifies XRP as a currency, without a value. Normally, you will not use this
+            model as it does not specify an amount of XRP. In cases where you need to
+            specify an amount of XRP, you will use a string. However, for some book order
+            requests where currencies are specified without amounts, you may need to
+            specify the use of XRP, without a value. In these cases, you will use this
+            object.
+          default: XRP
 
     IssuedCurrency:
       $id: IssuedCurrency

@@ -1,0 +1,26 @@
+components:
+  schemas:
+    OracleDeleteTransaction:
+      $id: OracleDeleteTransaction
+      type: object
+      required:
+        - OracleDocumentID
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      properties:
+        OracleDocumentID:
+          type: string
+          description: |
+            A unique identifier of the price oracle for the Account.
+
+    OracleDeleteErrorCode:
+      $id: OracleDeleteErrorCode
+      type: integer
+      format: uint32
+      description: Error codes for the OracleDelete transaction.
+      enum:
+        - 140
+      x-enum-varnames:
+        - tecNO_ENTRY
+      x-enum-descriptions:
+        - The Oracle object doesn't exist.

@@ -23,8 +23,9 @@ components:
           $ref: '#/components/schemas/MPTokenIssuanceSetFlag'
       x-custom-validation:
         flagConflict:
-          - flag1: tfMPTLock
-            flag2: tfMPTUnlock
+          - flags:
+              - tfMPTLock
+              - tfMPTUnlock
       x-generate-enum-in-model:
         - MPTokenIssuanceSetFlag
 

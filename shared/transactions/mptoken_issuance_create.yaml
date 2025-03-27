@@ -44,6 +44,7 @@ components:
         MPTokenMetadata:
           type: string
           format: hex
+          minLength: 1
           description: |
             Arbitrary metadata about this issuance, in hex format. The limit for this field is 1024 bytes.
         Flags:
