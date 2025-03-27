@@ -13,16 +13,19 @@ components:
         Data:
           type: string
           format: hex
+          maxLength: 256
           description: |
             (Optional) The public attestations of identity credentials associated with the DID.
         DIDDocument:
           type: string
           format: hex
+          maxLength: 256
           description: |
             (Optional) The DID document associated with the DID.
         URI:
           type: string
           format: hex
+          maxLength: 256
           description: |
             (Optional) The Universal Resource Identifier associated with the DID.
       x-custom-validation:

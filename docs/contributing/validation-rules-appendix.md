@@ -74,6 +74,7 @@ Reference: [Swagger OpenAPI Extensions](https://swagger.io/docs/specification/v3
 Users can define custom validations using vendor extensions (`x-custom-validation`), which allow adding extra constraints beyond standard OpenAPI rules.
 
 Custom validations can be applied on:
+
 1. Specific property
 2. Rules involving combinations of properties
 
@@ -249,7 +250,7 @@ Verifies requiredFields must be specified if dependentField is not empty.
 x-custom-validation:
   dependentPresence:
     - dependentField: { { fieldname } }
-      requiredFields: 
+      requiredFields:
         - { { fieldname } }
         - { { fieldname } }
 ```
@@ -317,11 +318,11 @@ Verify at least one within a set of fields is required.
 
 ```yaml
 x-custom-validation:
-    requireOneOf:
-      - fields:
-          - {{fieldname}}
-          - {{fieldname}}
-        message: 'Require at-least one of these fields.'
+  requireOneOf:
+    - fields:
+        - { { fieldname } }
+        - { { fieldname } }
+      message: 'Require at-least one of these fields.'
 ```
 
 **Example:**
@@ -335,7 +336,6 @@ x-custom-validation:
       message: 'Require at-least one of these LPTokenOut or Amount.'
 ```
 
-
 ### **requireExactlyOne**
 
 Verifies that exactly one field is present.
@@ -344,11 +344,11 @@ Verifies that exactly one field is present.
 
 ```yaml
 x-custom-validation:
-    requireExactlyOne:
-      - fields:
-          - {{fieldname}}
-          - {{fieldname}}
-        message: 'Exactly one field must be present.'
+  requireExactlyOne:
+    - fields:
+        - { { fieldname } }
+        - { { fieldname } }
+      message: 'Exactly one field must be present.'
 ```
 
 **Example:**
@@ -363,7 +363,6 @@ x-custom-validation:
         - UnauthorizeCredentials
       message: 'You must provide exactly one of Authorize, AuthorizeCredentials, Unauthorize, or UnauthorizeCredentials.'
 ```
-
 
 ### **conditionalRequiredOnFlag / conditionalForbiddenOnFlag**
 
@@ -383,7 +382,6 @@ conditionalRequiredOnFlag:
 ```
 
 **Example (conditionalForbiddenOnFlag):**
-
 
 If asfAuthorizedNFTokenMinter is not set on SetFlag then NFTokenMinter field must be absent.
 
@@ -416,7 +414,6 @@ conditionalGreaterThanOnFlag:
 
 **Example (conditionalLessThanOnFlag):**
 
-
 If tfSellNFToken is set on Flags then Amount field must be less than 0.
 
 ```yaml
@@ -427,6 +424,32 @@ conditionalLessThanOnFlag:
     field: Amount
     value: 0
     message: 'Must be less than 0.'
+```
+
+### **flagConflict**
+
+Verifies that only one flag in the list can be set.
+
+**Structure:**
+
+```yaml
+x-custom-validation:
+  flagConflict:
+    - flagField: Flags
+      flags:
+        - { { flag1 } }
+        - { { flag2 } }
+```
+
+**Example:**
+
+```yaml
+x-custom-validation:
+  flagConflict:
+    - flagField: Flags
+      flags:
+        - tfMPTLock
+        - tfMPTUnlock
 ```
 
 ### **matchingCurrencyType**
