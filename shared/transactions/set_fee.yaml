@@ -1,0 +1,52 @@
+components:
+  schemas:
+    SetFeeTransaction:
+      $id: SetFeeTransaction
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/PseudoTransaction'
+      description: |
+        A SetFee pseudo-transaction marks a change in transaction cost or reserve requirements as a result of Fee Voting.
+      properties:
+        BaseFeeDrops:
+          type: string
+          description: |
+            	The charge, in drops of XRP, for the reference transaction. (This is the [transaction cost](https://xrpl.org/docs/concepts/transactions/transaction-cost) before scaling for load.)
+          x-custom-validation:
+            isNumericString: true
+        ReserveBaseDrops:
+          type: string
+          description: |
+            The base reserve, in drops.
+          x-custom-validation:
+            isNumericString: true
+        ReserveIncrementDrops:
+          type: string
+          description: |
+            The incremental reserve, in drops.
+          x-custom-validation:
+            isNumericString: true
+        LedgerSequence:
+          type: integer
+          format: uint32
+          description: |
+            (Omitted for some historical SetFee pseudo-transactions) The index of the ledger version where this pseudo-transaction appears. This distinguishes the pseudo-transaction from other occurrences of the same change.
+        BaseFee:
+          type: string
+          description: |
+            The charge, in drops of XRP, for the reference transaction, as hex. (This is the [transaction cost](https://xrpl.org/docs/concepts/transactions/transaction-cost) before scaling for load.)
+          x-custom-validation:
+            isNumericString: true
+        ReferenceFeeUnits:
+          type: integer
+          format: uint32
+          description: |
+            The cost, in fee units, of the reference transaction.
+        ReserveBase:
+          type: integer
+          description: |
+            The base reserve, in drops.
+        ReserveIncrement:
+          type: integer
+          description: |
+            The incremental reserve, in drops.

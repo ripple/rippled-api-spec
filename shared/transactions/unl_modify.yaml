@@ -1,0 +1,23 @@
+components:
+  schemas:
+    UNLModifyTransaction:
+      $id: UNLModifyTransaction
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/PseudoTransaction'
+      description: |
+        A UNLModify pseudo-transaction marks a change to the Negative UNL, indicating that a trusted validator has gone offline or come back online.
+      properties:
+        LedgerSequence:
+          type: integer
+          format: uint32
+          description: |
+            The ledger index where this pseudo-transaction appears. This distinguishes the pseudo-transaction from other occurrences of the same change.
+        UNLModifyDisabling:
+          type: integer
+          description: |
+            If 1, this change represents adding a validator to the Negative UNL. If 0, this change represents removing a validator from the Negative UNL. (No other values are allowed.)
+        UNLModifyValidator:
+          type: string
+          description: |
+            The validator to add or remove, as identified by its master public key.
