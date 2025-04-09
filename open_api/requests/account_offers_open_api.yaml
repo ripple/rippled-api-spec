@@ -1,0 +1,54 @@
+components:
+  schemas:
+    AccountOffersRequest:
+      type: object
+      description: >
+        The account_offers method retrieves a list of offers made by a given account that are outstanding as of a particular ledger version.
+      properties:
+        method:
+          type: string
+          enum:
+            - account_offers
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersRequest'
+      required:
+        - method
+      example:
+        method: 'account_offers'
+        params:
+          - account: 'rpP2JgiMyTF5jR5hLG3xHCPi1knBb1v9cM'
+            ledger_index: 'current'
+            limit: 200
+
+    AccountOffersResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersSuccessResponse'
+              error: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersSuccessResponse'
+            - $ref: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          account: 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn'
+          offers:
+            - flags: 0
+              quality: '0.000000007599140009999998'
+              seq: 6578020
+              taker_gets: '29740867287'
+              taker_pays:
+                currency: 'USD'
+                issuer: 'rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q'
+                value: '226.0050145327418'
+          ledger_current_index: 14380380
+          validated: false
+          status: 'success'

@@ -15,9 +15,13 @@ components:
         account:
           type: string
           description: The unique identifier of an account, typically the account's address.
+          x-custom-validation:
+            isAccount: true
         destination_account:
           type: string
           description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
+          x-custom-validation:
+            isAccount: true
         limit:
           type: number
           minimum: 10

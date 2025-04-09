@@ -13,6 +13,8 @@ components:
         account:
           type: string
           description: The account to look up trust lines for.
+          x-custom-validation:
+            isAccount: true
         peer:
           type: string
           description: (Optional) A second account; if provided, filter results to trust lines connecting the two accounts.

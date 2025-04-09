@@ -13,6 +13,8 @@ components:
         account:
           type: string
           description: The account to look up.
+          x-custom-validation:
+            isAccount: true
         queue:
           type: boolean
           description: If true, return stats about queued transactions sent by this account. Can only be used when querying for the data from the current open ledger. Not available from servers in Reporting Mode.

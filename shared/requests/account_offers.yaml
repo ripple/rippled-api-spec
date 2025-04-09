@@ -1,0 +1,131 @@
+components:
+  schemas:
+    AccountOffersRequest:
+      description: >
+        The account_offers method retrieves a list of offers made by a given account that are outstanding as of a particular ledger version.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        account:
+          type: string
+          description: Look up Offers placed by this account.
+          x-custom-validation:
+            isAccount: true
+        limit:
+          type: integer
+          description: |
+            Limit the number of Offers to retrieve. 
+            The server may return fewer than this number of results. Must be within the inclusive range 10 to 400. 
+            Positive values outside this range are replaced with the closest valid option.The default is 200.
+          minimum: 10
+          maximum: 400
+        marker:
+          type: object
+          description: Value from a previous paginated response. Resume retrieving data where that response left off.
+      required:
+        - account
+
+    AccountOffersSuccessResponse:
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            account:
+              type: string
+              description: The address of the account this request corresponds to.
+              x-custom-validation:
+                isAccount: true
+            offers:
+              type: array
+              description: |
+                Array of objects, where each object represents an offer made by this account that is outstanding as of the requested ledger version.
+                If the number of offers is large, only returns up to limit at a time.
+              items:
+                $ref: '#/components/schemas/Offer'
+            ledger_hash:
+              type: string
+              description: (May be omitted) The identifying hash of the ledger version that was used when retrieving this data.
+            ledger_index:
+              type: integer
+              description: (Omitted if ledger_current_index provided instead) The ledger index of the ledger version that was used when retrieving this data, as requested.
+            ledger_current_index:
+              type: integer
+              description: (Omitted if ledger_hash or ledger_index provided) The ledger index of the current in-progress ledger version, which was used when retrieving this data.
+            marker:
+              type: object
+              description: |
+                (May be omitted) Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off. 
+                Omitted when there are no pages of information after this one.
+            validated:
+              type: boolean
+              description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
+
+    Offer:
+      type: object
+      properties:
+        flags:
+          type: integer
+          description: Options set for this offer entry as bit-flags.
+        seq:
+          type: integer
+          description: |
+            Sequence number of the transaction that created this entry. (Transaction sequence numbers are relative to accounts.)
+        taker_gets:
+          description: |
+            The amount the account accepting the offer receives, as a String representing an amount in XRP, or a currency specification object. (See Specifying Currency Amounts)
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        taker_pays:
+          description: |
+            The amount the account accepting the offer provides, as a String representing an amount in XRP, or a currency specification object. (See Specifying Currency Amounts)
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        quality:
+          type: string
+          description: |
+            The exchange rate of the offer, as the ratio of the original taker_pays divided by the original taker_gets. 
+            When executing offers, the offer with the most favorable (lowest) quality is consumed first; offers with the same quality are executed from oldest to newest.
+          x-custom-validation:
+            isNumericString: true
+        expiration:
+          type: integer
+          description: |
+            (May be omitted) A time after which this offer is considered unfunded, as the number of seconds since the Ripple Epoch. See also: Offer Expiration.
+
+    AccountOffersErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+                - actMalformed
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The address specified in the `account` field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the `ledger_hash` or `ledger_index` does not exist, or it does exist but the server does not have it.
+            * `actMalformed` - If the `marker` field provided is not acceptable.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AccountOffersRequest'
+      required:
+        - status
+        - error
+        - request
