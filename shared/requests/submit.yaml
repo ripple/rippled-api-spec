@@ -118,6 +118,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -169,6 +171,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -235,6 +239,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -286,6 +292,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -412,6 +420,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
@@ -465,6 +475,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -527,6 +539,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
@@ -580,6 +594,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -617,6 +633,7 @@ components:
             - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateErrorCode'
             - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundErrorCode'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteErrorCode'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee
