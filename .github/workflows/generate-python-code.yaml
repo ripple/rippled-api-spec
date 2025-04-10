@@ -60,7 +60,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gh
 
-      - name: Clone xrpl-py and copy generated models
+      - name: Make a pull request to xrpl-py
         run: |
 
           git clone https://x-access-token:${GH_TOKEN}@github.com/XRPLF/xrpl-py.git
@@ -71,6 +71,8 @@ jobs:
           cp -r ./out/myRippledPythonClient/test xrpl-py/xrpl/openapi-codegen/test
 
           cd xrpl-py
+          pip install black
+          black ./xrpl/openapi-codegen || true
           git config user.name "xrpl-codegen-bot"
           git config user.email "actions@github.com"
           BRANCH="update-models-${{ github.event.release.tag_name }}"
@@ -80,7 +82,7 @@ jobs:
           git push origin $BRANCH
 
           gh pr create \
-            --title "[TEST PR - PLEASE DISREGARD] Update models from rippled-api-spec ${{ github.event.release.tag_name }}" \
-            --body "This PR includes generated models and tests based on the rippled-api-spec release \`${{ github.event.release.tag_name }}\`." \
+            --title "Update scaffolding models from rippled-api-spec ${{ github.event.release.tag_name }}" \
+            --body "This PR includes newly generated scaffolding models and tests based on the rippled-api-spec release \`${{ github.event.release.tag_name }}\`." \
             --base main \
             --head $BRANCH
