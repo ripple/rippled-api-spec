@@ -78,11 +78,11 @@ jobs:
           BRANCH="update-models-${{ github.event.release.tag_name }}"
           git checkout -b $BRANCH
           git add xrpl/openapi-codegen
-          git commit --author="xrpl-codegen-bot <actions@github.com>" -m "Update models from rippled-api-spec ${{ github.event.release.tag_name }}"
+          git commit -m "Update models from rippled-api-spec ${{ github.event.release.tag_name }}"
           git push origin $BRANCH
 
           gh pr create \
-            --title "Update scaffolding models from rippled-api-spec ${{ github.event.release.tag_name }}" \
-            --body "This PR includes newly generated scaffolding models and tests based on the rippled-api-spec release \`${{ github.event.release.tag_name }}\`." \
+            --title "[OpenAPI Codegen] Update scaffolding models from rippled-api-spec ${{ github.event.release.tag_name }}" \
+            --body "This PR includes newly generated scaffolding models and tests based on the [rippled-api-spec release ${{ github.event.release.tag_name }}](https://github.com/ripple/rippled-api-spec/releases/tag/${{ github.event.release.tag_name }})." \
             --base main \
             --head $BRANCH
