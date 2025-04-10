@@ -1,0 +1,66 @@
+components:
+  schemas:
+    GatewayBalancesRequest:
+      type: object
+      description: >
+        The gateway_balances command calculates the total balances issued by a given account, optionally excluding amounts held by operational addresses.
+      properties:
+        method:
+          type: string
+          enum:
+            - gateway_balances
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesRequest'
+      required:
+        - method
+      example:
+        method: 'gateway_balances'
+        params:
+          - account: rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
+            hotwallet:
+              - rKm4uWpg9tfwbVSeATv4KxDe6mpE9yPkgJ
+              - ra7JkEzrgeKHdzKgo4EUUVBnxggY4z37kt
+            ledger_index: validated
+            strict: true
+
+    GatewayBalancesResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesSuccessResponse'
+              error: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesSuccessResponse'
+            - $ref: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          account: rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
+          assets:
+            r9F6wk8HkXrgYWoJ7fsv4VrUBVoqDVtzkH:
+              - currency: BTC
+                value: '5444166510000000e-26'
+            rPFLkxQk6xUGdGYEykqe7PR25Gr7mLHDc8:
+              - currency: EUR
+                value: '4000000000000000e-27'
+          balances:
+            rKm4uWpg9tfwbVSeATv4KxDe6mpE9yPkgJ:
+              - currency: EUR
+                value: '29826.1965999999'
+            ra7JkEzrgeKHdzKgo4EUUVBnxggY4z37kt:
+              - currency: USD
+                value: '13857.70416'
+          ledger_hash: 980FECF48CA4BFDEC896692C31A50D484BDFE865EC101B00259C413AA3DBD672
+          ledger_index: 14483212
+          obligations:
+            BTC: '5908.324927635318'
+            EUR: '992471.7419793958'
+          status: success
+          validated: true

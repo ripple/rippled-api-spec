@@ -38,6 +38,14 @@ paths:
                   account_offers: 'requests/account_offers_open_api.yaml#/components/schemas/AccountOffersRequest'
                   account_tx: 'requests/account_tx_open_api.yaml#/components/schemas/AccountTxRequest'
                   amm_info: 'requests/amm_info_open_api.yaml#/components/schemas/AmmInfoRequest'
+                  book_changes: 'requests/book_changes_open_api.yaml#/components/schemas/BookChangesRequest'
+                  book_offers: 'requests/book_offers_open_api.yaml#/components/schemas/BookOffersRequest'
+                  channel_authorize: 'requests/channel_authorize_open_api.yaml#/components/schemas/ChannelAuthorizeRequest'
+                  channel_verify: 'requests/channel_verify_open_api.yaml#/components/schemas/ChannelVerifyRequest'
+                  deposit_authorized: 'requests/deposit_authorized_open_api.yaml#/components/schemas/DepositAuthorizedRequest'
+                  feature: 'requests/feature_open_api.yaml#/components/schemas/FeatureRequest'
+                  fee: 'requests/fee_open_api.yaml#/components/schemas/FeeRequest'
+                  gateway_balances: 'requests/gateway_balances_open_api.yaml#/components/schemas/GatewayBalancesRequest'
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
                 - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
@@ -49,6 +57,14 @@ paths:
                 - $ref: 'requests/account_offers_open_api.yaml#/components/schemas/AccountOffersRequest'
                 - $ref: 'requests/account_tx_open_api.yaml#/components/schemas/AccountTxRequest'
                 - $ref: 'requests/amm_info_open_api.yaml#/components/schemas/AmmInfoRequest'
+                - $ref: 'requests/book_changes_open_api.yaml#/components/schemas/BookChangesRequest'
+                - $ref: 'requests/book_offers_open_api.yaml#/components/schemas/BookOffersRequest'
+                - $ref: 'requests/channel_authorize_open_api.yaml#/components/schemas/ChannelAuthorizeRequest'
+                - $ref: 'requests/channel_verify_open_api.yaml#/components/schemas/ChannelVerifyRequest'
+                - $ref: 'requests/deposit_authorized_open_api.yaml#/components/schemas/DepositAuthorizedRequest'
+                - $ref: 'requests/feature_open_api.yaml#/components/schemas/FeatureRequest'
+                - $ref: 'requests/fee_open_api.yaml#/components/schemas/FeeRequest'
+                - $ref: 'requests/gateway_balances_open_api.yaml#/components/schemas/GatewayBalancesRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'
@@ -68,6 +84,14 @@ paths:
                   - $ref: 'requests/account_offers_open_api.yaml#/components/schemas/AccountOffersResponse'
                   - $ref: 'requests/account_tx_open_api.yaml#/components/schemas/AccountTxResponse'
                   - $ref: 'requests/amm_info_open_api.yaml#/components/schemas/AmmInfoResponse'
+                  - $ref: 'requests/book_changes_open_api.yaml#/components/schemas/BookChangesResponse'
+                  - $ref: 'requests/book_offers_open_api.yaml#/components/schemas/BookOffersResponse'
+                  - $ref: 'requests/channel_authorize_open_api.yaml#/components/schemas/ChannelAuthorizeResponse'
+                  - $ref: 'requests/channel_verify_open_api.yaml#/components/schemas/ChannelVerifyResponse'
+                  - $ref: 'requests/deposit_authorized_open_api.yaml#/components/schemas/DepositAuthorizedResponse'
+                  - $ref: 'requests/feature_open_api.yaml#/components/schemas/FeatureResponse'
+                  - $ref: 'requests/fee_open_api.yaml#/components/schemas/FeeResponse'
+                  - $ref: 'requests/gateway_balances_open_api.yaml#/components/schemas/GatewayBalancesResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.

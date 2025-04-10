@@ -1,0 +1,44 @@
+components:
+  schemas:
+    FeatureRequest:
+      type: object
+      description: >
+        The feature command returns information about amendments this server knows about, including whether they are enabled and if the server knows how to apply the amendments.
+      properties:
+        method:
+          type: string
+          enum:
+            - feature
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/feature.yaml#/components/schemas/FeatureRequest'
+      required:
+        - method
+      example:
+        method: 'feature'
+        params:
+          - feature: '4C97EBA926031A7CF7D7B36FDE3ED66DDA5421192D63DE53FFB46E43B9DC8373'
+
+    FeatureResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/feature.yaml#/components/schemas/FeatureSuccessResponse'
+              error: '../../shared/requests/feature.yaml#/components/schemas/FeatureErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/feature.yaml#/components/schemas/FeatureSuccessResponse'
+            - $ref: '../../shared/requests/feature.yaml#/components/schemas/FeatureErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          4C97EBA926031A7CF7D7B36FDE3ED66DDA5421192D63DE53FFB46E43B9DC8373:
+            enabled: false
+            name: MultiSign
+            supported: true
+          status: success

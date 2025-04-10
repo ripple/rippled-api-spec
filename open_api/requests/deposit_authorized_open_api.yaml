@@ -1,0 +1,55 @@
+components:
+  schemas:
+    DepositAuthorizedRequest:
+      type: object
+      description: >
+        The deposit_authorized command indicates whether one account is authorized to send payments directly to another. 
+        See Deposit Authorization for information on how to require authorization to deliver money to your account.
+      properties:
+        method:
+          type: string
+          enum:
+            - deposit_authorized
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedRequest'
+      required:
+        - method
+      example:
+        method: 'deposit_authorized'
+        params:
+          - source_account: rEhxGqkqPPSxQ3P25J66ft5TwpzV14k2de
+            destination_account: rsUiUMpnrgxQp24dJYZDhmV4bE3aBtQyt8
+            credentials:
+              - A182EFBD154C9E80195082F86C1C8952FC0760A654B886F61BB0A59803B4387B
+              - 383D269D6C7417D0A8716B09F5DB329FB17B45A5EFDBAFB82FF04BC420DCF7D5
+            ledger_index: validated
+
+    DepositAuthorizedResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedSuccessResponse'
+              error: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedErrorResponse'
+          oneOf:
+            - $ref: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedSuccessResponse'
+            - $ref: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          credentials:
+            - A182EFBD154C9E80195082F86C1C8952FC0760A654B886F61BB0A59803B4387B
+            - 383D269D6C7417D0A8716B09F5DB329FB17B45A5EFDBAFB82FF04BC420DCF7D5
+          deposit_authorized: true
+          destination_account: rsUiUMpnrgxQp24dJYZDhmV4bE3aBtQyt8
+          ledger_hash: BD03A10653ED9D77DCA859B7A735BF0580088A8F287FA2C5403E0A19C58EF322
+          ledger_index: 8
+          source_account: rEhxGqkqPPSxQ3P25J66ft5TwpzV14k2de
+          status: success
+          validated: true
