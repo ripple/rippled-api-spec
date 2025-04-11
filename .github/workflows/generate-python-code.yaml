@@ -65,11 +65,11 @@ jobs:
 
           git clone https://x-access-token:${GH_TOKEN}@github.com/XRPLF/xrpl-py.git
           mkdir -p xrpl-py/xrpl/openapi-codegen/models
-          mkdir -p xrpl-py/xrpl/openapi-codegen/test
+          mkdir -p xrpl-py/xrpl/openapi-codegen/test/transactions
           cp -r ./out/myRippledPythonClient/xrpl/models xrpl-py/xrpl/openapi-codegen/models
           rm -f xrpl-py/xrpl/openapi-codegen/models/__init__.py
           find xrpl-py/xrpl/openapi-codegen/models -type f -name '*_flag.py' -delete
-          cp -r ./out/myRippledPythonClient/test xrpl-py/xrpl/openapi-codegen/test
+          cp -r ./out/myRippledPythonClient/test/transactions/. xrpl-py/xrpl/openapi-codegen/test/transactions
 
           cd xrpl-py
           pip install black
