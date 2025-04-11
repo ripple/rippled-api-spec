@@ -1,0 +1,89 @@
+name: Generate Python Client on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  generate-and-pr:
+    runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.XRPL_CODEGEN_BOT_TOKEN }}
+
+    steps:
+      - name: Set up Java 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - name: Install Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y maven
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Checkout rippled-api-spec repo
+        uses: actions/checkout@v3
+
+      - name: Install dependencies and build spec
+        run: |
+          npm ci
+          npm run bundle
+
+      - name: Checkout openapi-codegen-xrpl
+        uses: actions/checkout@v3
+        with:
+          repository: ripple/openapi-codegen-xrpl
+          token: ${{ env.GH_TOKEN }}
+          path: codegen
+
+      - name: Build codegen
+        working-directory: codegen
+        run: mvn clean package
+
+      - name: Generate Python client code
+        run: |
+          java -cp codegen/target/xrpl-codegen-openapi-generator-1.0.0.jar:codegen/modules/openapi-generator-cli/target/openapi-generator-cli.jar \
+            org.openapitools.codegen.OpenAPIGenerator generate \
+            -g my-python-codegen \
+            -i dist/openapi.yaml \
+            -o ./out/myRippledPythonClient \
+            -c codegen/py-config.yaml
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      - name: Make a pull request to xrpl-py
+        run: |
+
+          git clone https://x-access-token:${GH_TOKEN}@github.com/XRPLF/xrpl-py.git
+          mkdir -p xrpl-py/xrpl/openapi-codegen/models
+          mkdir -p xrpl-py/xrpl/openapi-codegen/test/transactions
+          cp -r ./out/myRippledPythonClient/xrpl/models xrpl-py/xrpl/openapi-codegen/models
+          rm -f xrpl-py/xrpl/openapi-codegen/models/__init__.py
+          find xrpl-py/xrpl/openapi-codegen/models -type f -name '*_flag.py' -delete
+          cp -r ./out/myRippledPythonClient/test/transactions/. xrpl-py/xrpl/openapi-codegen/test/transactions
+
+          cd xrpl-py
+          pip install black
+          black ./xrpl/openapi-codegen || true
+          git config user.name "xrpl-codegen-bot"
+          git config user.email "actions@github.com"
+          BRANCH="update-models-${{ github.event.release.tag_name }}"
+          git checkout -b $BRANCH
+          git add xrpl/openapi-codegen
+          git commit -m "Update models from rippled-api-spec ${{ github.event.release.tag_name }}"
+          git push origin $BRANCH
+
+          gh pr create \
+            --title "[OpenAPI Codegen] Update scaffolding models from rippled-api-spec ${{ github.event.release.tag_name }}" \
+            --body "This PR includes newly generated scaffolding models and tests based on the [rippled-api-spec release ${{ github.event.release.tag_name }}](https://github.com/ripple/rippled-api-spec/releases/tag/${{ github.event.release.tag_name }})." \
+            --base main \
+            --head $BRANCH
