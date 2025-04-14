@@ -63,11 +63,6 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesRequest'
-          - name: LedgerEntryRequest
-            messageId: LedgerEntryRequest
-            contentType: application/json
-            payload:
-              $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
           - name: ServerInfoRequest
             messageId: ServerInfoRequest
             contentType: application/json
@@ -93,11 +88,6 @@ channels:
             contentType: application/json
             payload:
               $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesResponse'
-          - name: LedgerEntryResponse
-            messageId: LedgerEntryResponse
-            contentType: application/json
-            payload:
-              $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
           - name: ServerInfoResponse
             messageId: ServerInfoResponse
             contentType: application/json
