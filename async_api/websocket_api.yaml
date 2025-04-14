@@ -54,7 +54,6 @@ channels:
           - $ref: '#/components/messages/AccountChannelsRequest'
           - $ref: '#/components/messages/AccountInfoRequest'
           - $ref: '#/components/messages/AccountLinesRequest'
-          - $ref: '#/components/messages/LedgerEntryRequest'
           - $ref: '#/components/messages/ServerInfoRequest'
           # ... (Add references for additional requests)
     publish:
@@ -64,7 +63,6 @@ channels:
           - $ref: '#/components/messages/AccountChannelsResponse'
           - $ref: '#/components/messages/AccountInfoResponseV1'
           - $ref: '#/components/messages/AccountLinesResponse'
-          - $ref: '#/components/messages/LedgerEntryResponse'
           - $ref: '#/components/messages/ServerInfoResponse'
           # ... (Add references for additional responses)
 
@@ -94,14 +92,6 @@ components:
       contentType: application/json
       payload:
         $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesRequest'
-
-    # Ledger entry request message
-    LedgerEntryRequest:
-      name: LedgerEntryRequest
-      messageId: LedgerEntryRequest
-      contentType: application/json
-      payload:
-        $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryRequest'
 
     # Ledger entry request message
     ServerInfoRequest:
@@ -136,14 +126,6 @@ components:
       contentType: application/json
       payload:
         $ref: './requests/account_lines_async_api.yaml#/components/schemas/AccountLinesResponse'
-
-    # Ledger entry response message
-    LedgerEntryResponse:
-      name: LedgerEntryResponse
-      messageId: LedgerEntryResponse
-      contentType: application/json
-      payload:
-        $ref: './requests/ledger_entry_async_api.yaml#/components/schemas/LedgerEntryResponse'
 
     # Ledger entry response message
     ServerInfoResponse:
