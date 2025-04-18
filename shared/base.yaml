@@ -315,6 +315,29 @@ components:
           description: |
             The asset that is locked and unlocked on the locking chain.
 
+    NFTokenOffer:
+      type: object
+      properties:
+        amount:
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '#/components/schemas/TokenAmount'
+        flags:
+          type: integer
+          description: >
+            A set of bit-flags for this offer. See NFTokenOffer flags for possible values.
+        nft_offer_index:
+          type: string
+          description: The ledger object ID of this offer.
+        owner:
+          type: string
+          description: The account that placed this offer.
+          x-custom-validation:
+            isAccount: true
+
     ServerState:
       type: string
       description: >

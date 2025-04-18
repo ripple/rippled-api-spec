@@ -1,0 +1,133 @@
+components:
+  schemas:
+    NoRippleCheckRequest:
+      description: >
+        The noripple_check command provides a quick way to check the status of the Default Ripple field for an account and the No Ripple flag of its trust lines, compared with the recommended settings.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        account:
+          type: string
+          description: A unique identifier for the account, most commonly the account's address.
+          x-custom-validation:
+            isAccount: true
+        role:
+          type: string
+          description: |
+            Whether the address refers to a gateway or user. Recommendations depend on the role of the account. 
+            Issuers must have Default Ripple enabled and must disable No Ripple on all trust lines. Users should have Default Ripple disabled, and should enable No Ripple on all trust lines.
+        transactions:
+          type: boolean
+          description: |
+            (Optional) If true, include an array of suggested transactions, as JSON objects, that you can sign and submit to fix the problems. The default is false.
+        limit:
+          type: integer
+          description: |
+            (Optional) The maximum number of trust line problems to include in the results. Defaults to 300.
+
+    NoRippleCheckSuccessResponse:
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            ledger_current_index:
+              type: integer
+              description: The ledger index of the ledger used to calculate these results.
+            problems:
+              type: array
+              description: |
+                Array of strings with human-readable descriptions of the problems. 
+                This includes up to one entry if the account's Default Ripple setting is not as recommended, plus up to limit entries for trust lines whose No Ripple setting is not as recommended.
+              items:
+                type: string
+            transactions:
+              type: array
+              description: |
+                (May be omitted) If the request specified transactions as true, this is an array of JSON objects, each of which is the JSON form of a transaction that should fix one of the described problems. 
+                The length of this array is the same as the problems array, and each entry is intended to fix the problem described at the same index into that array.
+              items:
+                oneOf:
+                  - $ref: '../transactions/account_delete.yaml#/components/schemas/AccountDeleteTransaction'
+                  - $ref: '../transactions/account_set.yaml#/components/schemas/AccountSetTransaction'
+                  - $ref: '../transactions/amm_bid.yaml#/components/schemas/AMMBidTransaction'
+                  - $ref: '../transactions/amm_create.yaml#/components/schemas/AMMCreateTransaction'
+                  - $ref: '../transactions/amm_delete.yaml#/components/schemas/AMMDeleteTransaction'
+                  - $ref: '../transactions/amm_deposit.yaml#/components/schemas/AMMDepositTransaction'
+                  - $ref: '../transactions/amm_vote.yaml#/components/schemas/AMMVoteTransaction'
+                  - $ref: '../transactions/amm_withdraw.yaml#/components/schemas/AMMWithdrawTransaction'
+                  - $ref: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
+                  - $ref: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+                  - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
+                  - $ref: '../transactions/credential_accept.yaml#/components/schemas/CredentialAcceptTransaction'
+                  - $ref: '../transactions/credential_create.yaml#/components/schemas/CredentialCreateTransaction'
+                  - $ref: '../transactions/credential_delete.yaml#/components/schemas/CredentialDeleteTransaction'
+                  - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
+                  - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
+                  - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'
+                  - $ref: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+                  - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
+                  - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
+                  - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+                  - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+                  - $ref: '../transactions/mptoken_authorize.yaml#/components/schemas/MPTokenAuthorizeTransaction'
+                  - $ref: '../transactions/mptoken_issuance_create.yaml#/components/schemas/MPTokenIssuanceCreateTransaction'
+                  - $ref: '../transactions/mptoken_issuance_destroy.yaml#/components/schemas/MPTokenIssuanceDestroyTransaction'
+                  - $ref: '../transactions/mptoken_issuance_set.yaml#/components/schemas/MPTokenIssuanceSetTransaction'
+                  - $ref: '../transactions/nftoken_accept_offer.yaml#/components/schemas/NFTokenAcceptOfferTransaction'
+                  - $ref: '../transactions/nftoken_burn.yaml#/components/schemas/NFTokenBurnTransaction'
+                  - $ref: '../transactions/nftoken_cancel_offer.yaml#/components/schemas/NFTokenCancelOfferTransaction'
+                  - $ref: '../transactions/nftoken_create_offer.yaml#/components/schemas/NFTokenCreateOfferTransaction'
+                  - $ref: '../transactions/nftoken_min.yaml#/components/schemas/NFTokenMintTransaction'
+                  - $ref: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
+                  - $ref: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
+                  - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+                  - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
+                  - $ref: '../transactions/payment_channel_claim.yaml#/components/schemas/PaymentChannelClaimTransaction'
+                  - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateTransaction'
+                  - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundTransaction'
+                  - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
+                  - $ref: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+                  - $ref: '../transactions/set_regular_key.yaml#/components/schemas/SetRegularKeyTransaction'
+                  - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+                  - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
+                  - $ref: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
+                  - $ref: '../transactions/unl_modify.yaml#/components/schemas/UnlModifyTransaction'
+                  - $ref: '../transactions/xchain_account_create_commit.yaml#/components/schemas/XChainAccountCreateCommitTransaction'
+                  - $ref: '../transactions/xchain_add_account_create_attestation.yaml#/components/schemas/XChainAddAccountCreateAttestationTransaction'
+                  - $ref: '../transactions/xchain_add_claim_attestation.yaml#/components/schemas/XChainAddClaimAttestationTransaction'
+                  - $ref: '../transactions/xchain_claim.yaml#/components/schemas/XChainClaimTransaction'
+                  - $ref: '../transactions/xchain_commit.yaml#/components/schemas/XChainCommitTransaction'
+                  - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
+                  - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
+            validated:
+              type: boolean
+              description: |
+                Whether the response is from a validated ledger. If true, the response is from a validated ledger. If false, the response is from a non-validated ledger.
+
+    NoRippleCheckErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The Address specified in the account field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the ledger_hash or ledger_index does not exist, or it does exist but the server does not have it.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/NoRippleCheckRequest'
+      required:
+        - status
+        - error
+        - request
