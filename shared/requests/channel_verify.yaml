@@ -3,40 +3,38 @@ components:
     ChannelVerifyRequest:
       description: >
         The channel_verify method checks the validity of a signature that can be used to redeem a specific amount of XRP from a payment channel.
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
-      properties:
-        amount:
-          type: string
-          format: hex
-          description: |
-            The amount of XRP, in drops, the provided signature authorizes.
-        channel_id:
-          type: string
-          format: hex
-          description: |
-            The Channel ID of the channel that provides the XRP. This is a 64-character hexadecimal string.
-        public_key:
-          type: string
-          format: hex
-          description: |
-            The public key of the channel and the key pair that was used to create the signature, in hexadecimal or the XRP Ledger's base58 format.
-        signature:
-          type: string
-          format: hex
-          description: |
-            The signature to verify, in hexadecimal.
-
-    ChannelVerifySuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
-            signature_verified:
-              type: boolean
+            amount:
+              type: string
+              format: hex
               description: |
-                If true, the signature is valid for the stated amount, channel, and public key.
+                The amount of XRP, in drops, the provided signature authorizes.
+            channel_id:
+              type: string
+              format: hex
+              description: |
+                The Channel ID of the channel that provides the XRP. This is a 64-character hexadecimal string.
+            public_key:
+              type: string
+              format: hex
+              description: |
+                The public key of the channel and the key pair that was used to create the signature, in hexadecimal or the XRP Ledger's base58 format.
+            signature:
+              type: string
+              format: hex
+              description: |
+                The signature to verify, in hexadecimal.
+
+    ChannelVerifySuccessResponse:
+      type: object
+      properties:
+        signature_verified:
+          type: boolean
+          description: |
+            If true, the signature is valid for the stated amount, channel, and public key.
 
     ChannelVerifyErrorResponse:
       type: object

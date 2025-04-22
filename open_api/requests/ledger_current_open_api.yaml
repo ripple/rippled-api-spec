@@ -1,0 +1,46 @@
+components:
+  schemas:
+    LedgerCurrentRequest:
+      type: object
+      description: >
+        The ledger_current method returns the unique identifiers of the current in-progress ledger.
+        This command is mostly useful for testing, because the ledger returned is still in flux.
+      properties:
+        method:
+          type: string
+          enum:
+            - ledger_current
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/ledger_current.yaml#/components/schemas/LedgerCurrentRequest'
+      required:
+        - method
+      example:
+        method: ledger_current
+        params:
+
+    LedgerCurrentSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/ledger_current.yaml#/components/schemas/LedgerCurrentSuccessResponse'
+
+    LedgerCurrentResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/LedgerCurrentSuccessResponseJSON'
+              error: '../../shared/requests/ledger_current.yaml#/components/schemas/LedgerCurrentErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/LedgerCurrentSuccessResponseJSON'
+            - $ref: '../../shared/requests/ledger_current.yaml#/components/schemas/LedgerCurrentErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          ledger_current_index: 8696233
+          status: success

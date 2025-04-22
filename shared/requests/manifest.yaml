@@ -4,33 +4,31 @@ components:
       description: >
         The manifest method reports the current "manifest" information for a given validator public key. 
         The "manifest" is a block of data that authorizes an ephemeral signing key with a signature from the validator's master key pair. Updated in: rippled 1.7.0
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
-      properties:
-        public_key:
-          type: string
-          description: The base58-encoded public key of the validator to look up. This can be the master public key or ephemeral public key.
-
-    ManifestSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
-            manifest:
-              type: string
-              description: |
-                (May be omitted) The full manifest data in base64 format. 
-                This data is serialized to binary before being base64-encoded. Omitted if the server does not have a manifest for the public_key from the request.
-            requested:
+            public_key:
               type: string
               description: The base58-encoded public key of the validator to look up. This can be the master public key or ephemeral public key.
-            details:
-              description: |
-                (May be omitted) The data contained in this manifest. 
-                Omitted if the server does not have a manifest for the public_key from the request.
-                See Details Object below for a full description of its contents.
-              $ref: '#/components/schemas/ManifestDetails'
+
+    ManifestSuccessResponse:
+      type: object
+      properties:
+        manifest:
+          type: string
+          description: |
+            (May be omitted) The full manifest data in base64 format. 
+            This data is serialized to binary before being base64-encoded. Omitted if the server does not have a manifest for the public_key from the request.
+        requested:
+          type: string
+          description: The base58-encoded public key of the validator to look up. This can be the master public key or ephemeral public key.
+        details:
+          description: |
+            (May be omitted) The data contained in this manifest. 
+            Omitted if the server does not have a manifest for the public_key from the request.
+            See Details Object below for a full description of its contents.
+          $ref: '#/components/schemas/ManifestDetails'
 
     Details:
       type: object

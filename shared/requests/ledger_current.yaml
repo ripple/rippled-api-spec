@@ -4,19 +4,16 @@ components:
       description: >
         The ledger_current method returns the unique identifiers of the current in-progress ledger.
         This command is mostly useful for testing, because the ledger returned is still in flux.
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
 
     LedgerCurrentSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-        - type: object
-          properties:
-            ledger_current_index:
-              type: integer
-              description: |
-                The ledger index of this ledger version.
+      type: object
+      properties:
+        ledger_current_index:
+          type: integer
+          description: |
+            The ledger index of this ledger version.
 
     LedgerCurrentErrorResponse:
       type: object

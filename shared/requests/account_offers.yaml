@@ -7,25 +7,26 @@ components:
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        account:
-          type: string
-          description: Look up Offers placed by this account.
-          x-custom-validation:
-            isAccount: true
-        limit:
-          type: integer
-          description: |
-            Limit the number of Offers to retrieve. 
-            The server may return fewer than this number of results. Must be within the inclusive range 10 to 400. 
-            Positive values outside this range are replaced with the closest valid option.The default is 200.
-          minimum: 10
-          maximum: 400
-        marker:
-          type: object
-          description: Value from a previous paginated response. Resume retrieving data where that response left off.
-      required:
-        - account
+        - type: object
+          properties:
+            account:
+              type: string
+              description: Look up Offers placed by this account.
+              x-custom-validation:
+                isAccount: true
+            limit:
+              type: integer
+              description: |
+                Limit the number of Offers to retrieve. 
+                The server may return fewer than this number of results. Must be within the inclusive range 10 to 400. 
+                Positive values outside this range are replaced with the closest valid option.The default is 200.
+              minimum: 10
+              maximum: 400
+            marker:
+              type: object
+              description: Value from a previous paginated response. Resume retrieving data where that response left off.
+          required:
+            - account
 
     AccountOffersSuccessResponse:
       allOf:

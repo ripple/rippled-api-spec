@@ -24,6 +24,16 @@ components:
             ledger_index: 'current'
             queue: true
 
+    AccountInfoSuccessResponseV1JSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
+
+    AccountInfoSuccessResponseV2JSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
+
     AccountInfoResponseV1:
       type: object
       properties:
@@ -32,10 +42,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
+              success: '#/components/schemas/AccountInfoSuccessResponseV1JSON'
               error: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV1'
+            - $ref: '#/components/schemas/AccountInfoSuccessResponseV1JSON'
             - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
       required:
         - result
@@ -82,10 +92,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
+              success: '#/components/schemas/AccountInfoSuccessResponseV2JSON'
               error: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoSuccessResponseV2'
+            - $ref: '#/components/schemas/AccountInfoSuccessResponseV2JSON'
             - $ref: '../../shared/requests/account_info.yaml#/components/schemas/AccountInfoErrorResponse'
       required:
         - result

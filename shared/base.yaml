@@ -359,3 +359,35 @@ components:
         full: The server is fully caught-up with the network and could participate in validation, but is not doing so (possibly because it has not been configured as a validator).
         validating: The server is currently participating in validation of the ledger.
         propsing: The server is participating in validation of the ledger and currently proposing its own version.
+
+    StateAccountingInfo:
+      type: object
+      properties:
+        duration_us:
+          type: string
+          description: >
+            The number of microseconds the server has spent in this state. (This is updated whenever the server transitions into another state.)
+        transitions:
+          type: string
+          description: The number of times the server has changed into this state.
+
+    StateAccounting:
+      type: object
+      description: >
+        A map of various [server states](https://xrpl.org/docs/references/http-websocket-apis/api-conventions/rippled-server-states) with information about the time the server spends in each.
+        This can be useful for tracking the long-term health of your server's connectivity to the network.
+      properties:
+        disconnected:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        connected:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        syncing:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        tracking:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        full:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        validating:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        proposing:
+          $ref: '#/components/schemas/StateAccountingInfo'

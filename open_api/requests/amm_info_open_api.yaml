@@ -24,6 +24,11 @@ components:
               currency: 'TST'
               issuer: 'rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd'
 
+    AmmInfoResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoSuccessResponse'
+
     AmmInfoResponse:
       type: object
       properties:
@@ -32,10 +37,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoSuccessResponse'
+              success: '#/components/schemas/AmmInfoResponseJSON'
               error: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoSuccessResponse'
+            - $ref: '#/components/schemas/AmmInfoResponseJSON'
             - $ref: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoErrorResponse'
       required:
         - result

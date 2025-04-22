@@ -6,50 +6,49 @@ components:
       type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
-      properties:
-        account:
-          type: string
-          description: Show only LP Tokens held by this liquidity provider.
-          x-custom-validation:
-            isAccount: true
-        amm_account:
-          type: string
-          description: The address of the AMM's special AccountRoot. (This is the issuer of the AMM's LP Tokens.)
-          x-custom-validation:
-            isAccount: true
-        asset:
-          $ref: '../base.yaml#/components/schemas/Currency'
-          description: |
-            One of the assets of the AMM to look up, as an object with currency and issuer fields (omit issuer for XRP), like currency amounts.
-        asset2:
-          $ref: '../base.yaml#/components/schemas/Currency'
-          description: |
-            The other of the assets of the AMM, as an object with currency and issuer fields (omit issuer for XRP), like currency amounts.
-      x-custom-validation:
-        mutualPresence:
-          - field1: asset
-            field2: asset2
-
-    AmmInfoSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
-            amm:
-              $ref: '#/components/schemas/Amm'
-            ledger_current_index:
-              type: integer
-              description: (Omitted if ledger_index is provided instead) The ledger index of the current in-progress ledger, which was used when retrieving this information.
-            ledger_hash:
+            account:
               type: string
-              description: (Omitted if ledger_current_index is provided instead) The identifying hash of the ledger version that was used when retrieving this data.
-            ledger_index:
-              type: integer
-              description: (Omitted if ledger_current_index is provided instead) The ledger index of the ledger version used when retrieving this information.
-            validated:
-              type: boolean
+              description: Show only LP Tokens held by this liquidity provider.
+              x-custom-validation:
+                isAccount: true
+            amm_account:
+              type: string
+              description: The address of the AMM's special AccountRoot. (This is the issuer of the AMM's LP Tokens.)
+              x-custom-validation:
+                isAccount: true
+            asset:
+              $ref: '../base.yaml#/components/schemas/Currency'
               description: |
-                If true, the ledger used for this request is validated and these results are final; if omitted or set to false, the data is pending and may change.
+                One of the assets of the AMM to look up, as an object with currency and issuer fields (omit issuer for XRP), like currency amounts.
+            asset2:
+              $ref: '../base.yaml#/components/schemas/Currency'
+              description: |
+                The other of the assets of the AMM, as an object with currency and issuer fields (omit issuer for XRP), like currency amounts.
+          x-custom-validation:
+            mutualPresence:
+              - field1: asset
+                field2: asset2
+
+    AmmInfoSuccessResponse:
+      type: object
+      properties:
+        amm:
+          $ref: '#/components/schemas/Amm'
+        ledger_current_index:
+          type: integer
+          description: (Omitted if ledger_index is provided instead) The ledger index of the current in-progress ledger, which was used when retrieving this information.
+        ledger_hash:
+          type: string
+          description: (Omitted if ledger_current_index is provided instead) The identifying hash of the ledger version that was used when retrieving this data.
+        ledger_index:
+          type: integer
+          description: (Omitted if ledger_current_index is provided instead) The ledger index of the ledger version used when retrieving this information.
+        validated:
+          type: boolean
+          description: |
+            If true, the ledger used for this request is validated and these results are final; if omitted or set to false, the data is pending and may change.
 
     Amm:
       type: object

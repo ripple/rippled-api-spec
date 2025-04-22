@@ -8,52 +8,51 @@ components:
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        taker_gets:
-          $ref: '../base.yaml#/components/schemas/Currency'
-          description: |
-            The asset the account taking the Offer would receive, as a currency without an amount.
-        taker_pays:
-          $ref: '../base.yaml#/components/schemas/Currency'
-          description: |
-            The asset the account taking the Offer would pay, as a currency without an amount.
-        limit:
-          type: integer
-          description: |
-            The maximum number of Offers to return. The response may include fewer results.
-        taker:
-          type: string
-          description: |
-            The Address of an account to use as a perspective.
-            The response includes this account's Offers even if they are unfunded. (You can use this to see what Offers are above or below yours in the order book.)
-          x-custom-validation:
-            isAccount: true
-
-    BookOffersSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
-            offers:
-              type: array
+            taker_gets:
+              $ref: '../base.yaml#/components/schemas/Currency'
               description: |
-                Array of offer objects, each of which has the fields of an Offer object
-              items:
-                $ref: '#/components/schemas/Offer'
-            ledger_current_index:
+                The asset the account taking the Offer would receive, as a currency without an amount.
+            taker_pays:
+              $ref: '../base.yaml#/components/schemas/Currency'
+              description: |
+                The asset the account taking the Offer would pay, as a currency without an amount.
+            limit:
               type: integer
               description: |
-                (Omitted if ledger_current_index is provided) The ledger index of the current in-progress ledger version, which was used to retrieve this information.
-            ledger_hash:
+                The maximum number of Offers to return. The response may include fewer results.
+            taker:
               type: string
-              description: (May be omitted) The identifying hash of the ledger version that was used when retrieving this data, as requested.
-            ledger_index:
-              type: integer
-              description: (Omitted if ledger_current_index provided) The ledger index of the ledger version that was used when retrieving this data, as requested.
-            validated:
-              type: boolean
               description: |
-                (May be omitted) If true, the information comes from a validated ledger version.
+                The Address of an account to use as a perspective.
+                The response includes this account's Offers even if they are unfunded. (You can use this to see what Offers are above or below yours in the order book.)
+              x-custom-validation:
+                isAccount: true
+
+    BookOffersSuccessResponse:
+      type: object
+      properties:
+        offers:
+          type: array
+          description: |
+            Array of offer objects, each of which has the fields of an Offer object
+          items:
+            $ref: '#/components/schemas/Offer'
+        ledger_current_index:
+          type: integer
+          description: |
+            (Omitted if ledger_current_index is provided) The ledger index of the current in-progress ledger version, which was used to retrieve this information.
+        ledger_hash:
+          type: string
+          description: (May be omitted) The identifying hash of the ledger version that was used when retrieving this data, as requested.
+        ledger_index:
+          type: integer
+          description: (Omitted if ledger_current_index provided) The ledger index of the ledger version that was used when retrieving this data, as requested.
+        validated:
+          type: boolean
+          description: |
+            (May be omitted) If true, the information comes from a validated ledger version.
 
     Offer:
       type: object

@@ -26,6 +26,11 @@ components:
               - 383D269D6C7417D0A8716B09F5DB329FB17B45A5EFDBAFB82FF04BC420DCF7D5
             ledger_index: validated
 
+    DepositAuthorizedSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedSuccessResponse'
+
     DepositAuthorizedResponse:
       type: object
       properties:
@@ -34,10 +39,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedSuccessResponse'
+              success: '#/components/schemas/DepositAuthorizedSuccessResponseJSON'
               error: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedSuccessResponse'
+            - $ref: '#/components/schemas/DepositAuthorizedSuccessResponseJSON'
             - $ref: '../../shared/requests/deposit_authorized.yaml#/components/schemas/DepositAuthorizedErrorResponse'
       required:
         - result

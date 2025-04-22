@@ -1,0 +1,109 @@
+components:
+  schemas:
+    ServerStateRequest:
+      description: >
+        The server_state command asks the server for various machine-readable information about the rippled server's current state.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+
+    ServerStateSuccessResponse:
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            state:
+              $ref: '#/components/schemas/State'
+    State:
+      type: object
+      properties:
+        build_version:
+          type: string
+        complete_ledgers:
+          type: string
+        io_latency_ms:
+          type: integer
+        jq_trans_overflow:
+          type: string
+        last_close:
+          type: object
+          $ref: '#/components/schemas/LastClose'
+        load_base:
+          type: integer
+        load_factor:
+          type: integer
+        load_factor_fee_escalation:
+          type: integer
+        load_factor_fee_queue:
+          type: integer
+        load_factor_fee_reference:
+          type: integer
+        load_factor_server:
+          type: integer
+        peer_disconnects:
+          type: string
+        peer_disconnects_resources:
+          type: string
+        peers:
+          type: integer
+        pubkey_node:
+          type: string
+        server_state:
+          type: string
+        server_state_duration_us:
+          type: string
+        state_accounting:
+          $ref: '../base.yaml#/components/schemas/StateAccounting'
+        time:
+          type: string
+        uptime:
+          type: integer
+        validated_ledger:
+          $ref: '#/components/schemas/ValidatedLedger'
+        validation_quorum:
+          type: integer
+
+    ValidatedLedger:
+      type: object
+      properties:
+        base_fee:
+          type: integer
+        close_time:
+          type: integer
+        hash:
+          type: string
+          format: hash256
+        reserve_base:
+          type: integer
+        reserve_inc:
+          type: integer
+        seq:
+          type: integer
+          description: The [ledger index](https://xrpl.org/docs/references/protocol/data-types/basic-data-types#ledger-index) of the latest validated ledger.
+
+    LastClose:
+      type: object
+      properties:
+        converge_time:
+          type: integer
+        proposers:
+          type: integer
+
+    ServerStateErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/ServerStateRequest'
+      required:
+        - status
+        - error
+        - request

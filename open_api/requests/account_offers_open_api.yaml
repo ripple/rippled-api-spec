@@ -22,6 +22,11 @@ components:
             ledger_index: 'current'
             limit: 200
 
+    AccountOffersResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersSuccessResponse'
+
     AccountOffersResponse:
       type: object
       properties:
@@ -30,10 +35,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersSuccessResponse'
+              success: '#/components/schemas/AccountOffersResponseJSON'
               error: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersSuccessResponse'
+            - $ref: '#/components/schemas/AccountOffersResponseJSON'
             - $ref: '../../shared/requests/account_offers.yaml#/components/schemas/AccountOffersErrorResponse'
       required:
         - result

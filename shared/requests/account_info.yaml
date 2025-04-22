@@ -9,20 +9,21 @@ components:
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        account:
-          type: string
-          description: The account to look up.
-          x-custom-validation:
-            isAccount: true
-        queue:
-          type: boolean
-          description: If true, return stats about queued transactions sent by this account. Can only be used when querying for the data from the current open ledger. Not available from servers in Reporting Mode.
-        signer_lists:
-          type: boolean
-          description: >
-            API v1: If true, return any SignerList objects associated with this account.
-            API v2: Identical to v1, but also returns an invalidParams error if you provide a non-boolean value.
+        - type: object
+          properties:
+            account:
+              type: string
+              description: The account to look up.
+              x-custom-validation:
+                isAccount: true
+            queue:
+              type: boolean
+              description: If true, return stats about queued transactions sent by this account. Can only be used when querying for the data from the current open ledger. Not available from servers in Reporting Mode.
+            signer_lists:
+              type: boolean
+              description: >
+                API v1: If true, return any SignerList objects associated with this account.
+                API v2: Identical to v1, but also returns an invalidParams error if you provide a non-boolean value.
       required:
         - account
 
@@ -270,25 +271,23 @@ components:
         - SignerQuorum
 
     AccountInfoSuccessResponseBase:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-        - type: object
-          properties:
-            account_flags:
-              $ref: '#/components/schemas/AccountFlags'
-              description: The account's flag statuses.
-            ledger_current_index:
-              type: integer
-              description: The ledger index of the current in-progress ledger.
-            ledger_index:
-              type: integer
-              description: The ledger index of the ledger version used when retrieving this information.
-            queue_data:
-              $ref: '#/components/schemas/QueueData'
-              description: Information about queued transactions sent by this account.
-            validated:
-              type: boolean
-              description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
+      type: object
+      properties:
+        account_flags:
+          $ref: '#/components/schemas/AccountFlags'
+          description: The account's flag statuses.
+        ledger_current_index:
+          type: integer
+          description: The ledger index of the current in-progress ledger.
+        ledger_index:
+          type: integer
+          description: The ledger index of the ledger version used when retrieving this information.
+        queue_data:
+          $ref: '#/components/schemas/QueueData'
+          description: Information about queued transactions sent by this account.
+        validated:
+          type: boolean
+          description: True if this data is from a validated ledger version; if omitted or set to false, this data is not final.
 
     AccountInfoSuccessResponseV1:
       $id: AccountInfoResponseSuccess

@@ -13,27 +13,29 @@ components:
         - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
-            alternatives:
+            id:
+              type: integer
+            FIELDS:
               type: array
-              description: |
-                Array of objects with possible paths to take, as described below. 
-                If empty, then there are no paths connecting the source and destination accounts.
               items:
-                -$ref: '#/components/schemas/Alternative'
-            destination_account:
-              type: string
-              description: |
-                Unique address of the account that would receive a payment transaction
-              x-custom-validation:
-                isAccount: true
-            destination_currencies:
-              type: array
-              description: |
-                Array of currencies that the destination account might want to receive. 
-                Each entry in the array should be a JSON object with a mandatory currency field and optional issuer field, like how currency amounts are specified. 
-                By default, uses all destination currencies available up to a maximum of 88 different currency/issuer pairs.
-              items:
-                type: string
+                type: array
+                oneOf:
+                  - $ref: '#/components/schemas/Data'
+                  - type: string
+
+    Data:
+      type: object
+      properties:
+        isSerialized:
+          type: boolean
+        isSigningField:
+          type: boolean
+        isVLEncoded:
+          type: boolean
+        nth:
+          type: integer
+        type:
+          type: string
 
     ServerDefinitionsErrorResponse:
       type: object
@@ -42,24 +44,6 @@ components:
           type: string
           oneOf:
             - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
-            - enum:
-                - tooBusy
-                - invalidParams
-                - srcActMissing
-                - srcActMalformed
-                - dstActMissing
-                - dstActMalformed
-                - srcCurMalformed
-                - srcIsrMalformed
-          description: >
-            * `tooBusy` - The server is under too much load to calculate paths. Not returned if you are connected as an admin.
-            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
-            * `srcActMissing` - The source_account field is omitted from the request.
-            * `srcActMalformed` - The source_account field in the request is not formatted properly.
-            * `dstActMissing` - The destination_account field is omitted from the request.
-            * `dstActMalformed` - The destination_account field in the request is not formatted properly.
-            * `srcCurMalformed` - The source_currencies field is not formatted properly.
-            * `srcIsrMalformed` - The issuer field of one or more of the currency objects in the request is not valid.
         status:
           type: string
           enum:

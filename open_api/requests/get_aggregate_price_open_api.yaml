@@ -1,0 +1,68 @@
+components:
+  schemas:
+    GetAggregatePriceRequest:
+      type: object
+      description: >
+        The get_aggregate_price method retrieves the aggregate price of specified Oracle objects, returning three price statistics: mean, median, and trimmed mean.
+      properties:
+        method:
+          type: string
+          enum:
+            - get_aggregate_price
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/get_aggregate_price.yaml#/components/schemas/GetAggregatePriceRequest'
+      required:
+        - method
+      example:
+        method: get_aggregate_price
+        params:
+          - ledger_index: current
+            base_asset: XRP
+            quote_asset: USD
+            trim: 20
+            oracles:
+              - account: rNZ9m6AP9K7z3EVg6GhPMx36V4QmZKeWds
+                oracle_document_id: 34
+              - account: rMVKq8zrVsJZQFEiTARyC6WfZznhhLMcNi
+                oracle_document_id: 100
+              - account: r92kJTnUbUUq15t2BBZYGYxY79RnNc7rLQ
+                oracle_document_id: 2
+
+    GetAggregatePriceSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/get_aggregate_price.yaml#/components/schemas/GetAggregatePriceSuccessResponse'
+
+    GetAggregatePriceResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/GetAggregatePriceSuccessResponseJSON'
+              error: '../../shared/requests/get_aggregate_price.yaml#/components/schemas/GetAggregatePriceErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/GetAggregatePriceSuccessResponseJSON'
+            - $ref: '../../shared/requests/get_aggregate_price.yaml#/components/schemas/GetAggregatePriceErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          entire_set:
+            mean: '0.78'
+            size: 3
+            standard_deviation: '0.03464101615137754'
+          ledger_current_index: 3677185
+          median: '0.8'
+          time: 1724877762
+          trimmed_set:
+            mean: '0.78'
+            size: 3
+            standard_deviation: '0.03464101615137754'
+          validated: false
+        status: success
+        type: response

@@ -23,6 +23,11 @@ components:
             key_type: secp256k1
             amount: '1000000'
 
+    ChannelAuthorizeSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/channel_authorize.yaml#/components/schemas/ChannelAuthorizeSuccessResponse'
+
     ChannelAuthorizeResponse:
       type: object
       properties:
@@ -31,10 +36,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/channel_authorize.yaml#/components/schemas/ChannelAuthorizeSuccessResponse'
+              success: '#/components/schemas/ChannelAuthorizeSuccessResponseJSON'
               error: '../../shared/requests/channel_authorize.yaml#/components/schemas/ChannelAuthorizeErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/channel_authorize.yaml#/components/schemas/ChannelAuthorizeSuccessResponse'
+            - $ref: '#/components/schemas/ChannelAuthorizeSuccessResponseJSON'
             - $ref: '../../shared/requests/channel_authorize.yaml#/components/schemas/ChannelAuthorizeErrorResponse'
       required:
         - result

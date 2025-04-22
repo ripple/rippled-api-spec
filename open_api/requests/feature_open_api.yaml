@@ -20,6 +20,11 @@ components:
         params:
           - feature: '4C97EBA926031A7CF7D7B36FDE3ED66DDA5421192D63DE53FFB46E43B9DC8373'
 
+    FeatureSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/feature.yaml#/components/schemas/FeatureSuccessResponse'
+
     FeatureResponse:
       type: object
       properties:
@@ -28,10 +33,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/feature.yaml#/components/schemas/FeatureSuccessResponse'
+              success: '#/components/schemas/FeatureSuccessResponseJSON'
               error: '../../shared/requests/feature.yaml#/components/schemas/FeatureErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/feature.yaml#/components/schemas/FeatureSuccessResponse'
+            - $ref: '#/components/schemas/FeatureSuccessResponseJSON'
             - $ref: '../../shared/requests/feature.yaml#/components/schemas/FeatureErrorResponse'
       required:
         - result

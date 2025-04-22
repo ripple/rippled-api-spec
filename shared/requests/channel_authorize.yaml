@@ -3,58 +3,56 @@ components:
     ChannelAuthorizeRequest:
       description: >
         The channel_authorize method creates a signature that can be used to redeem a specific amount of XRP from a payment channel.
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
-      properties:
-        channel_id:
-          type: string
-          description: |
-            The unique ID of the payment channel to use.
-        secret:
-          type: string
-          description: |
-            (Optional) The secret key to use to sign the claim. This must be the same key pair as the public key specified in the channel.
-            Cannot be used with seed, seed_hex, or passphrase. Updated in: rippled 1.4.0
-        seed:
-          type: string
-          description: |
-            (Optional) The secret seed to use to sign the claim. This must be the same key pair as the public key specified in the channel. 
-            Must be in the XRP Ledger's base58 format. If provided, you must also specify the key_type. Cannot be used with secret, seed_hex, or passphrase.
-        seed_hex:
-          type: string
-          description: |
-            (Optional) The secret seed to use to sign the claim. This must be the same key pair as the public key specified in the channel. 
-            Must be in hexadecimal format. If provided, you must also specify the key_type. Cannot be used with secret, seed, or passphrase.
-        passphrase:
-          type: string
-          description: |
-            (Optional) A string passphrase to use to sign the claim. This must be the same key pair as the public key specified in the channel. 
-            The key derived from this passphrase must match the public key specified in the channel. If provided, you must also specify the key_type. Cannot be used with secret, seed, or seed_hex.
-        key_type:
-          type: string
-          description: |
-            (Optional) The signing algorithm of the cryptographic key pair provided. Valid types are secp256k1 or ed25519. The default is secp256k1.
-      x-custom-validation:
-        requireExactlyOne:
-          - fields:
-              - secret
-              - seed
-              - seed_hex
-              - passphrase
-            message: 'The request must specify exactly one of secret, seed, seed_hex, or passphrase.'
-
-    ChannelAuthorizeSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
-            signature:
+            channel_id:
               type: string
-              format: hex
               description: |
-                The signature for this claim, as a hexadecimal value. 
-                To process the claim, the destination account of the payment channel must send a PaymentChannelClaim transaction with this signature, the exact Channel ID, XRP amount, and public key of the channel.
+                The unique ID of the payment channel to use.
+            secret:
+              type: string
+              description: |
+                (Optional) The secret key to use to sign the claim. This must be the same key pair as the public key specified in the channel.
+                Cannot be used with seed, seed_hex, or passphrase. Updated in: rippled 1.4.0
+            seed:
+              type: string
+              description: |
+                (Optional) The secret seed to use to sign the claim. This must be the same key pair as the public key specified in the channel. 
+                Must be in the XRP Ledger's base58 format. If provided, you must also specify the key_type. Cannot be used with secret, seed_hex, or passphrase.
+            seed_hex:
+              type: string
+              description: |
+                (Optional) The secret seed to use to sign the claim. This must be the same key pair as the public key specified in the channel. 
+                Must be in hexadecimal format. If provided, you must also specify the key_type. Cannot be used with secret, seed, or passphrase.
+            passphrase:
+              type: string
+              description: |
+                (Optional) A string passphrase to use to sign the claim. This must be the same key pair as the public key specified in the channel. 
+                The key derived from this passphrase must match the public key specified in the channel. If provided, you must also specify the key_type. Cannot be used with secret, seed, or seed_hex.
+            key_type:
+              type: string
+              description: |
+                (Optional) The signing algorithm of the cryptographic key pair provided. Valid types are secp256k1 or ed25519. The default is secp256k1.
+          x-custom-validation:
+            requireExactlyOne:
+              - fields:
+                  - secret
+                  - seed
+                  - seed_hex
+                  - passphrase
+                message: 'The request must specify exactly one of secret, seed, seed_hex, or passphrase.'
+
+    ChannelAuthorizeSuccessResponse:
+      type: object
+      properties:
+        signature:
+          type: string
+          format: hex
+          description: |
+            The signature for this claim, as a hexadecimal value. 
+            To process the claim, the destination account of the payment channel must send a PaymentChannelClaim transaction with this signature, the exact Channel ID, XRP amount, and public key of the channel.
 
     ChannelAuthorizeErrorResponse:
       type: object

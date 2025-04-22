@@ -76,17 +76,6 @@ components:
             (Reporting mode servers only) An ISO 8601 timestamp indicating when this server last published a validated ledger to its
             [subscription streams](https://xrpl.org/docs/references/http-websocket-apis/public-api-methods/subscription-methods/subscribe).
 
-    StateAccountingInfo:
-      type: object
-      properties:
-        duration_us:
-          type: string
-          description: >
-            The number of microseconds the server has spent in this state. (This is updated whenever the server transitions into another state.)
-        transitions:
-          type: string
-          description: The number of times the server has changed into this state.
-
     ValidatedLedger:
       type: object
       properties:
@@ -450,25 +439,7 @@ components:
           description: >
             The number of consecutive microseconds the server has been in the current state.
         state_accounting:
-          type: object
-          description: >
-            A map of various [server states](https://xrpl.org/docs/references/http-websocket-apis/api-conventions/rippled-server-states) with information about the time the server spends in each.
-            This can be useful for tracking the long-term health of your server's connectivity to the network.
-          properties:
-            disconnected:
-              $ref: '#/components/schemas/StateAccountingInfo'
-            connected:
-              $ref: '#/components/schemas/StateAccountingInfo'
-            syncing:
-              $ref: '#/components/schemas/StateAccountingInfo'
-            tracking:
-              $ref: '#/components/schemas/StateAccountingInfo'
-            full:
-              $ref: '#/components/schemas/StateAccountingInfo'
-            validating:
-              $ref: '#/components/schemas/StateAccountingInfo'
-            proposing:
-              $ref: '#/components/schemas/StateAccountingInfo'
+          $ref: '../base.yaml#/components/schemas/StateAccounting'
         time:
           type: string
           description: The current time in UTC, according to the server's clock.

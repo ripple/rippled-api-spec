@@ -22,6 +22,11 @@ components:
           - ledger_index: 88530953
             api_version: 2
 
+    BookChangesResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesSuccessResponse'
+
     BookChangesResponse:
       type: object
       properties:
@@ -30,10 +35,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesSuccessResponse'
+              success: '#/components/schemas/BookChangesResponseJSON'
               error: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesSuccessResponse'
+            - $ref: '#/components/schemas/BookChangesResponseJSON'
             - $ref: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesErrorResponse'
       required:
         - result

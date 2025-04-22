@@ -7,80 +7,79 @@ components:
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        account:
-          type: string
-          description: Look up Offers placed by this account.
-          x-custom-validation:
-            isAccount: true
-        tx_type:
-          type: string
-          description: (Optional) Clio Only Return only transactions of a specific type, such as "Clawback", "AccountSet", "AccountDelete", et al. Case-insensitive.
-        ledger_index_min:
-          type: integer
-          description: |
-            (Optional) Use to specify the earliest ledger to include transactions from. 
-            A value of -1 instructs the server to use the earliest validated ledger version available.
-        ledger_index_max:
-          type: integer
-          description: |
-            (Optional) Use to specify the most recent ledger to include transactions from. 
-            A value of -1 instructs the server to use the most recent validated ledger version available.
-        binary:
-          type: boolean
-          description: (Optional) Defaults to false. If set to true, returns transactions as hex strings instead of JSON.
-        forward:
-          type: boolean
-          description: |
-            (Optional) Defaults to false. If set to true, returns values indexed with the oldest ledger first. 
-            Otherwise, the results are indexed with the newest ledger first. (Each page of results may not be internally ordered, but the pages are overall ordered.)
-        limit:
-          type: integer
-          description: |
-            (Optional) Default varies. Limit the number of transactions to retrieve. The server is not required to honor this value.
-        marker:
-          type: object
-          description: |
-            Value from a previous paginated response. Resume retrieving data where that response left off. 
-            This value is stable even if there is a change in the server's range of available ledgers.
-      required:
-        - account
-
-    AccountTxSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
             account:
               type: string
-              description: Unique Address identifying the related account.
+              description: Look up Offers placed by this account.
               x-custom-validation:
                 isAccount: true
+            tx_type:
+              type: string
+              description: (Optional) Clio Only Return only transactions of a specific type, such as "Clawback", "AccountSet", "AccountDelete", et al. Case-insensitive.
             ledger_index_min:
               type: integer
-              description: The ledger index of the earliest ledger actually searched for transactions.
+              description: |
+                (Optional) Use to specify the earliest ledger to include transactions from. 
+                A value of -1 instructs the server to use the earliest validated ledger version available.
             ledger_index_max:
               type: integer
-              description: The ledger index of the most recent ledger actually searched for transactions.
+              description: |
+                (Optional) Use to specify the most recent ledger to include transactions from. 
+                A value of -1 instructs the server to use the most recent validated ledger version available.
+            binary:
+              type: boolean
+              description: (Optional) Defaults to false. If set to true, returns transactions as hex strings instead of JSON.
+            forward:
+              type: boolean
+              description: |
+                (Optional) Defaults to false. If set to true, returns values indexed with the oldest ledger first. 
+                Otherwise, the results are indexed with the newest ledger first. (Each page of results may not be internally ordered, but the pages are overall ordered.)
             limit:
               type: integer
-              description: The limit value used in the request. (This may differ from the actual limit value enforced by the server.)
+              description: |
+                (Optional) Default varies. Limit the number of transactions to retrieve. The server is not required to honor this value.
             marker:
               type: object
               description: |
-                Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off.
-            transactions:
-              type: array
-              description: |
-                Array of transactions matching the request's criteria.
-              oneOf:
-                - $ref: '#/components/schemas/TransactionJSONResponse'
-                - $ref: '#/components/schemas/TransactionHexResponse'
-            validated:
-              type: boolean
-              description: |
-                If included and set to true, the information in this response comes from a validated ledger version.
-                Otherwise, the information is subject to change.
+                Value from a previous paginated response. Resume retrieving data where that response left off. 
+                This value is stable even if there is a change in the server's range of available ledgers.
+          required:
+            - account
+
+    AccountTxSuccessResponse:
+      type: object
+      properties:
+        account:
+          type: string
+          description: Unique Address identifying the related account.
+          x-custom-validation:
+            isAccount: true
+        ledger_index_min:
+          type: integer
+          description: The ledger index of the earliest ledger actually searched for transactions.
+        ledger_index_max:
+          type: integer
+          description: The ledger index of the most recent ledger actually searched for transactions.
+        limit:
+          type: integer
+          description: The limit value used in the request. (This may differ from the actual limit value enforced by the server.)
+        marker:
+          type: object
+          description: |
+            Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off.
+        transactions:
+          type: array
+          description: |
+            Array of transactions matching the request's criteria.
+          oneOf:
+            - $ref: '#/components/schemas/TransactionJSONResponse'
+            - $ref: '#/components/schemas/TransactionHexResponse'
+        validated:
+          type: boolean
+          description: |
+            If included and set to true, the information in this response comes from a validated ledger version.
+            Otherwise, the information is subject to change.
 
     TransactionJSONResponse:
       type: array

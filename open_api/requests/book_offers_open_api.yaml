@@ -27,6 +27,11 @@ components:
               issuer: rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B
             limit: 10
 
+    BookOffersSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersSuccessResponse'
+
     BookOffersResponse:
       type: object
       properties:
@@ -35,10 +40,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersSuccessResponse'
+              success: '#/components/schemas/BookOffersSuccessResponseJSON'
               error: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersSuccessResponse'
+            - $ref: '#/components/schemas/BookOffersSuccessResponseJSON'
             - $ref: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersErrorResponse'
       required:
         - result

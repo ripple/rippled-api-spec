@@ -4,39 +4,36 @@ components:
       description: >
         The book_changes method reports information about changes to the order books in the decentralized exchange (DEX) compared with the previous ledger version. 
         This may be useful for building "candlestick" charts.
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
 
     BookChangesSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-        - type: object
-          properties:
-            changes:
-              type: array
-              description: |
-                List of Book Update Objects, containing one entry for each order book that was updated in this ledger version.
-                The array is empty if no order books were updated.
-              items:
-                $ref: '#/components/schemas/BookUpdate'
-            ledger_hash:
-              type: string
-              description: The identifying hash of the ledger version that was used when retrieving this data.
-            ledger_index:
-              type: integer
-              description: The ledger index of the ledger version that was used when retrieving this data.
-            ledger_time:
-              type: integer
-              description: The official close time of the ledger that was used when retrieving this data, in seconds since the Ripple Epoch.
-            type:
-              type: string
-              description: The string bookChanges, which indicates that this is an order book update message.
-            validated:
-              type: boolean
-              description: |
-                (May be omitted) If true, the information comes from a validated ledger version.
+      type: object
+      properties:
+        changes:
+          type: array
+          description: |
+            List of Book Update Objects, containing one entry for each order book that was updated in this ledger version.
+            The array is empty if no order books were updated.
+          items:
+            $ref: '#/components/schemas/BookUpdate'
+        ledger_hash:
+          type: string
+          description: The identifying hash of the ledger version that was used when retrieving this data.
+        ledger_index:
+          type: integer
+          description: The ledger index of the ledger version that was used when retrieving this data.
+        ledger_time:
+          type: integer
+          description: The official close time of the ledger that was used when retrieving this data, in seconds since the Ripple Epoch.
+        type:
+          type: string
+          description: The string bookChanges, which indicates that this is an order book update message.
+        validated:
+          type: boolean
+          description: |
+            (May be omitted) If true, the information comes from a validated ledger version.
 
     BookUpdate:
       type: object

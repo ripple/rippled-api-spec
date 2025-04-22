@@ -25,6 +25,12 @@ components:
             destination_account: 'ra5nK24KXen9AHvsdFTKHSANinZseWnPcX'
             ledger_index": 'validated'
 
+    AccountChannelsSuccessResponseJSON:
+      $id: AccountChannelsSuccessResponseJSON
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
+
     AccountChannelsResponse:
       type: object
       properties:
@@ -33,10 +39,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
+              success: '#/components/schemas/AccountChannelsSuccessResponseJSON'
               error: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsSuccessResponse'
+            - $ref: '#/components/schemas/AccountChannelsSuccessResponseJSON'
             - $ref: '../../shared/requests/account_channels.yaml#/components/schemas/AccountChannelsErrorResponse'
       required:
         - result

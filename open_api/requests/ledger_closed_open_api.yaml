@@ -1,0 +1,46 @@
+components:
+  schemas:
+    LedgerClosedRequest:
+      type: object
+      description: >
+        The ledger_closed method returns the unique identifiers of the most recently closed ledger. (This ledger is not necessarily validated and immutable yet.)
+      properties:
+        method:
+          type: string
+          enum:
+            - ledger_closed
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/ledger_closed.yaml#/components/schemas/LedgerClosedRequest'
+      required:
+        - method
+      example:
+        method: ledger_closed
+        params:
+
+    LedgerClosedSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/ledger_closed.yaml#/components/schemas/LedgerClosedSuccessResponse'
+
+    LedgerClosedResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/LedgerClosedSuccessResponseJSON'
+              error: '../../shared/requests/ledger_closed.yaml#/components/schemas/LedgerClosedErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/LedgerClosedSuccessResponseJSON'
+            - $ref: '../../shared/requests/ledger_closed.yaml#/components/schemas/LedgerClosedErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          ledger_hash: 8B5A0C5F6B198254A6E411AF55C29EE40AA86251D2E78DD0BB17647047FA9C24
+          ledger_index: 8696231
+          status: success

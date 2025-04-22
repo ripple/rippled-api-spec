@@ -7,89 +7,88 @@ components:
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        account:
-          type: string
-          description: |
-            The Address to check. This should be the issuing address
-          x-custom-validation:
-            isAccount: true
-        strict:
-          type: boolean
-          description: |
-            (Optional) If true, only accept an address or public key for the account parameter. Defaults to false.
-        hotwallet:
-          description: (Optional) An operational address to exclude from the balances issued, or an array of such addresses.
-          oneOf:
-            - type: string
-              x-custom-validation:
-                isAccount: true
-            - type: array
-              items:
-                type: string
-                x-custom-validation:
-                  isAccount: true
-
-    GatewayBalancesSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
             account:
               type: string
               description: |
-                The address of the account that issued the balances.
+                The Address to check. This should be the issuing address
               x-custom-validation:
-                isNumericString: true
-            obligations:
+                isAccount: true
+            strict:
+              type: boolean
+              description: |
+                (Optional) If true, only accept an address or public key for the account parameter. Defaults to false.
+            hotwallet:
+              description: (Optional) An operational address to exclude from the balances issued, or an array of such addresses.
+              oneOf:
+                - type: string
+                  x-custom-validation:
+                    isAccount: true
+                - type: array
+                  items:
+                    type: string
+                    x-custom-validation:
+                      isAccount: true
+
+    GatewayBalancesSuccessResponse:
+      type: object
+      properties:
+        account:
+          type: string
+          description: |
+            The address of the account that issued the balances.
+          x-custom-validation:
+            isNumericString: true
+        obligations:
+          type: object
+          description: (Omitted if empty) Total amounts issued to addresses not excluded, as a map of currencies to the total value issued.
+          additionalProperties:
+            type: string
+            x-custom-validation:
+              isNumericString: true
+        balances:
+          description: |
+            (Omitted if empty) Amounts issued to the hotwallet addresses from the request. 
+            The keys are addresses and the values are arrays of currency amounts they hold.
+          additionalProperties:
+            type: array
+            items:
               type: object
-              description: (Omitted if empty) Total amounts issued to addresses not excluded, as a map of currencies to the total value issued.
-              additionalProperties:
-                type: string
-                x-custom-validation:
-                  isNumericString: true
-            balances:
-              description: |
-                (Omitted if empty) Amounts issued to the hotwallet addresses from the request. 
-                The keys are addresses and the values are arrays of currency amounts they hold.
-              additionalProperties:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    currency:
-                      type: string
-                      description: The currency code.
-                    value:
-                      type: string
-                      description: The amount of the currency.
-                      x-custom-validation:
-                        isNumericString: true
-            assets:
-              description: |
-                (Omitted if empty) Total amounts held that are issued by others. In the recommended configuration, the issuing address should have none.
-              additionalProperties:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    asset:
-                      type: string
-                      description: The asset code.
-                    value:
-                      type: string
-                      description: The amount of the asset.
-                      x-custom-validation:
-                        isNumericString: true
-            ledger_current_index:
-              type: integer
-              description: (Omitted if ledger_current_index is provided) The ledger index of the current in-progress ledger version, which was used to retrieve this information.
-            ledger_hash:
-              type: string
-              description: The identifying hash of the ledger that was used to generate this response.
-            ledger_index:
-              type: integer
-              description: The ledger index of the ledger version that was used to generate this response.
+              properties:
+                currency:
+                  type: string
+                  description: The currency code.
+                value:
+                  type: string
+                  description: The amount of the currency.
+                  x-custom-validation:
+                    isNumericString: true
+        assets:
+          description: |
+            (Omitted if empty) Total amounts held that are issued by others. In the recommended configuration, the issuing address should have none.
+          additionalProperties:
+            type: array
+            items:
+              type: object
+              properties:
+                asset:
+                  type: string
+                  description: The asset code.
+                value:
+                  type: string
+                  description: The amount of the asset.
+                  x-custom-validation:
+                    isNumericString: true
+        ledger_current_index:
+          type: integer
+          description: (Omitted if ledger_current_index is provided) The ledger index of the current in-progress ledger version, which was used to retrieve this information.
+        ledger_hash:
+          type: string
+          description: The identifying hash of the ledger that was used to generate this response.
+        ledger_index:
+          type: integer
+          description: The ledger index of the ledger version that was used to generate this response.
 
     GatewayBalancesErrorResponse:
       type: object

@@ -25,6 +25,11 @@ components:
             ledger_index: validated
             strict: true
 
+    GatewayBalancesSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesSuccessResponse'
+
     GatewayBalancesResponse:
       type: object
       properties:
@@ -33,10 +38,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesSuccessResponse'
+              success: '#/components/schemas/GatewayBalancesSuccessResponseJSON'
               error: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesSuccessResponse'
+            - $ref: '#/components/schemas/GatewayBalancesSuccessResponseJSON'
             - $ref: '../../shared/requests/gateway_balances.yaml#/components/schemas/GatewayBalancesErrorResponse'
       required:
         - result

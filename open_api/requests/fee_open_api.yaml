@@ -21,6 +21,11 @@ components:
         method: 'fee'
         params:
 
+    FeeSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/fee.yaml#/components/schemas/FeeSuccessResponse'
+
     FeeResponse:
       type: object
       properties:
@@ -29,10 +34,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/fee.yaml#/components/schemas/FeeSuccessResponse'
+              success: '#/components/schemas/FeeSuccessResponseJSON'
               error: '../../shared/requests/fee.yaml#/components/schemas/FeeErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/fee.yaml#/components/schemas/FeeSuccessResponse'
+            - $ref: '#/components/schemas/FeeSuccessResponseJSON'
             - $ref: '../../shared/requests/fee.yaml#/components/schemas/FeeErrorResponse'
       required:
         - result

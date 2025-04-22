@@ -4,81 +4,79 @@ components:
       description: >
         The deposit_authorized command indicates whether one account is authorized to send payments directly to another. 
         See Deposit Authorization for information on how to require authorization to deliver money to your account.
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        source_account:
-          type: string
-          description: |
-            The sender of a possible payment.
-          x-custom-validation:
-            isAccount: true
-        destination_account:
-          type: string
-          description: |
-            The recipient of a possible payment.
-          x-custom-validation:
-            isAccount: true
-        credentials:
-          type: array
-          description: |
-            A set of credentials to take into account when checking if the sender can send funds to the destination. 
-            Each member of the array must be the unique ID of a Credential entry in the ledger. Cannot be an empty array.
-          items:
-            type: string
-          minItems: 1
-          uniqueItems: true
-      required:
-        - source_account
-        - destination_account
-
-    DepositAuthorizedSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - type: object
           properties:
-            credentials:
-              type: array
-              description: |
-                The credentials specified in the request, if any.
-              items:
-                type: string
-            deposit_authorized:
-              type: boolean
-              description: |
-                Whether the specified source account is authorized to send payments directly to the destination account. 
-                If true, either the destination account does not require deposit authorization or the source account is preauthorized.
-            destination_account:
-              type: string
-              description: |
-                The destination account specified in the request.
-              x-custom-validation:
-                isAccount: true
-            ledger_hash:
-              type: string
-              description: The identifying hash of the ledger that was used to generate this response.
-            ledger_index:
-              type: integer
-              description: The ledger index of the ledger version that was used to generate this response.
-            ledger_current_index:
-              type: integer
-              description: The ledger index of the current in-progress ledger version, which was used to generate this response.
             source_account:
               type: string
               description: |
-                The source account specified in the request.
+                The sender of a possible payment.
               x-custom-validation:
                 isAccount: true
-            validated:
-              type: boolean
+            destination_account:
+              type: string
               description: |
-                If true, the information comes from a validated ledger version.
+                The recipient of a possible payment.
+              x-custom-validation:
+                isAccount: true
+            credentials:
+              type: array
+              description: |
+                A set of credentials to take into account when checking if the sender can send funds to the destination. 
+                Each member of the array must be the unique ID of a Credential entry in the ledger. Cannot be an empty array.
+              items:
+                type: string
+              minItems: 1
+              uniqueItems: true
           required:
-            - deposit_authorized
-            - destination_account
             - source_account
+            - destination_account
+
+    DepositAuthorizedSuccessResponse:
+      type: object
+      properties:
+        credentials:
+          type: array
+          description: |
+            The credentials specified in the request, if any.
+          items:
+            type: string
+        deposit_authorized:
+          type: boolean
+          description: |
+            Whether the specified source account is authorized to send payments directly to the destination account. 
+            If true, either the destination account does not require deposit authorization or the source account is preauthorized.
+        destination_account:
+          type: string
+          description: |
+            The destination account specified in the request.
+          x-custom-validation:
+            isAccount: true
+        ledger_hash:
+          type: string
+          description: The identifying hash of the ledger that was used to generate this response.
+        ledger_index:
+          type: integer
+          description: The ledger index of the ledger version that was used to generate this response.
+        ledger_current_index:
+          type: integer
+          description: The ledger index of the current in-progress ledger version, which was used to generate this response.
+        source_account:
+          type: string
+          description: |
+            The source account specified in the request.
+          x-custom-validation:
+            isAccount: true
+        validated:
+          type: boolean
+          description: |
+            If true, the information comes from a validated ledger version.
+      required:
+        - deposit_authorized
+        - destination_account
+        - source_account
 
     DepositAuthorizedErrorResponse:
       type: object
