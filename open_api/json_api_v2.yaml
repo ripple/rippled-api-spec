@@ -4,7 +4,6 @@ info:
   description: A JSON RPC API used to query rippled.
   license:
     name: MIT License
-    identifier: mit
     url: https://opensource.org/license/mit/
   version: 2.0.0
 
