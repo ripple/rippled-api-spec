@@ -1,0 +1,44 @@
+components:
+  schemas:
+    PingRequest:
+      type: object
+      description: >
+        The ping command returns an acknowledgement, so that clients can test the connection status and latency.
+      properties:
+        method:
+          type: string
+          enum:
+            - ping
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/ping.yaml#/components/schemas/PingRequest'
+      required:
+        - method
+      example:
+        method: ping
+        params:
+
+    PingSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/ping.yaml#/components/schemas/PingSuccessResponse'
+
+    PingResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/PingSuccessResponseJSON'
+              error: '../../shared/requests/ping.yaml#/components/schemas/PingErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/PingSuccessResponseJSON'
+            - $ref: '../../shared/requests/ping.yaml#/components/schemas/PingErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          status: success
