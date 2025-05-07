@@ -1,0 +1,51 @@
+components:
+  schemas:
+    NFTSellOffersRequest:
+      type: object
+      description: >
+        The nft_sell_offers method returns a list of sell offers for a given NFToken object.
+      properties:
+        method:
+          type: string
+          enum:
+            - nft_sell_offers
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/nft_sell_offers.yaml#/components/schemas/NFTSellOffersRequest'
+      required:
+        - method
+      example:
+        method: nft_sell_offers
+        params:
+          - nft_id: 00090000D0B007439B080E9B05BF62403911301A7B1F0CFAA048C0A200000007
+
+    NFTSellOffersSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/nft_sell_offers.yaml#/components/schemas/NFTSellOffersSuccessResponse'
+
+    NFTSellOffersResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/NFTSellOffersSuccessResponseJSON'
+              error: '../../shared/requests/nft_sell_offers.yaml#/components/schemas/NFTSellOffersErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/NFTSellOffersSuccessResponseJSON'
+            - $ref: '../../shared/requests/nft_sell_offers.yaml#/components/schemas/NFTSellOffersErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          nft_id: 00090000D0B007439B080E9B05BF62403911301A7B1F0CFAA048C0A200000007
+          offers:
+            - amount: '1000'
+              flags: 1
+              nft_offer_index: 9E28E366573187F8E5B85CE301F229E061A619EE5A589EF740088F8843BF10A1
+              owner: rLpSRZ1E8JHyNDZeHYsQs1R5cwDCB3uuZt
+          status: success

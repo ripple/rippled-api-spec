@@ -9,19 +9,17 @@ components:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
 
     ServerDefinitionsSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-        - type: object
-          properties:
-            id:
-              type: integer
-            FIELDS:
-              type: array
-              items:
-                type: array
-                oneOf:
-                  - $ref: '#/components/schemas/Data'
-                  - type: string
+      type: object
+      properties:
+        id:
+          type: integer
+        FIELDS:
+          type: array
+          items:
+            type: array
+            oneOf:
+              - $ref: '#/components/schemas/Data'
+              - type: string
 
     Data:
       type: object

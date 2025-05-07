@@ -23,26 +23,24 @@ components:
           description: (Optional) Value from a previous paginated response. Resume retrieving data where that response left off.
 
     NFTSellOffersSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-        - type: object
-          properties:
-            nft_id:
-              type: string
-              description: The NFToken these offers are for, as specified in the request.
-            offers:
-              type: array
-              description: A list of buy offers for the token. Each of these is formatted as a Sell Offer (see below).
-              items:
-                $ref: '../base.yaml#/components/schemas/NFTokenOffer'
-            limit:
-              type: integer
-              description: (May be omitted) The limit, as specified in the request.
-            marker:
-              type: object
-              description: |
-                (May be omitted) Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off.
-                Omitted when there are no pages of information after this one.
+      type: object
+      properties:
+        nft_id:
+          type: string
+          description: The NFToken these offers are for, as specified in the request.
+        offers:
+          type: array
+          description: A list of buy offers for the token. Each of these is formatted as a Sell Offer (see below).
+          items:
+            $ref: '../base.yaml#/components/schemas/NFTokenOffer'
+        limit:
+          type: integer
+          description: (May be omitted) The limit, as specified in the request.
+        marker:
+          type: object
+          description: |
+            (May be omitted) Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off.
+            Omitted when there are no pages of information after this one.
 
     NFTSellOffersErrorResponse:
       type: object

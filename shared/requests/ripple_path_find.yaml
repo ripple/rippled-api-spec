@@ -55,31 +55,29 @@ components:
             field2: send_max
 
     RipplePathFindSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-        - type: object
-          properties:
-            alternatives:
-              type: array
-              description: |
-                Array of objects with possible paths to take, as described below. 
-                If empty, then there are no paths connecting the source and destination accounts.
-              items:
-                -$ref: '#/components/schemas/Alternative'
-            destination_account:
-              type: string
-              description: |
-                Unique address of the account that would receive a payment transaction
-              x-custom-validation:
-                isAccount: true
-            destination_currencies:
-              type: array
-              description: |
-                Array of currencies that the destination account might want to receive. 
-                Each entry in the array should be a JSON object with a mandatory currency field and optional issuer field, like how currency amounts are specified. 
-                By default, uses all destination currencies available up to a maximum of 88 different currency/issuer pairs.
-              items:
-                type: string
+      type: object
+      properties:
+        alternatives:
+          type: array
+          description: |
+            Array of objects with possible paths to take, as described below. 
+            If empty, then there are no paths connecting the source and destination accounts.
+          items:
+            -$ref: '#/components/schemas/Alternative'
+        destination_account:
+          type: string
+          description: |
+            Unique address of the account that would receive a payment transaction
+          x-custom-validation:
+            isAccount: true
+        destination_currencies:
+          type: array
+          description: |
+            Array of currencies that the destination account might want to receive. 
+            Each entry in the array should be a JSON object with a mandatory currency field and optional issuer field, like how currency amounts are specified. 
+            By default, uses all destination currencies available up to a maximum of 88 different currency/issuer pairs.
+          items:
+            type: string
 
     Alternative:
       type: object

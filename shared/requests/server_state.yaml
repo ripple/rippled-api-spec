@@ -9,12 +9,10 @@ components:
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
 
     ServerStateSuccessResponse:
-      allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
-        - type: object
-          properties:
-            state:
-              $ref: '#/components/schemas/State'
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/State'
     State:
       type: object
       properties:

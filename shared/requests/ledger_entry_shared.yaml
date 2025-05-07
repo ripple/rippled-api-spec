@@ -504,207 +504,207 @@ components:
         - This account must individually approve other users for those users to hold this account's tokens.
         - Requires incoming payments to specify a Destination Tag.
 
-  Amendments:
-    type: object
-    properties:
-      allOf:
-        - $ref: '#/components/schemas/BaseLedgerEntry'
-        - type: object
-          properties:
-            Amendments:
-              type: array
-              description: |
-                Array of 256-bit amendment IDs for all currently enabled amendments. If omitted, there are no enabled amendments.
-              items:
+    Amendments:
+      type: object
+      properties:
+        allOf:
+          - $ref: '#/components/schemas/BaseLedgerEntry'
+          - type: object
+            properties:
+              Amendments:
+                type: array
+                description: |
+                  Array of 256-bit amendment IDs for all currently enabled amendments. If omitted, there are no enabled amendments.
+                items:
+                  type: string
+                  format: hash256
+              Majorities:
+                type: array
+                description: |
+                  Array of objects describing the status of amendments that have majority support but are not yet enabled. 
+                  If omitted, there are no pending amendments with majority support.
+                items:
+                  $ref: '#/components/schemas/MajorityItem'
+
+    MajorityItem:
+      type: object
+      properties:
+        Majority:
+          $ref: '#/components/schemas/MajorityItemContent'
+
+    MajorityItemContent:
+      type: object
+      properties:
+        Amendment:
+          type: string
+          format: hash256
+          description: The Amendment ID of the pending amendment.
+        CloseTime:
+          type: integer
+          description: The close_time field of the ledger version where this amendment most recently gained a majority.
+
+    AMM:
+      type: object
+      required:
+        - Account
+        - Asset
+        - Asset2
+        - LPTokenBalance
+        - TradingFee
+      properties:
+        allOf:
+          - $ref: '#/components/schemas/BaseLedgerEntry'
+          - type: object
+            properties:
+              Asset:
+                description: |
+                  The definition for one of the two assets this AMM holds. In JSON, this is an object with currency and issuer fields.
+                $ref: '../base.yaml#/components/schemas/Currency'
+              Asset2:
+                description: |
+                  The definition for the other asset this AMM holds. In JSON, this is an object with currency and issuer fields.
+                $ref: '../base.yaml#/components/schemas/Currency'
+              Account:
+                description: |
+                  The address of the special account that holds this AMM's assets.
+                type: string
+                x-custom-validation:
+                  isAccount: true
+              AuctionSlot:
+                $ref: '#/components/schemas/AuctionSlot'
+                description: |
+                  Details of the current owner of the auction slot, as an Auction Slot object.
+              LPTokenBalance:
+                description: |
+                  The total outstanding balance of liquidity provider tokens from this AMM instance. 
+                  The holders of these tokens can vote on the AMM's trading fee in proportion to their holdings, 
+                  or redeem the tokens for a share of the AMM's assets which grows with the trading fees collected.
+                $ref: '../base.yaml#/components/schemas/TokenAmount'
+              PreviousTxnID:
                 type: string
                 format: hash256
-            Majorities:
-              type: array
-              description: |
-                Array of objects describing the status of amendments that have majority support but are not yet enabled. 
-                If omitted, there are no pending amendments with majority support.
-              items:
-                $ref: '#/components/schemas/MajorityItem'
+                description: The identifying hash of the transaction that most recently modified this entry. (Added by the fixPreviousTxnID amendment.)
+              PreviousTxnLgrSeq:
+                type: integer
+                description: The index of the ledger that contains the transaction that most recently modified this entry. (Added by the fixPreviousTxnID amendment.)
+              TradingFee:
+                type: integer
+                description: |
+                  The percentage fee to be charged for trades against this AMM instance, in units of 1/100,000. The maximum value is 1000, for a 1% fee.
+              VoteSlots:
+                type: array
+                description: |
+                  A list of vote objects, representing votes on the pool's trading fee.
+                items:
+                  $ref: '#/components/schemas/VoteEntry'
 
-  MajorityItem:
-    type: object
-    properties:
-      Majority:
-        $ref: '#/components/schemas/MajorityItemContent'
-
-  MajorityItemContent:
-    type: object
-    properties:
-      Amendment:
-        type: string
-        format: hash256
-        description: The Amendment ID of the pending amendment.
-      CloseTime:
-        type: integer
-        description: The close_time field of the ledger version where this amendment most recently gained a majority.
-
-  AMM:
-    type: object
-    required:
-      - Account
-      - Asset
-      - Asset2
-      - LPTokenBalance
-      - TradingFee
-    properties:
-      allOf:
-        - $ref: '#/components/schemas/BaseLedgerEntry'
-        - type: object
-          properties:
-            Asset:
-              description: |
-                The definition for one of the two assets this AMM holds. In JSON, this is an object with currency and issuer fields.
-              $ref: '../base.yaml#/components/schemas/Currency'
-            Asset2:
-              description: |
-                The definition for the other asset this AMM holds. In JSON, this is an object with currency and issuer fields.
-              $ref: '../base.yaml#/components/schemas/Currency'
-            Account:
-              description: |
-                The address of the special account that holds this AMM's assets.
+    AuctionSlot:
+      type: object
+      required:
+        - Account
+        - Price
+        - Expiration
+        - DiscountedFee
+      properties:
+        properties:
+          Account:
+            type: string
+            description: The current owner of this auction slot.
+            x-custom-validation:
+              isAccount: true
+          AuthAccounts:
+            type: array
+            description: |
+              A list of at most 4 additional accounts that are authorized to trade at the discounted fee for this AMM instance.
+            items:
               type: string
               x-custom-validation:
                 isAccount: true
-            AuctionSlot:
-              $ref: '#/components/schemas/AuctionSlot'
-              description: |
-                Details of the current owner of the auction slot, as an Auction Slot object.
-            LPTokenBalance:
-              description: |
-                The total outstanding balance of liquidity provider tokens from this AMM instance. 
-                The holders of these tokens can vote on the AMM's trading fee in proportion to their holdings, 
-                or redeem the tokens for a share of the AMM's assets which grows with the trading fees collected.
-              $ref: '../base.yaml#/components/schemas/TokenAmount'
-            PreviousTxnID:
-              type: string
-              format: hash256
-              description: The identifying hash of the transaction that most recently modified this entry. (Added by the fixPreviousTxnID amendment.)
-            PreviousTxnLgrSeq:
-              type: integer
-              description: The index of the ledger that contains the transaction that most recently modified this entry. (Added by the fixPreviousTxnID amendment.)
-            TradingFee:
-              type: integer
-              description: |
-                The percentage fee to be charged for trades against this AMM instance, in units of 1/100,000. The maximum value is 1000, for a 1% fee.
-            VoteSlots:
-              type: array
-              description: |
-                A list of vote objects, representing votes on the pool's trading fee.
-              items:
-                $ref: '#/components/schemas/VoteEntry'
+            maxItems: 4
+          DiscountedFee:
+            type: string
+            description: |
+              The trading fee to be charged to the auction owner, in the same format as TradingFee. Normally, this is 1/10 of the normal fee for this AMM.
+            x-custom-validation:
+              isNumericString: true
+          Price:
+            description: The amount the auction owner paid to win this slot, in LP Tokens.
+            $ref: '../base.yaml#/components/schemas/TokenAmount'
+          Expiration:
+            type: string
+            description: The time when this slot expires, in seconds since the Ripple Epoch.
+            x-custom-validation:
+              isNumericString: true
 
-  AuctionSlot:
-    type: object
-    required:
-      - Account
-      - Price
-      - Expiration
-      - DiscountedFee
-    properties:
+    VoteEntry:
+      type: object
+      required:
+        - Account
+        - TradingFee
+        - VoteWeight
       properties:
         Account:
           type: string
-          description: The current owner of this auction slot.
+          description: The account that cast the vote.
           x-custom-validation:
             isAccount: true
-        AuthAccounts:
-          type: array
+        TradingFee:
+          type: integer
           description: |
-            A list of at most 4 additional accounts that are authorized to trade at the discounted fee for this AMM instance.
-          items:
-            type: string
-            x-custom-validation:
-              isAccount: true
-          maxItems: 4
-        DiscountedFee:
-          type: string
+            The proposed trading fee, in units of 1/100,000; a value of 1 is equivalent to 0.001%. The maximum value is 1000, indicating a 1% fee.
+        VoteWeight:
+          type: integer
           description: |
-            The trading fee to be charged to the auction owner, in the same format as TradingFee. Normally, this is 1/10 of the normal fee for this AMM.
-          x-custom-validation:
-            isNumericString: true
-        Price:
-          description: The amount the auction owner paid to win this slot, in LP Tokens.
-          $ref: '../base.yaml#/components/schemas/TokenAmount'
-        Expiration:
-          type: string
-          description: The time when this slot expires, in seconds since the Ripple Epoch.
-          x-custom-validation:
-            isNumericString: true
+            The weight of the vote, in units of 1/100,000. For example, a value of 1234 means this vote counts as 1.234% of the weighted total vote. 
+            The weight is determined by the percentage of this AMM's LP Tokens the account owns. The maximum value is 100000.
 
-  VoteEntry:
-    type: object
-    required:
-      - Account
-      - TradingFee
-      - VoteWeight
-    properties:
-      Account:
-        type: string
-        description: The account that cast the vote.
-        x-custom-validation:
-          isAccount: true
-      TradingFee:
-        type: integer
-        description: |
-          The proposed trading fee, in units of 1/100,000; a value of 1 is equivalent to 0.001%. The maximum value is 1000, indicating a 1% fee.
-      VoteWeight:
-        type: integer
-        description: |
-          The weight of the vote, in units of 1/100,000. For example, a value of 1234 means this vote counts as 1.234% of the weighted total vote. 
-          The weight is determined by the percentage of this AMM's LP Tokens the account owns. The maximum value is 100000.
-
-  Bridge:
-    type: object
-    required:
-      - Account
-      - SignatureReward
-      - XChainAccountClaimCount
-      - XChainAccountCreateCount
-      - XChainBridge
-      - XChainClaimID
-    properties:
-      allOf:
-        - $ref: '#/components/schemas/BaseLedgerEntry'
-        - type: object
-          properties:
-            Account:
-              type: string
-              description: The account that submitted the XChainCreateBridge transaction on the blockchain.
-              x-custom-validation:
-                isAccount: true
-            MinAccountCreateAmount:
-              $ref: '../base.yaml#/components/schemas/TokenAmount'
-              description: |
-                The minimum amount, in XRP, required for an XChainAccountCreateCommit transaction. 
-                If this isn't present, the XChainAccountCreateCommit transaction will fail.
-                This field can only be present on XRP-XRP bridges.
-            SignatureReward:
-              $ref: '../base.yaml#/components/schemas/TokenAmount'
-              description: |
-                The total amount, in XRP, to be rewarded for providing a signature for cross-chain transfer or for signing for the cross-chain reward. 
-                This amount will be split among the signers.
-            XChainAccountClaimCount:
-              type: integer
-              description: |
-                A counter used to order the execution of account create transactions. 
-                It is incremented every time a XChainAccountCreateCommit transaction is "claimed" on the destination chain. 
-                When the "claim" transaction is run on the destination chain, the XChainAccountClaimCount must match the value 
-                that the XChainAccountCreateCount had at the time the XChainAccountClaimCount was run on the source chain. 
-                This orders the claims so that they run in the same order that the XChainAccountCreateCommit transactions ran on the source chain, to prevent transaction replay.
-            XChainAccountCreateCount:
-              type: integer
-              description: |
-                A counter used to order the execution of account create transactions. 
-                It is incremented every time a successful XChainAccountCreateCommit transaction is run for the source chain.
-            XChainBridge:
-              $ref: '../base.yaml#/components/schemas/XChainBridge'
-              description: |
-                The door accounts and assets of the bridge this object correlates to.
-            XChainClaimID:
-              type: integer
-              description: The value of the next XChainClaimID to be created.
+    Bridge:
+      type: object
+      required:
+        - Account
+        - SignatureReward
+        - XChainAccountClaimCount
+        - XChainAccountCreateCount
+        - XChainBridge
+        - XChainClaimID
+      properties:
+        allOf:
+          - $ref: '#/components/schemas/BaseLedgerEntry'
+          - type: object
+            properties:
+              Account:
+                type: string
+                description: The account that submitted the XChainCreateBridge transaction on the blockchain.
+                x-custom-validation:
+                  isAccount: true
+              MinAccountCreateAmount:
+                $ref: '../base.yaml#/components/schemas/TokenAmount'
+                description: |
+                  The minimum amount, in XRP, required for an XChainAccountCreateCommit transaction. 
+                  If this isn't present, the XChainAccountCreateCommit transaction will fail.
+                  This field can only be present on XRP-XRP bridges.
+              SignatureReward:
+                $ref: '../base.yaml#/components/schemas/TokenAmount'
+                description: |
+                  The total amount, in XRP, to be rewarded for providing a signature for cross-chain transfer or for signing for the cross-chain reward. 
+                  This amount will be split among the signers.
+              XChainAccountClaimCount:
+                type: integer
+                description: |
+                  A counter used to order the execution of account create transactions. 
+                  It is incremented every time a XChainAccountCreateCommit transaction is "claimed" on the destination chain. 
+                  When the "claim" transaction is run on the destination chain, the XChainAccountClaimCount must match the value 
+                  that the XChainAccountCreateCount had at the time the XChainAccountClaimCount was run on the source chain. 
+                  This orders the claims so that they run in the same order that the XChainAccountCreateCommit transactions ran on the source chain, to prevent transaction replay.
+              XChainAccountCreateCount:
+                type: integer
+                description: |
+                  A counter used to order the execution of account create transactions. 
+                  It is incremented every time a successful XChainAccountCreateCommit transaction is run for the source chain.
+              XChainBridge:
+                $ref: '../base.yaml#/components/schemas/XChainBridge'
+                description: |
+                  The door accounts and assets of the bridge this object correlates to.
+              XChainClaimID:
+                type: integer
+                description: The value of the next XChainClaimID to be created.

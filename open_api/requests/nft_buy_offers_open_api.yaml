@@ -1,0 +1,52 @@
+components:
+  schemas:
+    NFTBuyOffersRequest:
+      type: object
+      description: >
+        The nft_buy_offers method returns a list of buy offers for a given NFToken object.
+      properties:
+        method:
+          type: string
+          enum:
+            - nft_buy_offers
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/nft_buy_offers.yaml#/components/schemas/NFTBuyOffersRequest'
+      required:
+        - method
+      example:
+        method: nft_buy_offers
+        params:
+          - nft_id: 00090000D0B007439B080E9B05BF62403911301A7B1F0CFAA048C0A200000007
+            ledger_index: validated
+
+    NFTBuyOffersSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/nft_buy_offers.yaml#/components/schemas/NFTBuyOffersSuccessResponse'
+
+    NFTBuyOffersResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/NFTBuyOffersSuccessResponseJSON'
+              error: '../../shared/requests/nft_buy_offers.yaml#/components/schemas/NFTBuyOffersErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/NFTBuyOffersSuccessResponseJSON'
+            - $ref: '../../shared/requests/nft_buy_offers.yaml#/components/schemas/NFTBuyOffersErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          nft_id: 00090000D0B007439B080E9B05BF62403911301A7B1F0CFAA048C0A200000007
+          offers:
+            - amount: '1500'
+              flags: 0
+              nft_offer_index: 3212D26DB00031889D4EF7D9129BB0FA673B5B40B1759564486C0F0946BA203F
+              owner: rsuHaTvJh1bDmDoxX9QcKP7HEBSBt4XsHx
+          status: success
