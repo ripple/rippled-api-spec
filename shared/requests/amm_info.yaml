@@ -1,0 +1,188 @@
+components:
+  schemas:
+    AmmInfoRequest:
+      description: >
+        The amm_info method gets information about an Automated Market Maker (AMM) instance.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            account:
+              type: string
+              description: Show only LP Tokens held by this liquidity provider.
+              x-custom-validation:
+                isAccount: true
+            amm_account:
+              type: string
+              description: The address of the AMM's special AccountRoot. (This is the issuer of the AMM's LP Tokens.)
+              x-custom-validation:
+                isAccount: true
+            asset:
+              $ref: '../base.yaml#/components/schemas/Currency'
+              description: |
+                One of the assets of the AMM to look up, as an object with currency and issuer fields (omit issuer for XRP), like currency amounts.
+            asset2:
+              $ref: '../base.yaml#/components/schemas/Currency'
+              description: |
+                The other of the assets of the AMM, as an object with currency and issuer fields (omit issuer for XRP), like currency amounts.
+          x-custom-validation:
+            mutualPresence:
+              - field1: asset
+                field2: asset2
+
+    AmmInfoSuccessResponse:
+      type: object
+      properties:
+        amm:
+          $ref: '#/components/schemas/Amm'
+        ledger_current_index:
+          type: integer
+          description: (Omitted if ledger_index is provided instead) The ledger index of the current in-progress ledger, which was used when retrieving this information.
+        ledger_hash:
+          type: string
+          description: (Omitted if ledger_current_index is provided instead) The identifying hash of the ledger version that was used when retrieving this data.
+        ledger_index:
+          type: integer
+          description: (Omitted if ledger_current_index is provided instead) The ledger index of the ledger version used when retrieving this information.
+        validated:
+          type: boolean
+          description: |
+            If true, the ledger used for this request is validated and these results are final; if omitted or set to false, the data is pending and may change.
+
+    Amm:
+      type: object
+      properties:
+        account:
+          type: string
+          description: The Address of the AMM Account.
+          x-custom-validation:
+            isAccount: true
+        amount:
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        amount2:
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        asset_frozen:
+          type: boolean
+          description: |
+            (Omitted for XRP) If true, the amount currency is currently frozen.
+        asset_frozen2:
+          type: boolean
+          description: |
+            (Omitted for XRP) If true, the amount2 currency is currently frozen.
+        auction_slot:
+          $ref: '#/components/schemas/AuctionSlot'
+        lp_token:
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        trading_fee:
+          type: number
+        vote_slots:
+          type: array
+          description: |
+            (May be omitted) The current votes for the AMM's trading fee, as Vote Slot Objects.
+          items:
+            $ref: '#/components/schemas/VoteSlot'
+
+    AuctionSlot:
+      type: object
+      properties:
+        account:
+          type: string
+          description: The Address of the account that owns the auction slot.
+          x-custom-validation:
+            isAccount: true
+        auth_accounts:
+          type: array
+          description: |
+            A list of additional accounts that the auction slot holder has designated as being eligible of the discounted trading fee. 
+            Each member of this array is an object with one field, account, containing the address of the designated account.
+          items:
+            type: string
+            x-custom-validation:
+              isAccount: true
+        discounted_fee:
+          type: number
+          description: |
+            The discounted trading fee that applies to the auction slot holder, and any eligible accounts, when trading against this AMM. 
+            This is 1/10 of the AMM's normal trading fee.
+        expiration:
+          type: string
+          description: |
+            The ISO 8601 UTC timestamp after which this auction slot expires. 
+            After expired, the auction slot does not apply (but the data can remain in the ledger until another transaction replaces it or cleans it up).
+          x-custom-validation:
+            isNumericString: true
+        price:
+          description: |
+            The amount, in LP Tokens, that the auction slot holder paid to win the auction slot.
+            This affects the price to outbid the current slot holder.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        time_interval:
+          type: integer
+          description: |
+            The current 72-minute time interval this auction slot is in, from 0 to 19. 
+            The auction slot expires after 24 hours (20 intervals of 72 minutes) and affects the cost to outbid the current holder and how much the current holder is refunded if someone outbids them.
+
+    VoteSlot:
+      type: object
+      properties:
+        account:
+          type: string
+          description: The Address of the account that owns the auction slot.
+          x-custom-validation:
+            isAccount: true
+        trading_fee:
+          type: number
+          description: |
+            The trading fee this liquidity provider voted for, in units of 1/100,000.
+        vote_weight:
+          type: number
+          description: |
+            How much this liquidity provider's vote counts towards the final trading fee.
+            This is proportional to how much of the AMM's LP Tokens this liquidity provider holds.
+            The value is equal to 100,000 times the number of this LP Tokens this liquidity provider holds, divided by the total number of LP Tokens outstanding.
+            For example, a value of 1000 means that the liquidity provider holds 1% of this AMM's LP Tokens.
+
+    AmmInfoErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - actNotFound
+                - invalidParams
+          description: >
+            * `actNotFound` - The AMM for this asset pair does not exist, or an account specified in the request does not exist.
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AmmInfoRequest'
+      required:
+        - status
+        - error
+        - request

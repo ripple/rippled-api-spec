@@ -1,0 +1,61 @@
+components:
+  schemas:
+    FeeRequest:
+      type: object
+      description: >
+        The fee command reports the current state of the open-ledger requirements for the transaction cost. 
+        This requires the FeeEscalation amendment to be enabled.
+        This is a public command available to unprivileged users.
+      properties:
+        method:
+          type: string
+          enum:
+            - fee
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/fee.yaml#/components/schemas/FeeRequest'
+      required:
+        - method
+      example:
+        method: 'fee'
+        params:
+
+    FeeSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/fee.yaml#/components/schemas/FeeSuccessResponse'
+
+    FeeResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/FeeSuccessResponseJSON'
+              error: '../../shared/requests/fee.yaml#/components/schemas/FeeErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/FeeSuccessResponseJSON'
+            - $ref: '../../shared/requests/fee.yaml#/components/schemas/FeeErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          current_ledger_size: '56'
+          current_queue_size: '11'
+          drops:
+            base_fee: '10'
+            median_fee: '10000'
+            minimum_fee: '10'
+            open_ledger_fee: '2653937'
+          expected_ledger_size: '55'
+          ledger_current_index: 26575101
+          levels:
+            median_level: '256000'
+            minimum_level: '256'
+            open_ledger_level: '67940792'
+            reference_level: '256'
+          max_queue_size: '1100'
+          status: success

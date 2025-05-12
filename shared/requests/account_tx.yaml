@@ -1,0 +1,239 @@
+components:
+  schemas:
+    AccountTxRequest:
+      description: >
+        The account_tx method retrieves a list of validated transactions that involve a given account.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+        - type: object
+          properties:
+            account:
+              type: string
+              description: Look up Offers placed by this account.
+              x-custom-validation:
+                isAccount: true
+            tx_type:
+              type: string
+              description: (Optional) Clio Only Return only transactions of a specific type, such as "Clawback", "AccountSet", "AccountDelete", et al. Case-insensitive.
+            ledger_index_min:
+              type: integer
+              description: |
+                (Optional) Use to specify the earliest ledger to include transactions from. 
+                A value of -1 instructs the server to use the earliest validated ledger version available.
+            ledger_index_max:
+              type: integer
+              description: |
+                (Optional) Use to specify the most recent ledger to include transactions from. 
+                A value of -1 instructs the server to use the most recent validated ledger version available.
+            binary:
+              type: boolean
+              description: (Optional) Defaults to false. If set to true, returns transactions as hex strings instead of JSON.
+            forward:
+              type: boolean
+              description: |
+                (Optional) Defaults to false. If set to true, returns values indexed with the oldest ledger first. 
+                Otherwise, the results are indexed with the newest ledger first. (Each page of results may not be internally ordered, but the pages are overall ordered.)
+            limit:
+              type: integer
+              description: |
+                (Optional) Default varies. Limit the number of transactions to retrieve. The server is not required to honor this value.
+            marker:
+              type: object
+              description: |
+                Value from a previous paginated response. Resume retrieving data where that response left off. 
+                This value is stable even if there is a change in the server's range of available ledgers.
+          required:
+            - account
+
+    AccountTxSuccessResponse:
+      type: object
+      properties:
+        account:
+          type: string
+          description: Unique Address identifying the related account.
+          x-custom-validation:
+            isAccount: true
+        ledger_index_min:
+          type: integer
+          description: The ledger index of the earliest ledger actually searched for transactions.
+        ledger_index_max:
+          type: integer
+          description: The ledger index of the most recent ledger actually searched for transactions.
+        limit:
+          type: integer
+          description: The limit value used in the request. (This may differ from the actual limit value enforced by the server.)
+        marker:
+          type: object
+          description: |
+            Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off.
+        transactions:
+          type: array
+          description: |
+            Array of transactions matching the request's criteria.
+          oneOf:
+            - $ref: '#/components/schemas/TransactionJSONResponse'
+            - $ref: '#/components/schemas/TransactionHexResponse'
+        validated:
+          type: boolean
+          description: |
+            If included and set to true, the information in this response comes from a validated ledger version.
+            Otherwise, the information is subject to change.
+
+    TransactionJSONResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Transaction'
+
+    Transaction:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        tx_json:
+          $ref: '#/components/schemas/TxJson'
+        ledger_index:
+          type: integer
+        hash:
+          type: string
+        ledger_hash:
+          type: string
+        close_time_iso:
+          type: string
+        validated:
+          type: boolean
+
+    Meta:
+      type: object
+      properties:
+        AffectedNodes:
+          type: array
+          description: A map of affected nodes.
+          items:
+            $ref: '#/components/schemas/AffectedNode'
+        TransactionIndex:
+          type: integer
+        TransactionResult:
+          type: string
+        delivered_amount:
+          type: integer
+
+    TxJson:
+      type: object
+      properties:
+        Account:
+          type: string
+        DeliverMax:
+          type: string
+        Amount:
+          type: string
+        Destination:
+          type: string
+        Fee:
+          type: string
+        Flags:
+          type: integer
+        LastLedgerSequence:
+          type: integer
+        Sequence:
+          type: integer
+        SigningPubKey:
+          type: string
+        TransactionType:
+          type: string
+        TxnSignature:
+          type: string
+        ledger_index:
+          type: integer
+        date:
+          type: integer
+
+    AffectedNode:
+      type: object
+      properties:
+        ModifiedNode:
+          $ref: '#/components/schemas/ModifiedNode'
+
+    ModifiedNode:
+      type: object
+      properties:
+        FinalFields:
+          $ref: '#/components/schemas/FinalFields'
+        LedgerEntryType:
+          type: string
+        LedgerIndex:
+          type: string
+        PreviousFields:
+          $ref: '#/components/schemas/PreviousFields'
+        PreviousTxnID:
+          type: string
+        PreviousTxnLgrSeq:
+          type: integer
+
+    FinalFields:
+      type: object
+      properties:
+        Account:
+          type: string
+        Balance:
+          type: string
+        Flags:
+          type: integer
+        OwnerCount:
+          type: integer
+        Sequence:
+          type: integer
+
+    PreviousFields:
+      type: object
+      properties:
+        Balance:
+          type: string
+        Sequence:
+          type: integer
+
+    TransactionHexResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/TransactionHex'
+
+    TransactionHex:
+      type: object
+      properties:
+        meta_blob:
+          type: string
+        tx_blob:
+          type: string
+        validated:
+          type: boolean
+        ledger_index:
+          type: integer
+
+    AccountTxErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actMalformed
+                - lgrIdxMalformed
+                - lgrIdxsInvalid
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actMalformed` - The Address specified in the account field of the request is not formatted properly.
+            * `lgrIdxMalformed` - The ledger specified by the ledger_index_min or ledger_index_max does not exist, or if it does exist the server does not have it. In API v1, you won't receive this error if you specify a ledger_index_min or ledger_index_max value beyond the range of ledgers that the server has.
+            * `lgrIdxsInvalid` - Either the request specifies a ledger_index_max that is before the ledger_index_min, or the server does not have a validated ledger range because it is not synced with the network.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/AccountTxRequest'
+      required:
+        - status
+        - error
+        - request

@@ -1,0 +1,149 @@
+components:
+  schemas:
+    RipplePathFindRequest:
+      description: >
+        The ripple_path_find method is a simplified version of the path_find method that provides a single response with a payment path you can use right away.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        source_account:
+          type: string
+          description: |
+            Unique address of the account that would send funds in a transaction
+          x-custom-validation:
+            isAccount: true
+        destination_account:
+          type: string
+          description: |
+            Unique address of the account that would receive funds in a transaction
+          x-custom-validation:
+            isAccount: true
+        destination_amount:
+          description: |
+            Currency Amount that the destination account would receive in a transaction. 
+            Special case: You can specify "-1" (for XRP) or provide -1 as the contents of the value field (for non-XRP currencies). 
+            This requests a path to deliver as much as possible, while spending no more than the amount specified in send_max (if provided).
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        send_max:
+          description: |
+            (Optional) Currency Amount that would be spent in the transaction. Cannot be used with source_currencies.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+        source_currencies:
+          type: array
+          description: |
+            (Optional) Array of currencies that the source account might want to spend. 
+            Each entry in the array should be a JSON object with a mandatory currency field and optional issuer field, like how currency amounts are specified. Cannot contain more than 18 source currencies. 
+            By default, uses all source currencies available up to a maximum of 88 different currency/issuer pairs.
+          items:
+            $ref: '../base.yaml#/components/schemas/IssuedCurrency'
+          maxItems: 18
+      x-custom-validation:
+        mutualExclusion:
+          - field1: destination_amount
+            field2: send_max
+
+    RipplePathFindSuccessResponse:
+      type: object
+      properties:
+        alternatives:
+          type: array
+          description: |
+            Array of objects with possible paths to take, as described below. 
+            If empty, then there are no paths connecting the source and destination accounts.
+          items:
+            $ref: '#/components/schemas/Alternative'
+        destination_account:
+          type: string
+          description: |
+            Unique address of the account that would receive a payment transaction
+          x-custom-validation:
+            isAccount: true
+        destination_currencies:
+          type: array
+          description: |
+            Array of currencies that the destination account might want to receive. 
+            Each entry in the array should be a JSON object with a mandatory currency field and optional issuer field, like how currency amounts are specified. 
+            By default, uses all destination currencies available up to a maximum of 88 different currency/issuer pairs.
+          items:
+            type: string
+
+    Alternative:
+      type: object
+      properties:
+        paths_computed:
+          type: array
+          description: |
+            Number of paths computed. This is the number of paths that were considered, not the number of paths returned.
+          items:
+            $ref: '#/components/schemas/Path'
+        source_amount:
+          description: |
+            Currency Amount that the source would have to send along this path for the destination to receive the desired amount
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+
+    Path:
+      type: object
+      properties:
+        account:
+          type: string
+          x-custom-validation:
+            isAccount: true
+        currency:
+          type: string
+        issuer:
+          type: string
+          x-custom-validation:
+            isAccount: true
+
+    RipplePathFindErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - tooBusy
+                - invalidParams
+                - srcActMissing
+                - srcActMalformed
+                - dstActMissing
+                - dstActMalformed
+                - srcCurMalformed
+                - srcIsrMalformed
+          description: >
+            * `tooBusy` - The server is under too much load to calculate paths. Not returned if you are connected as an admin.
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `srcActMissing` - The source_account field is omitted from the request.
+            * `srcActMalformed` - The source_account field in the request is not formatted properly.
+            * `dstActMissing` - The destination_account field is omitted from the request.
+            * `dstActMalformed` - The destination_account field in the request is not formatted properly.
+            * `srcCurMalformed` - The source_currencies field is not formatted properly.
+            * `srcIsrMalformed` - The issuer field of one or more of the currency objects in the request is not valid.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/RipplePathFindRequest'
+      required:
+        - status
+        - error
+        - request

@@ -1,0 +1,55 @@
+components:
+  schemas:
+    BookOffersRequest:
+      type: object
+      description: >
+        The book_offers method retrieves a list of Offers between two currencies, also known as an order book. 
+        The response omits unfunded Offers and reports how much of each remaining Offer's total is currently funded.
+      properties:
+        method:
+          type: string
+          enum:
+            - book_offers
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersRequest'
+      required:
+        - method
+      example:
+        method: 'book_offers'
+        params:
+          - taker: r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59
+            taker_gets:
+              currency: XRP
+            taker_pays:
+              currency: USD
+              issuer: rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B
+            limit: 10
+
+    BookOffersSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersSuccessResponse'
+
+    BookOffersResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/BookOffersSuccessResponseJSON'
+              error: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/BookOffersSuccessResponseJSON'
+            - $ref: '../../shared/requests/book_offers.yaml#/components/schemas/BookOffersErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          ledger_current_index: 8696243
+          offers: []
+          status: success
+          validated: false

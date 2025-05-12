@@ -1,0 +1,704 @@
+components:
+  schemas:
+    LedgerEntryByIdEntryRequest:
+      type: object
+      properties:
+        index:
+          type: string
+          format: hash256
+          description: The ledger entry ID of a single entry to retrieve from the ledger, as a 64-character (256-bit) hexadecimal string.
+
+    AccountRootEntryRequest:
+      type: object
+      properties:
+        account_root:
+          type: string
+          description: The classic address of the AccountRoot entry to retrieve.
+          x-custom-validation:
+            isAccount: true
+
+    AMMEntryRequest:
+      type: object
+      properties:
+        amm:
+          oneOf:
+            - type: string
+              format: hex
+              description: |
+                The AMM to retrieve. If you specify a string, it must be the object ID of the AMM, as hexadecimal. 
+                If you specify an object, it must contain asset and asset2 sub-fields.
+            - $ref: '#/components/schemas/AMMObject'
+
+    AMMObject:
+      type: object
+      properties:
+        asset:
+          $ref: '../base.yaml#/components/schemas/Currency'
+          description: One of the two assets in this AMM's pool, as a currency object without an amount.
+        asset2:
+          $ref: '../base.yaml#/components/schemas/Currency'
+          description: The other of the two assets in this AMM's pool, as a currency object without an amount.
+
+    BridgeEntryRequest:
+      type: object
+      properties:
+        bridge_account:
+          type: string
+          description: The account that submitted the XChainCreateBridge transaction on the blockchain.
+          x-custom-validation:
+            isAccount: true
+        bridge:
+          $ref: '../base.yaml#/components/schemas/XChainBridge'
+
+    CredentialEntryRequest:
+      type: object
+      properties:
+        credential:
+          description: |
+            Specify the Credential to retrieve. If a string, must be the [ledger entry ID][] of the entry, as hexadecimal. 
+            If an object, requires subject, issuer, and credential_type sub-fields.
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/CredentialObject'
+
+    CredentialObject:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: The account that is the subject of the credential.
+          x-custom-validation:
+            isAccount: true
+        issuer:
+          type: string
+          description: The account that issued the credential.
+          x-custom-validation:
+            isAccount: true
+        credential_type:
+          type: string
+          format: hex
+          description: The type of the credential, as issued.
+
+    DirectoryNodeEntryRequest:
+      type: object
+      properties:
+        directory:
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/DirectoryNodeObject'
+
+    DirectoryNodeObject:
+      type: object
+      properties:
+        sub_index:
+          type: integer
+          description: (Optional) If provided, jumps to a later "page" of the DirectoryNode.
+        dir_root:
+          type: string
+          description: (Optional) Unique index identifying the directory to retrieve, as a hex string.
+        owner:
+          type: string
+          description: (Optional) Unique address of the account associated with this directory.
+
+    OfferEntryRequest:
+      type: object
+      properties:
+        offer:
+          description: |
+            If a string, interpret as ledger entry ID of the Offer to retrieve. If an object, requires the sub-fields account and seq to uniquely identify the offer.
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/OfferEntryObject'
+
+    OfferEntryObject:
+      type: object
+      properties:
+        account:
+          type: string
+          description: (Required if offer is specified as an object) The account that placed the offer.
+          x-custom-validation:
+            isAccount: true
+        seq:
+          type: integer
+          description: (Required if offer is specified as an object) The Sequence Number of the transaction that created the Offer entry.
+
+    OracleEntryRequest:
+      type: object
+      properties:
+        oracle:
+          $ref: '#/components/schemas/OracleObject'
+
+    OracleObject:
+      type: object
+      properties:
+        account:
+          type: string
+          description: The account that controls the Oracle object.
+          x-custom-validation:
+            isAccount: true
+        oracle_document_id:
+          type: number
+          description: A unique identifier of the price oracle for the Account
+
+    RippleStateEntryRequest:
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/RippleStateObject'
+        ripple_state:
+          $ref: '#/components/schemas/RippleStateObject'
+
+    RippleStateObject:
+      type: object
+      description: |
+        Object specifying the RippleState (trust line) object to retrieve. 
+        The accounts and currency sub-fields are required to uniquely specify the RippleState entry to retrieve.
+      properties:
+        accounts:
+          type: array
+          description: (Required if ripple_state is specified) 2-length array of account Addresses, defining the two accounts linked by this RippleState entry.
+          items:
+            type: string
+            minItems: 2
+            maxItems: 2
+            x-custom-validation:
+              isAccount: true
+        currency:
+          type: string
+          description: (Required if ripple_state is specified) Currency Code of the RippleState entry to retrieve.
+
+    CheckEntryRequest:
+      type: object
+      properties:
+        check:
+          type: string
+          format: hash256
+          description: The ID of the Check object to retrieve, as a hex string.
+
+    EscrowEntryRequest:
+      type: object
+      properties:
+        escrow:
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/EscrowObject'
+
+    EscrowObject:
+      type: object
+      properties:
+        owner:
+          type: string
+          x-custom-validation:
+            isAccount: true
+        seq:
+          type: integer
+          description: The sequence number of the Escrow object.
+
+    PayChannelEntryRequest:
+      type: object
+      properties:
+        pay_channel:
+          type: string
+          format: hash256
+          description: The object ID of the PayChannel to retrieve.
+
+    DepositPreauthEntryRequest:
+      type: object
+      properties:
+        deposit_preauth:
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/DepositPreauthObject'
+
+    DepositPreauthObject:
+      type: object
+      required:
+        - owner
+      properties:
+        owner:
+          type: string
+          description: The account that provided the preauthorization.
+          x-custom-validation:
+            isAccount: true
+        authorized:
+          type: string
+          description: The account that received the preauthorization.
+          x-custom-validation:
+            isAccount: true
+        authorized_credentials:
+          type: array
+          description: A set of credentials that received the preauthorization.
+          items:
+            $ref: '#/components/schemas/AuthorizedCredential'
+
+    AuthorizedCredential:
+      type: object
+      required:
+        - issuer
+        - credential_type
+      properties:
+        issuer:
+          type: string
+          description: The address of the account that issued the credential.
+          x-custom-validation:
+            isCredential: true
+        credential_type:
+          type: string
+          format: hex
+          description: The type of the credential, as issued.
+
+    TicketEntryRequest:
+      type: object
+      properties:
+        ticket:
+          description: |
+            The Ticket to retrieve. If a string, must be the ledger entry ID of the Ticket, as hexadecimal. 
+            If an object, the account and ticket_seq sub-fields are required to uniquely specify the Ticket entry.
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/TicketObject'
+
+    TicketObject:
+      type: object
+      required:
+        - account
+        - ticket_seq
+      properties:
+        account:
+          type: string
+          description: (Required if ticket is specified as an object) The owner of the Ticket.
+          x-custom-validation:
+            isAccount: true
+        ticket_seq:
+          type: number
+          description: (Required if ticket is specified as an object) The Ticket Sequence number of the Ticket to retrieve.
+
+    NFTPageEntryRequest:
+      type: object
+      properties:
+        nft_page:
+          type: string
+          format: hash256
+          description: The ledger entry ID of an NFT Page to retrieve.
+
+    MPTIssuanceObjectEntryRequest:
+      type: object
+      properties:
+        mpt_issuance:
+          type: string
+          format: hash192
+          description: The 192-bit MPTokenIssuanceID that's associated with the MPTokenIssuance, as hexadecimal.
+
+    MPTokenObjectEntryRequest:
+      type: object
+      properties:
+        mptoken:
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/MPToken'
+
+    MPToken:
+      type: object
+      required:
+        - mpt_issuance_id
+        - account
+      properties:
+        mpt_issuance_id:
+          type: string
+          format: hash192
+          description: |
+            (Required if the MPToken is specified as an object) The 192-bit MPTokenIssuanceID that's associated with the MPTokenIssuance.
+        account:
+          type: string
+          description: (Required if the MPToken is specified as an object) The account that owns the MPToken.
+          x-custom-validation:
+            isAccount: true
+
+    BaseLedgerEntry:
+      $id: BaseLedgerEntry
+      type: object
+      description: |
+        The base object for all ledger entries. This is the most common way to specify a ledger entry in a request.
+        It is used in the LedgerEntry and LedgerEntryById requests.
+      properties:
+        index:
+          type: string
+          format: hash256
+          description: |
+            The unique ID for this ledger entry. In JSON, this field is represented with different names depending on the context and API method. 
+            (Note, even though this is specified as "optional" in the code, every ledger entry should have one unless it's legacy data from very early in the XRP Ledger's history.)
+        LedgerIndex:
+          type: string
+          format: hash256
+          description: |
+            The unique ID for this ledger entry. In JSON, this field is represented with different names depending on the context and API method. 
+            (Note, even though this is specified as "optional" in the code, every ledger entry should have one unless it's legacy data from very early in the XRP Ledger's history.)
+        LedgerEntryType:
+          type: string
+          description: The type of ledger entry. Valid ledger entry types include AccountRoot, Offer, RippleState, and others.
+        Flags:
+          type: integer
+          format: uint32
+          description: Set of bit-flags for this ledger entry.
+      required:
+        - LedgerEntryType
+
+    AccountRootEntryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Account:
+              type: string
+              description: The identifying (classic) address of this account.
+              x-custom-validation:
+                isAccount: true
+            AccountTxnID:
+              type: string
+              format: hash256
+              description: The identifying hash of the transaction most recently sent by this account. This field must be enabled to use the AccountTxnID transaction field. To enable it, send an AccountSet transaction with the asfAccountTxnID flag enabled.
+            AMMID:
+              type: string
+              format: hash256
+              description: (Added by the AMM amendment) The ledger entry ID of the corresponding AMM ledger entry. Set during account creation; cannot be modified. If present, indicates that this is a special AMM AccountRoot; always omitted on non-AMM accounts.
+            Balance:
+              type: string
+              description: The account's current XRP balance in drops, represented as a string.
+              x-custom-validation:
+                isNumericString: true
+            BurnedNFTokens:
+              type: integer
+              description: How many total of this account's issued non-fungible tokens have been burned. This number is always equal or less than MintedNFTokens.
+            Domain:
+              type: string
+              format: hex
+              maxLength: 512
+              description: |
+                A domain associated with this account. In JSON, this is the hexadecimal for the ASCII representation of the domain. Cannot be more than 256 bytes in length.
+            EmailHash:
+              type: string
+              format: hash128
+              description: |
+                The md5 hash of an email address. Clients can use this to look up an avatar through services such as Gravatar.
+            FirstNFTokenSequence:
+              type: integer
+              description: |
+                The account's Sequence Number at the time it minted its first non-fungible-token. (Added by the fixNFTokenRemint amendment)
+            MessageKey:
+              type: string
+              format: hex
+              description: |
+                A public key that may be used to send encrypted messages to this account. 
+                In JSON, uses hexadecimal. Must be exactly 33 bytes, with the first byte indicating the key type: 0x02 or 0x03 for secp256k1 keys, 0xED for Ed25519 keys.
+            MintedNFTokens:
+              type: integer
+              description: |
+                How many total non-fungible tokens have been minted by and on behalf of this account. (Added by the NonFungibleTokensV1_1 amendment)
+            NFTokenMinter:
+              type: string
+              description: |
+                Another account that can mint non-fungible tokens on behalf of this account. (Added by the NonFungibleTokensV1_1 amendment)
+            OwnerCount:
+              type: integer
+              description: The number of objects this account owns in the ledger, which contributes to its owner reserve.
+            PreviousTxnID:
+              type: string
+              format: hash256
+              description: The identifying hash of the transaction that most recently modified this object.
+            PreviousTxnLgrSeq:
+              type: integer
+              description: The index of the ledger that contains the transaction that most recently modified this object.
+            RegularKey:
+              type: string
+              format: hex
+              description: |
+                The address of a key pair that can be used to sign transactions for this account instead of the master key. Use a SetRegularKey transaction to change this value.
+            Sequence:
+              type: integer
+              description: The sequence number of the next valid transaction for this account.
+            TicketCount:
+              type: integer
+              description: |
+                How many Tickets this account owns in the ledger. This is updated automatically to ensure that the account stays within the hard limit of 250 Tickets at a time. 
+                This field is omitted if the account has zero Tickets. (Added by the TicketBatch amendment.)
+            TickSize:
+              type: integer
+              minimum: 3
+              maximum: 15
+              description: |
+                How many significant digits to use for exchange rates of Offers involving currencies issued by this address. Valid values are 3 to 15, inclusive. (Added by the TickSize amendment.)
+            TransferRate:
+              type: integer
+              description: |
+                A transfer fee to charge other users for sending currency issued by this account to each other.
+            WalletLocator:
+              type: string
+              format: hash256
+              description: |
+                An arbitrary 256-bit value that users can set.
+            WalletSize:
+              type: integer
+              description: |
+                Unused. (The code supports this field but there is no way to set it.)
+            Flags:
+              $ref: '#/components/schemas/AccountRootFlags'
+          required:
+            - Account
+            - OwnerCount
+            - PreviousTxnID
+            - PreviousTxnLgrSeq
+            - Sequence
+
+    AccountRootFlags:
+      type: integer
+      format: uint32
+      enum:
+        - 0x80000000
+        - 0x00800000
+        - 0x01000000
+        - 0x00100000
+        - 0x08000000
+        - 0x04000000
+        - 0x10000000
+        - 0x20000000
+        - 0x00080000
+        - 0x00400000
+        - 0x00200000
+        - 0x00010000
+        - 0x00040000
+        - 0x00020000
+      x-enum-varnames:
+        - lsfAllowTrustLineClawback
+        - lsfDefaultRipple
+        - lsfDepositAuth
+        - lsfDisableMaster
+        - lsfDisallowIncomingCheck
+        - lsfDisallowIncomingNFTokenOffer
+        - lsfDisallowIncomingPayChan
+        - lsfDisallowIncomingTrustline
+        - lsfDisallowXRP
+        - lsfGlobalFreeze
+        - lsfNoFreeze
+        - lsfPasswordSpent
+        - lsfRequireAuth
+        - lsfRequireDestTag
+      x-enum-descriptions:
+        - Enable Clawback for this account. (Requires the Clawback amendment.)
+        - Enable rippling on this addresses's trust lines by default. Required for issuing addresses; discouraged for others.
+        - This account has DepositAuth enabled, meaning it can only receive funds from transactions it sends, and from preauthorized accounts. (Added by the DepositAuth amendment)
+        - Disallows use of the master key to sign transactions for this account.
+        - This account blocks incoming Checks. (Added by the DisallowIncoming amendment.)
+        - This account blocks incoming NFTokenOffers. (Added by the DisallowIncoming amendment.)
+        - This account blocks incoming Payment Channels. (Added by the DisallowIncoming amendment.)
+        - This account blocks incoming trust lines. (Added by the DisallowIncoming amendment.)
+        - Client applications should not send XRP to this account. (Advisory; not enforced by the protocol.)
+        - All assets issued by this account are frozen.
+        - This account cannot freeze trust lines connected to it. Once enabled, cannot be disabled.
+        - This account has used its free SetRegularKey transaction.
+        - This account must individually approve other users for those users to hold this account's tokens.
+        - Requires incoming payments to specify a Destination Tag.
+
+    AmendmentsEntryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Amendments:
+              type: array
+              description: |
+                Array of 256-bit amendment IDs for all currently enabled amendments. If omitted, there are no enabled amendments.
+              items:
+                type: string
+                format: hash256
+            Majorities:
+              type: array
+              description: |
+                Array of objects describing the status of amendments that have majority support but are not yet enabled. 
+                If omitted, there are no pending amendments with majority support.
+              items:
+                $ref: '#/components/schemas/MajorityItem'
+
+    MajorityItem:
+      type: object
+      properties:
+        Majority:
+          $ref: '#/components/schemas/MajorityItemContent'
+
+    MajorityItemContent:
+      type: object
+      properties:
+        Amendment:
+          type: string
+          format: hash256
+          description: The Amendment ID of the pending amendment.
+        CloseTime:
+          type: integer
+          description: The close_time field of the ledger version where this amendment most recently gained a majority.
+
+    AMMEntryResponse:
+      required:
+        - Account
+        - Asset
+        - Asset2
+        - LPTokenBalance
+        - TradingFee
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Asset:
+              description: |
+                The definition for one of the two assets this AMM holds. In JSON, this is an object with currency and issuer fields.
+              $ref: '../base.yaml#/components/schemas/Currency'
+            Asset2:
+              description: |
+                The definition for the other asset this AMM holds. In JSON, this is an object with currency and issuer fields.
+              $ref: '../base.yaml#/components/schemas/Currency'
+            Account:
+              description: |
+                The address of the special account that holds this AMM's assets.
+              type: string
+              x-custom-validation:
+                isAccount: true
+            AuctionSlot:
+              $ref: '#/components/schemas/AuctionSlot'
+              description: |
+                Details of the current owner of the auction slot, as an Auction Slot object.
+            LPTokenBalance:
+              description: |
+                The total outstanding balance of liquidity provider tokens from this AMM instance. 
+                The holders of these tokens can vote on the AMM's trading fee in proportion to their holdings, 
+                or redeem the tokens for a share of the AMM's assets which grows with the trading fees collected.
+              $ref: '../base.yaml#/components/schemas/TokenAmount'
+            PreviousTxnID:
+              type: string
+              format: hash256
+              description: The identifying hash of the transaction that most recently modified this entry. (Added by the fixPreviousTxnID amendment.)
+            PreviousTxnLgrSeq:
+              type: integer
+              description: The index of the ledger that contains the transaction that most recently modified this entry. (Added by the fixPreviousTxnID amendment.)
+            TradingFee:
+              type: integer
+              description: |
+                The percentage fee to be charged for trades against this AMM instance, in units of 1/100,000. The maximum value is 1000, for a 1% fee.
+            VoteSlots:
+              type: array
+              description: |
+                A list of vote objects, representing votes on the pool's trading fee.
+              items:
+                $ref: '#/components/schemas/VoteEntry'
+
+    AuctionSlot:
+      type: object
+      required:
+        - Account
+        - Price
+        - Expiration
+        - DiscountedFee
+      properties:
+        Account:
+          type: string
+          description: The current owner of this auction slot.
+          x-custom-validation:
+            isAccount: true
+        AuthAccounts:
+          type: array
+          description: |
+            A list of at most 4 additional accounts that are authorized to trade at the discounted fee for this AMM instance.
+          items:
+            type: string
+            x-custom-validation:
+              isAccount: true
+          maxItems: 4
+        DiscountedFee:
+          type: string
+          description: |
+            The trading fee to be charged to the auction owner, in the same format as TradingFee. Normally, this is 1/10 of the normal fee for this AMM.
+          x-custom-validation:
+            isNumericString: true
+        Price:
+          description: The amount the auction owner paid to win this slot, in LP Tokens.
+          $ref: '../base.yaml#/components/schemas/TokenAmount'
+        Expiration:
+          type: string
+          description: The time when this slot expires, in seconds since the Ripple Epoch.
+          x-custom-validation:
+            isNumericString: true
+
+    VoteEntry:
+      type: object
+      required:
+        - Account
+        - TradingFee
+        - VoteWeight
+      properties:
+        Account:
+          type: string
+          description: The account that cast the vote.
+          x-custom-validation:
+            isAccount: true
+        TradingFee:
+          type: integer
+          description: |
+            The proposed trading fee, in units of 1/100,000; a value of 1 is equivalent to 0.001%. The maximum value is 1000, indicating a 1% fee.
+        VoteWeight:
+          type: integer
+          description: |
+            The weight of the vote, in units of 1/100,000. For example, a value of 1234 means this vote counts as 1.234% of the weighted total vote. 
+            The weight is determined by the percentage of this AMM's LP Tokens the account owns. The maximum value is 100000.
+
+    BridgeEntryResponse:
+      required:
+        - Account
+        - SignatureReward
+        - XChainAccountClaimCount
+        - XChainAccountCreateCount
+        - XChainBridge
+        - XChainClaimID
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Account:
+              type: string
+              description: The account that submitted the XChainCreateBridge transaction on the blockchain.
+              x-custom-validation:
+                isAccount: true
+            MinAccountCreateAmount:
+              $ref: '../base.yaml#/components/schemas/TokenAmount'
+              description: |
+                The minimum amount, in XRP, required for an XChainAccountCreateCommit transaction. 
+                If this isn't present, the XChainAccountCreateCommit transaction will fail.
+                This field can only be present on XRP-XRP bridges.
+            SignatureReward:
+              $ref: '../base.yaml#/components/schemas/TokenAmount'
+              description: |
+                The total amount, in XRP, to be rewarded for providing a signature for cross-chain transfer or for signing for the cross-chain reward. 
+                This amount will be split among the signers.
+            XChainAccountClaimCount:
+              type: integer
+              description: |
+                A counter used to order the execution of account create transactions. 
+                It is incremented every time a XChainAccountCreateCommit transaction is "claimed" on the destination chain. 
+                When the "claim" transaction is run on the destination chain, the XChainAccountClaimCount must match the value 
+                that the XChainAccountCreateCount had at the time the XChainAccountClaimCount was run on the source chain. 
+                This orders the claims so that they run in the same order that the XChainAccountCreateCommit transactions ran on the source chain, to prevent transaction replay.
+            XChainAccountCreateCount:
+              type: integer
+              description: |
+                A counter used to order the execution of account create transactions. 
+                It is incremented every time a successful XChainAccountCreateCommit transaction is run for the source chain.
+            XChainBridge:
+              $ref: '../base.yaml#/components/schemas/XChainBridge'
+              description: |
+                The door accounts and assets of the bridge this object correlates to.
+            XChainClaimID:
+              type: integer
+              description: The value of the next XChainClaimID to be created.

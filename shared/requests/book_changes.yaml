@@ -1,0 +1,109 @@
+components:
+  schemas:
+    BookChangesRequest:
+      description: >
+        The book_changes method reports information about changes to the order books in the decentralized exchange (DEX) compared with the previous ledger version. 
+        This may be useful for building "candlestick" charts.
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+
+    BookChangesSuccessResponse:
+      type: object
+      properties:
+        changes:
+          type: array
+          description: |
+            List of Book Update Objects, containing one entry for each order book that was updated in this ledger version.
+            The array is empty if no order books were updated.
+          items:
+            $ref: '#/components/schemas/BookUpdate'
+        ledger_hash:
+          type: string
+          description: The identifying hash of the ledger version that was used when retrieving this data.
+        ledger_index:
+          type: integer
+          description: The ledger index of the ledger version that was used when retrieving this data.
+        ledger_time:
+          type: integer
+          description: The official close time of the ledger that was used when retrieving this data, in seconds since the Ripple Epoch.
+        type:
+          type: string
+          description: The string bookChanges, which indicates that this is an order book update message.
+        validated:
+          type: boolean
+          description: |
+            (May be omitted) If true, the information comes from a validated ledger version.
+
+    BookUpdate:
+      type: object
+      properties:
+        currency_a:
+          type: string
+          description: |
+            An identifier for the first of the two currencies in the order book. 
+            For XRP, this is the string XRP_drops. For tokens, this is formatted as the address of the issuer in base58, followed by a forward-slash (/), followed by the Currency Code for the token, which can be a 3-character standard code or a 20-character hexadecimal code.
+        currency_b:
+          type: string
+          description: |
+            An identifier for the second of two currencies in the order book. This is in the same format as currency_a, except currency_b can never be XRP.
+        volume_a:
+          type: string
+          description: |
+            The total amount, or volume, of the first currency (that is, currency_a) that moved as a result of trades through this order book in this ledger.
+          x-custom-validation:
+            isNumericString: true
+        volume_b:
+          type: string
+          description: |
+            The volume of the second currency (that is, currency_b) that moved as a result of trades through this order book in this ledger.
+          x-custom-validation:
+            isNumericString: true
+        high:
+          type: string
+          description: |
+            The highest exchange rate among all offers matched in this ledger, as a ratio of the first currency to the second currency. (In other words, currency_a: currency_b.)
+          x-custom-validation:
+            isNumericString: true
+        low:
+          type: string
+          description: |
+            The lowest exchange rate among all offers matched in this ledger, as a ratio of the first currency to the second currency.
+          x-custom-validation:
+            isNumericString: true
+        open:
+          type: string
+          description: |
+            The exchange rate at the top of this order book before processing the transactions in this ledger, as a ratio of the first currency to the second currency.
+          x-custom-validation:
+            isNumericString: true
+        close:
+          type: string
+          description: |
+            The exchange rate at the top of this order book after processing the transactions in this ledger, as a ratio of the first currency to the second currency.
+          x-custom-validation:
+            isNumericString: true
+
+    BookChangesErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - lgrNotFound
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `lgrNotFound` - The ledger specified by the ledger_hash or ledger_index does not exist, or it does exist but the server does not have it.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/BookChangesRequest'
+      required:
+        - status
+        - error
+        - request

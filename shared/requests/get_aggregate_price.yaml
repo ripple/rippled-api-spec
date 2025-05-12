@@ -1,0 +1,144 @@
+components:
+  schemas:
+    GetAggregatePriceRequest:
+      description: >
+        The get_aggregate_price method retrieves the aggregate price of specified Oracle objects, returning three price statistics: mean, median, and trimmed mean.
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+        - type: object
+          properties:
+            base_asset:
+              type: string
+              description: |
+                The currency code of the asset to be priced.
+            quote_asset:
+              type: string
+              description: |
+                The currency code of the asset to quote the price of the base asset.
+            trim:
+              type: number
+              description: The percentage of outliers to trim. Valid trim range is 1-25. If included, the API returns statistics for the trimmed mean.
+            trim_threshold:
+              type: number
+              description: Defines a time range in seconds for filtering out older price data. Default value is 0, which doesn't filter any data.
+            oracles:
+              type: array
+              description: An array of oracle identifier objects. You must list between 1 and 200 oracle identifiers.
+              items:
+                $ref: '#/components/schemas/OracleIdentifier'
+              minItems: 1
+              maxItems: 200
+          required:
+            - base_asset
+            - quote_asset
+            - trim_threshold
+            - oracles
+
+    OracleIdentifier:
+      type: object
+      properties:
+        account:
+          type: string
+          description: |
+            The XRPL account that controls the Oracle object.
+          x-custom-validation:
+            isAccount: true
+        oracle_document_id:
+          type: number
+          description: |
+            A unique identifier of the price oracle for the Account
+      required:
+        - account
+        - oracle_document_id
+
+    GetAggregatePriceSuccessResponse:
+      type: object
+      properties:
+        entire_set:
+          type: object
+          description: |
+            The statistics from the collected oracle prices.
+          $ref: '#/components/schemas/EntireSet'
+        ledger_current_index:
+          type: number
+          description: The index of the latest validated ledger.
+        median:
+          type: string
+          description: The median.
+          x-custom-validation:
+            isNumericString: true
+        time:
+          type: integer
+          description: The most recent timestamp out of all LastUpdateTime values, represented in Unix time.
+        trimmed_set:
+          type: object
+          description: |
+            The trimmed statistics from the collected oracle prices. Only appears if the trim field was specified in the request.
+          $ref: '#/components/schemas/TrimmedSet'
+        validated:
+          type: boolean
+          description: |
+            Whether the response is from a validated ledger. If true, the response is from a validated ledger. If false, the response is from a non-validated ledger.
+
+    TrimmedSet:
+      type: object
+      properties:
+        mean:
+          type: string
+          description: The simple mean of the trimmed data.
+          x-custom-validation:
+            isNumericString: true
+        size:
+          type: number
+          description: The size of the data to calculate the trimmed mean.
+        standard_deviation:
+          type: string
+          description: The standard deviation of the trimmed data.
+          x-custom-validation:
+            isNumericString: true
+
+    EntireSet:
+      type: object
+      properties:
+        mean:
+          type: string
+          description: The simple mean.
+          x-custom-validation:
+            isNumericString: true
+        size:
+          type: number
+          description: The size of the data set to calculate the mean.
+        standard_deviation:
+          type: string
+          description: The standard deviation.
+          x-custom-validation:
+            isNumericString: true
+
+    GetAggregatePriceErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - internal
+                - objectNotFound
+                - oracleMalformed
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `internal` - The trim_threshold setting removed all prices.
+            * `objectNotFound` - There are no prices in the dataset.
+            * `oracleMalformed` - The oracles array is malformed. At least one object field is specified incorrectly or missing, or the number of objects is outside the bounds of 1 to 200.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/GetAggregatePriceRequest'
+      required:
+        - status
+        - error
+        - request

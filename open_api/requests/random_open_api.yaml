@@ -1,0 +1,45 @@
+components:
+  schemas:
+    RandomRequest:
+      type: object
+      description: >
+        The random command provides a random number to be used as a source of entropy for random number generation by clients.
+      properties:
+        method:
+          type: string
+          enum:
+            - random
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/random.yaml#/components/schemas/RandomRequest'
+      required:
+        - method
+      example:
+        method: random
+        params:
+
+    RandomSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/random.yaml#/components/schemas/RandomSuccessResponse'
+
+    RandomResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/RandomSuccessResponseJSON'
+              error: '../../shared/requests/random.yaml#/components/schemas/RandomErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/RandomSuccessResponseJSON'
+            - $ref: '../../shared/requests/random.yaml#/components/schemas/RandomErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          random: 4E57146AA47BC6E88FDFE8BAA235B900126C916B6CC521550996F590487B837A
+          status: success

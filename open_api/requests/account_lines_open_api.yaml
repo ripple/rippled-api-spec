@@ -25,6 +25,11 @@ components:
             peer: 'rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B'
             limit: 200
 
+    AccountLinesSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesSuccessResponse'
+
     AccountLinesResponse:
       type: object
       properties:
@@ -33,10 +38,10 @@ components:
           discriminator:
             propertyName: status
             mapping:
-              success: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesSuccessResponse'
+              success: '#/components/schemas/AccountLinesSuccessResponseJSON'
               error: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesErrorResponse'
           oneOf:
-            - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesSuccessResponse'
+            - $ref: '#/components/schemas/AccountLinesSuccessResponseJSON'
             - $ref: '../../shared/requests/account_lines.yaml#/components/schemas/AccountLinesErrorResponse'
       required:
         - result

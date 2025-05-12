@@ -1,0 +1,60 @@
+components:
+  schemas:
+    BookChangesRequest:
+      type: object
+      description: >
+        The book_changes method reports information about changes to the order books in the decentralized exchange (DEX) compared with the previous ledger version. 
+        This may be useful for building "candlestick" charts.
+      properties:
+        method:
+          type: string
+          enum:
+            - book_changes
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesRequest'
+      required:
+        - method
+      example:
+        method: 'book_changes'
+        params:
+          - ledger_index: 88530953
+            api_version: 2
+
+    BookChangesResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesSuccessResponse'
+
+    BookChangesResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/BookChangesResponseJSON'
+              error: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/BookChangesResponseJSON'
+            - $ref: '../../shared/requests/book_changes.yaml#/components/schemas/BookChangesErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          changes:
+            - close: '277777.7777777778'
+              currency_a: XRP_drops
+              currency_b: rKiCet8SdvWxPXnAgYarFUXMh1zCPz432Y/CNY
+              high: '277777.7777777778'
+              low: '277777.7777777778'
+              open: '277777.7777777778'
+              volume_a: '44082741'
+              volume_b: '158.6978676'
+          ledger_hash: 7AB08A2415C10E07201521F3260F77ADFF4902A528EA66378E259A07767A24B9
+          ledger_index: 88530953
+          ledger_time: 771100891
+          status: success
+          type: bookChanges

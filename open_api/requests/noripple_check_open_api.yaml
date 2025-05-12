@@ -1,0 +1,79 @@
+components:
+  schemas:
+    NoRippleCheckRequest:
+      type: object
+      description: >
+        The noripple_check command provides a quick way to check the status of the Default Ripple field for an account and the No Ripple flag of its trust lines, compared with the recommended settings.
+      properties:
+        method:
+          type: string
+          enum:
+            - noripple_check
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/noripple_check.yaml#/components/schemas/NoRippleCheckRequest'
+      required:
+        - method
+      example:
+        method: noripple_check
+        params:
+          - account: r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59
+            ledger_index: current
+            limit: 2
+            role: gateway
+            transactions: true
+
+    NoRippleCheckSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/noripple_check.yaml#/components/schemas/NoRippleCheckSuccessResponse'
+
+    NoRippleCheckResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/NoRippleCheckSuccessResponseJSON'
+              error: '../../shared/requests/noripple_check.yaml#/components/schemas/NoRippleCheckErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/NoRippleCheckSuccessResponseJSON'
+            - $ref: '../../shared/requests/noripple_check.yaml#/components/schemas/NoRippleCheckErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          ledger_current_index: 14380381
+          problems:
+            - You should immediately set your default ripple flag
+            - You should clear the no ripple flag on your XAU line to r3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z
+            - You should clear the no ripple flag on your USD line to rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
+          status: success
+          transactions:
+            - Account: r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59
+              Fee: 10000
+              Sequence: 1406
+              SetFlag: 8
+              TransactionType: AccountSet
+            - Account: r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59
+              Fee: 10000
+              Flags: 262144
+              LimitAmount:
+                currency: XAU
+                issuer: r3vi7mWxru9rJCxETCyA1CHvzL96eZWx5z
+                value: '0'
+              Sequence: 1407
+              TransactionType: TrustSet
+            - Account: r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59
+              Fee: 10000
+              Flags: 262144
+              LimitAmount:
+                currency: USD
+                issuer: rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q
+                value: '5'
+              Sequence: 1408
+              TransactionType: TrustSet
+          validated: false

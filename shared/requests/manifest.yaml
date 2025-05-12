@@ -1,0 +1,73 @@
+components:
+  schemas:
+    ManifestRequest:
+      description: >
+        The manifest method reports the current "manifest" information for a given validator public key. 
+        The "manifest" is a block of data that authorizes an ephemeral signing key with a signature from the validator's master key pair. Updated in: rippled 1.7.0
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            public_key:
+              type: string
+              description: The base58-encoded public key of the validator to look up. This can be the master public key or ephemeral public key.
+
+    ManifestSuccessResponse:
+      type: object
+      properties:
+        manifest:
+          type: string
+          description: |
+            (May be omitted) The full manifest data in base64 format. 
+            This data is serialized to binary before being base64-encoded. Omitted if the server does not have a manifest for the public_key from the request.
+        requested:
+          type: string
+          description: The base58-encoded public key of the validator to look up. This can be the master public key or ephemeral public key.
+        details:
+          $ref: '#/components/schemas/Details'
+          description: |
+            (May be omitted) The data contained in this manifest. 
+            Omitted if the server does not have a manifest for the public_key from the request.
+            See Details Object below for a full description of its contents.
+
+    Details:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: |
+            The domain name this validator claims to be associated with. If the manifest does not contain a domain, this is an empty string.
+        ephemeral_key:
+          type: string
+          description: The ephemeral public key for this validator, in base58.
+        master_key:
+          type: string
+          description: The master public key for this validator, in base58.
+        seq:
+          type: string
+          description: |
+            The sequence number of this manifest. This number increases whenever the validator operator updates the validator's token to rotate ephemeral keys or change settings.
+
+    ManifestErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - reportingUnsupported
+          description: >
+            * `invalidParams` - The public_key field was missing or specified incorrectly.
+            * `reportingUnsupported` - (Reporting Mode servers only) This method is not available in Reporting Mode.
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/ManifestRequest'
+      required:
+        - status
+        - error
+        - request

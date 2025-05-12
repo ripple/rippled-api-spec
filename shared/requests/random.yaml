@@ -1,0 +1,39 @@
+components:
+  schemas:
+    RandomRequest:
+      description: >
+        The random command provides a random number to be used as a source of entropy for random number generation by clients.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+
+    RandomSuccessResponse:
+      type: object
+      properties:
+        random:
+          type: string
+          format: hash256
+          description: Random 256-bit hex value.
+
+    RandomErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - internal
+          description: >
+            * `internal` - Some internal error occurred, possibly relating to the random number generator.
+        status:
+          type: string
+          enum:
+            - error
+
+        request:
+          $ref: '#/components/schemas/RandomRequest'
+      required:
+        - status
+        - error
+        - request

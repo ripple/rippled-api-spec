@@ -7,25 +7,29 @@ components:
         This includes only channels where the specified account is the channel's source, not the destination. 
         (A channel's source and owner are the same.) All information retrieved is relative to a particular version of the ledger. 
         Returns an AccountChannelsResponse.
-      type: object
       allOf:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      properties:
-        account:
-          type: string
-          description: The unique identifier of an account, typically the account's address.
-        destination_account:
-          type: string
-          description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
-        limit:
-          type: number
-          minimum: 10
-          maximum: 400
-          description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
-        marker:
-          # Not specifying a type is how we express the type can be "any" value
-          description: Value from a previous paginated response. Resume retrieving data where that response left off.
+        - type: object
+          properties:
+            account:
+              type: string
+              description: The unique identifier of an account, typically the account's address.
+              x-custom-validation:
+                isAccount: true
+            destination_account:
+              type: string
+              description: The unique identifier of an account, typically the account's address. If provided, filter results to payment channels whose destination is this account.
+              x-custom-validation:
+                isAccount: true
+            limit:
+              type: number
+              minimum: 10
+              maximum: 400
+              description: Limit the number of transactions to retrieve. Cannot be less than 10 or more than 400. The default is 200.
+            marker:
+              # Not specifying a type is how we express the type can be "any" value
+              description: Value from a previous paginated response. Resume retrieving data where that response left off.
       required:
         - account
 
@@ -101,27 +105,26 @@ components:
     AccountChannelsSuccessResponse:
       $id: AccountChannelResponseSuccess
       allOf:
-        - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
         - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
-      type: object
-      properties:
-        account:
-          type: string
-          description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
-        channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/Channel'
-          description: Payment channels owned by this account.
-        validated:
-          type: boolean
-          description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
-        limit:
-          type: number
-          description: The limit to how many channel objects were actually returned by this request.
-        marker:
-          # Not specifying a type is how we express the type can be "any" value
-          description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
+        - type: object
+          properties:
+            account:
+              type: string
+              description: The address of the source/owner of the payment channels. This corresponds to the account field of the request.
+            channels:
+              type: array
+              items:
+                $ref: '#/components/schemas/Channel'
+              description: Payment channels owned by this account.
+            validated:
+              type: boolean
+              description: If true, the information in this response comes from a validated ledger version. Otherwise, the information is subject to change.
+            limit:
+              type: number
+              description: The limit to how many channel objects were actually returned by this request.
+            marker:
+              # Not specifying a type is how we express the type can be "any" value
+              description: Server-defined value for pagination. Pass this to the next call to resume getting results where this call left off. Omitted when there are no additional pages after this one.
       required:
         - account
 

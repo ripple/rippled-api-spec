@@ -1,0 +1,55 @@
+components:
+  schemas:
+    LedgerStateFixTransaction:
+      $id: LedgerStateFixTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        LedgerStateFix is a general purpose transaction used to fix specific issues affecting the XRP ledger. 
+        You submit the transaction with the LedgerFixType value set to indicate the particular error state to correct.
+      required:
+        - LedgerFixType
+      properties:
+        LedgerFixType:
+          $ref: '#/components/schemas/LedgerFixTypeFlag'
+          description: |
+            The type of fix to apply. See LedgerFixType for possible values. 
+            Currently the only type is 1, which fixes the NFToken directory for a single account.
+        Owner:
+          type: string
+          description: |
+            (Required if LedgerFixType is 1.) The account that owns the NFToken directory to fix. 
+            Does not need any relationship to the sender of the transaction.
+          x-custom-validation:
+            isAccount: true
+      x-generate-enum-in-model:
+        - LedgerFixTypeFlag
+
+    LedgerFixTypeFlag:
+      type: integer
+      format: uint32
+      description: Enum for LedgerFixType.
+      enum: [1]
+      x-enum-varnames:
+        - type1
+      x-enum-descriptions:
+        - Fixes NFToken directory.
+
+    LedgerStateFixErrorCode:
+      $id: LedgerStateFixErrorCode
+      type: integer
+      format: uint32
+      description: Error codes for the LedgerStateFix transaction.
+      enum:
+        - 105
+        - 160
+        - -178
+      x-enum-varnames:
+        - tecFAILED_PROCESSING
+        - tecOBJECT_NOT_FOUND
+        - tefINVALID_LEDGER_FIX_TYPE
+      x-enum-descriptions:
+        - The transaction failed to apply the fix. For example, the transaction attempted to repair an NFT directory that was not broken.
+        - A ledger entry specified in the transaction does not exist. For example, the transaction tried to repair the NFT directory of an account that does not hold any NFTs.
+        - The LedgerFixType value specified in the transaction is not valid. Currently, the only valid type is 1.

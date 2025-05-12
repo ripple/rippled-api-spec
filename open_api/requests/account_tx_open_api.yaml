@@ -1,0 +1,57 @@
+components:
+  schemas:
+    AccountTxRequest:
+      type: object
+      description: >
+        The account_tx method retrieves a list of validated transactions that involve a given account.
+      properties:
+        method:
+          type: string
+          enum:
+            - account_tx
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/account_tx.yaml#/components/schemas/AccountTxRequest'
+      required:
+        - method
+      example:
+        method: 'account_tx'
+        params:
+          - account: 'rpP2JgiMyTF5jR5hLG3xHCPi1knBb1v9cM'
+            binary: false
+            api_version: 2
+
+    AccountTxResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/account_tx.yaml#/components/schemas/AccountTxSuccessResponse'
+
+    AccountTxResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/AccountTxResponseJSON'
+              error: '../../shared/requests/account_tx.yaml#/components/schemas/AccountTxErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/AccountTxResponseJSON'
+            - $ref: '../../shared/requests/account_tx.yaml#/components/schemas/AccountTxErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          account: 'rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn'
+          ledger_index_min: 32570
+          ledger_index_max: 91824423
+          transactions:
+            - ledger_index: 57112090
+              meta: '201C0000002EF8E51100612503677617551E0297F38EF4FED7004E074D246B4EA3E550D9AE0F61BE40E08D3432091D52CE56140FA03FE8C39540CA8189BC7A7956795C712BC0A542C6409C041150703C8574E624000AB96E624000037771BFD270E1E7220002000024000AB96F2D0000000062400003776C784A418114D2E44C9FAF7BE9C536219800A6E698E4C7D2C911E1E1E311006156F7D315E0E992B1F1AC66B309C9D68961AA327FE770101B74D4C975F8C5DEC96AE8240367761A624000000005478807811403C95DC0C7CE402E8044A5F13304108013CE9963E1E1F1031000'
+              tx_blob: '120000228000000024000AB96E201B036776306140000000054788076840000000000000287321020A46D8D02AC780C59853ACA309EAA92E7D8E02DD72A0B6AC315A7D18A6C3276A74463044022054811EEF61ACCFA1B5FC6BB05D2FA49CF5174062740370328382E6EA557C0E6A0220480584D487638C333A87CA37100354BD36209E355E8DB9FE79791A56E24C1F268114D2E44C9FAF7BE9C536219800A6E698E4C7D2C911831403C95DC0C7CE402E8044A5F13304108013CE9963'
+              validated: true
+          limit: 2
+          validated: false
+          status: 'success'

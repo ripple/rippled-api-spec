@@ -1,0 +1,71 @@
+components:
+  schemas:
+    NFTBuyOffersRequest:
+      description: >
+        The nft_buy_offers method returns a list of buy offers for a given NFToken object.
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseRequest'
+        - $ref: '../base.yaml#/components/schemas/LookupByLedgerRequest'
+      properties:
+        nft_id:
+          type: string
+          description: The unique identifier of a NFToken object.
+        limit:
+          type: integer
+          description: |
+            (Optional) Limit the number of NFT buy offers to retrieve. This value cannot be lower than 50 or more than 500.
+            Positive values outside this range are replaced with the closest valid option. The default is 250.
+          minimum: 50
+          maximum: 500
+        marker:
+          type: object
+          description: (Optional) Value from a previous paginated response. Resume retrieving data where that response left off.
+
+    NFTBuyOffersSuccessResponse:
+      type: object
+      properties:
+        nft_id:
+          type: string
+          description: The NFToken these offers are for, as specified in the request.
+        offers:
+          type: array
+          description: A list of buy offers for the token. Each of these is formatted as a Buy Offer (see below).
+          items:
+            $ref: '../base.yaml#/components/schemas/NFTokenOffer'
+        limit:
+          type: integer
+          description: (May be omitted) The limit, as specified in the request.
+        marker:
+          type: object
+          description: |
+            (May be omitted) Server-defined value indicating the response is paginated. Pass this to the next call to resume where this call left off.
+            Omitted when there are no pages of information after this one.
+
+    NFTBuyOffersErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          oneOf:
+            - $ref: '../base.yaml#/components/schemas/UniversalErrorResponseCodes'
+            - enum:
+                - invalidParams
+                - actNotFound
+                - lgrNotFound
+                - objectNotFound
+          description: >
+            * `invalidParams` - One or more fields are specified incorrectly, or one or more required fields are missing.
+            * `actNotFound` - The Address specified in the account field of the request does not correspond to an account in the ledger.
+            * `lgrNotFound` - The ledger specified by the ledger_hash or ledger_index does not exist, or it does exist but the server does not have it.
+            * `objectNotFound` - The NFT does not have any buy offers (note that object refers to the buy offer rather than the NFT itself).
+        status:
+          type: string
+          enum:
+            - error
+        request:
+          $ref: '#/components/schemas/NFTBuyOffersRequest'
+      required:
+        - status
+        - error
+        - request

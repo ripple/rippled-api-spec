@@ -1,0 +1,80 @@
+components:
+  schemas:
+    AmmInfoRequest:
+      type: object
+      description: >
+        The amm_info method gets information about an Automated Market Maker (AMM) instance.
+      properties:
+        method:
+          type: string
+          enum:
+            - amm_info
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoRequest'
+      required:
+        - method
+      example:
+        method: 'amm_info'
+        params:
+          - asset:
+              currency: 'XRP'
+            asset2:
+              currency: 'TST'
+              issuer: 'rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd'
+
+    AmmInfoResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoSuccessResponse'
+
+    AmmInfoResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/AmmInfoResponseJSON'
+              error: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/AmmInfoResponseJSON'
+            - $ref: '../../shared/requests/amm_info.yaml#/components/schemas/AmmInfoErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          amm:
+            account: rp9E3FN3gNmvePGhYnf414T2TkUuoxu8vM
+            amount: '296890496'
+            amount2:
+              currency: TST
+              issuer: rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd
+              value: '25.81656470648473'
+            asset2_frozen: false
+            auction_slot:
+              account: rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm
+              auth_accounts:
+                - account: r3f2WpQMsAd8k4Zoijv2PZ78EYFJ2EdvgV
+                - account: rnW8FAPgpQgA6VoESnVrUVJHBdq9QAtRZs
+              discounted_fee: 0
+              expiration: '2023-Jan-26 00:28:40.000000000 UTC'
+              price:
+                currency: 039C99CD9AB0B70B32ECDA51EAAE471625608EA2
+                issuer: rp9E3FN3gNmvePGhYnf414T2TkUuoxu8vM
+                value: '0'
+              time_interval: 0
+            lp_token:
+              currency: 039C99CD9AB0B70B32ECDA51EAAE471625608EA2
+              issuer: rp9E3FN3gNmvePGhYnf414T2TkUuoxu8vM
+              value: '87533.41976112682'
+            trading_fee: 600
+            vote_slots:
+              - account: rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm
+                trading_fee: 600
+                vote_weight: 9684
+          ledger_current_index: 316745
+          status: success
+          validated: false

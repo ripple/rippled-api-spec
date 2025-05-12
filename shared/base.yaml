@@ -73,6 +73,7 @@ components:
       properties:
         ledger_hash:
           type: string
+          format: hash256
           description: A 20-byte hex string for the ledger version to use.
         ledger_index:
           oneOf:
@@ -157,7 +158,6 @@ components:
                   MemoType: 687474703a2f2f6578616d706c652e636f6d2f6d656d6f2f67656e65726963
                   MemoData: 72656e74
             Amount: '1'
-
         NetworkID:
           type: integer
           format: uint32
@@ -178,6 +178,40 @@ components:
           type: integer
           format: uint32
           description: The sequence number of the ticket to use in place of a Sequence number. If this is provided, Sequence must be 0. Cannot be used with AccountTxnID.
+        TxnSignature:
+          type: string
+          description: The signature that verifies this transaction as originating from the account it says it is from.
+
+    PseudoTransaction:
+      $id: PseudoTransaction
+      type: object
+      required:
+        - Account
+        - TransactionType
+      properties:
+        Account:
+          type: string
+          description: The unique address of the account that initiated the transaction.
+          x-custom-validation:
+            isAccount: true
+        TransactionType:
+          type: string
+          description: >
+            The type of transaction. Valid transaction types include: Payment, OfferCreate, TrustSet, and many others.
+        Fee:
+          type: string
+          description: Integer amount of XRP, in drops, to be destroyed as a cost for distributing this transaction to the network. Some transaction types have different minimum requirements. See Transaction Cost for details.
+        Sequence:
+          type: integer
+          format: uint32
+          description: The sequence number of the account sending the transaction. A transaction is only valid if the Sequence number is exactly 1 greater than the previous transaction from the same account. The special case 0 means the transaction is using a Ticket instead.
+        Flags:
+          type: integer
+          format: uint32
+          description: Set of bit-flags for this transaction.
+        SigningPubKey:
+          type: string
+          description: Hex representation of the public key that corresponds to the private key used to sign this transaction. If an empty string, indicates a multi-signature is present in the Signers field instead.
         TxnSignature:
           type: string
           description: The signature that verifies this transaction as originating from the account it says it is from.
@@ -281,6 +315,29 @@ components:
           description: |
             The asset that is locked and unlocked on the locking chain.
 
+    NFTokenOffer:
+      type: object
+      properties:
+        amount:
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '#/components/schemas/TokenAmount'
+        flags:
+          type: integer
+          description: >
+            A set of bit-flags for this offer. See NFTokenOffer flags for possible values.
+        nft_offer_index:
+          type: string
+          description: The ledger object ID of this offer.
+        owner:
+          type: string
+          description: The account that placed this offer.
+          x-custom-validation:
+            isAccount: true
+
     ServerState:
       type: string
       description: >
@@ -302,3 +359,35 @@ components:
         full: The server is fully caught-up with the network and could participate in validation, but is not doing so (possibly because it has not been configured as a validator).
         validating: The server is currently participating in validation of the ledger.
         propsing: The server is participating in validation of the ledger and currently proposing its own version.
+
+    StateAccountingInfo:
+      type: object
+      properties:
+        duration_us:
+          type: string
+          description: >
+            The number of microseconds the server has spent in this state. (This is updated whenever the server transitions into another state.)
+        transitions:
+          type: string
+          description: The number of times the server has changed into this state.
+
+    StateAccounting:
+      type: object
+      description: >
+        A map of various [server states](https://xrpl.org/docs/references/http-websocket-apis/api-conventions/rippled-server-states) with information about the time the server spends in each.
+        This can be useful for tracking the long-term health of your server's connectivity to the network.
+      properties:
+        disconnected:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        connected:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        syncing:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        tracking:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        full:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        validating:
+          $ref: '#/components/schemas/StateAccountingInfo'
+        proposing:
+          $ref: '#/components/schemas/StateAccountingInfo'

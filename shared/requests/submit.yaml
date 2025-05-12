@@ -84,6 +84,9 @@ components:
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
               CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               CheckCreate: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+              EnableAmendment: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+              SetFee: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+              UNLModify: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
               OfferCancel: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
               OfferCreate: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
               TrustSet: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
@@ -115,6 +118,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -140,6 +145,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+            - $ref: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+            - $ref: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
@@ -163,6 +171,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -195,6 +205,9 @@ components:
               CheckCancel: '../transactions/check_cancel.yaml#/components/schemas/CheckCancelTransaction'
               CheckCash: '../transactions/check_cash.yaml#/components/schemas/CheckCashTransaction'
               CheckCreate: '../transactions/check_create.yaml#/components/schemas/CheckCreateTransaction'
+              EnableAmendment: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+              SetFee: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+              UNLModify: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
               OfferCancel: '../transactions/offer_cancel.yaml#/components/schemas/OfferCancelTransaction'
               OfferCreate: '../transactions/offer_create.yaml#/components/schemas/OfferCreateTransaction'
               TrustSet: '../transactions/trust_set.yaml#/components/schemas/TrustSetTransaction'
@@ -226,6 +239,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -251,6 +266,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+            - $ref: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+            - $ref: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
@@ -274,6 +292,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -374,6 +394,9 @@ components:
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
               EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+              EnableAmendment: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+              SetFee: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+              UNLModify: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
               Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
               DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
               TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
@@ -397,6 +420,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
@@ -424,6 +449,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+            - $ref: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+            - $ref: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
@@ -447,6 +475,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -483,6 +513,9 @@ components:
               EscrowCancel: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
               EscrowCreate: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
               EscrowFinish: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+              EnableAmendment: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+              SetFee: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+              UNLModify: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
               Clawback: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
               DepositPreauth: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
               TicketCreate: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
@@ -506,6 +539,8 @@ components:
               XChainCreateBridge: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
               XChainModifyBridge: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+              LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+              SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
@@ -533,6 +568,9 @@ components:
             - $ref: '../transactions/escrow_cancel.yaml#/components/schemas/EscrowCancelTransaction'
             - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateTransaction'
             - $ref: '../transactions/escrow_finish.yaml#/components/schemas/EscrowFinishTransaction'
+            - $ref: '../transactions/enable_amendment.yaml#/components/schemas/EnableAmendmentTransaction'
+            - $ref: '../transactions/set_fee.yaml#/components/schemas/SetFeeTransaction'
+            - $ref: '../transactions/unl_modify.yaml#/components/schemas/UNLModifyTransaction'
             - $ref: '../transactions/clawback.yaml#/components/schemas/ClawbackTransaction'
             - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
             - $ref: '../transactions/ticket_create.yaml#/components/schemas/TicketCreateTransaction'
@@ -556,6 +594,8 @@ components:
             - $ref: '../transactions/xchain_create_bridge.yaml#/components/schemas/XChainCreateBridgeTransaction'
             - $ref: '../transactions/xchain_modify_bridge.yaml#/components/schemas/XChainModifyBridgeTransaction'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
+            - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -593,6 +633,7 @@ components:
             - $ref: '../transactions/payment_channel_create.yaml#/components/schemas/PaymentChannelCreateErrorCode'
             - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundErrorCode'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteErrorCode'
+            - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee

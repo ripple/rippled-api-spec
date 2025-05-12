@@ -1,0 +1,38 @@
+components:
+  schemas:
+    EnableAmendmentTransaction:
+      $id: EnableAmendmentTransaction
+      type: object
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/PseudoTransaction'
+      description: |
+        An EnableAmendment pseudo-transaction marks a change in the status of a proposed amendment.
+      properties:
+        Amendment:
+          type: string
+          format: hash256
+          description: |
+            A unique identifier for the amendment. This is not intended to be a human-readable name. See [Amendments](https://xrpl.org/docs/concepts/networks-and-servers/amendments) for a list of known amendments.
+        LedgerSequence:
+          type: integer
+          format: uint32
+          description: |
+            The [ledger index](https://xrpl.org/docs/references/protocol/data-types/basic-data-types#ledger-index) where this pseudo-transaction appears. This distinguishes the pseudo-transaction from other occurrences of the same change.
+        Flags:
+          $ref: '#/components/schemas/EnableAmendmentFlag'
+
+    EnableAmendmentFlag:
+      type: integer
+      format: uint32
+      description: Enum for Enable Amendment Transaction Flags.
+      enum:
+        - 0x00010000
+        - 0x00020000
+      x-enum-varnames:
+        - tfGotMajority
+        - tfLostMajority
+      x-enum-descriptions:
+        - 'The same as SetFlag: asfRequireDest.'
+        - 'The same as ClearFlag: asfRequireDest.'
+      x-generate-hex: true
+      x-generate-flag-interface: true
