@@ -63,6 +63,13 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/AmendmentsEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/AMMEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/CheckEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/CredentialEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/DepositPreauthEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/DIDEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/DirectoryNodeEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/EscrowNodeEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/FeeSettingsEntryResponse'
 
     LedgerEntryErrorResponse:
       type: object
