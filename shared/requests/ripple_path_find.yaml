@@ -47,7 +47,7 @@ components:
             Each entry in the array should be a JSON object with a mandatory currency field and optional issuer field, like how currency amounts are specified. Cannot contain more than 18 source currencies. 
             By default, uses all source currencies available up to a maximum of 88 different currency/issuer pairs.
           items:
-            -$ref: '../base.yaml#/components/schemas/IssuedCurrency'
+            $ref: '../base.yaml#/components/schemas/IssuedCurrency'
           maxItems: 18
       x-custom-validation:
         mutualExclusion:
@@ -63,7 +63,7 @@ components:
             Array of objects with possible paths to take, as described below. 
             If empty, then there are no paths connecting the source and destination accounts.
           items:
-            -$ref: '#/components/schemas/Alternative'
+            $ref: '#/components/schemas/Alternative'
         destination_account:
           type: string
           description: |
@@ -87,7 +87,7 @@ components:
           description: |
             Number of paths computed. This is the number of paths that were considered, not the number of paths returned.
           items:
-            -$ref: '#/components/schemas/Path'
+            $ref: '#/components/schemas/Path'
         source_amount:
           description: |
             Currency Amount that the source would have to send along this path for the destination to receive the desired amount

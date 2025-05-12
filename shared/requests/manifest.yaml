@@ -24,11 +24,11 @@ components:
           type: string
           description: The base58-encoded public key of the validator to look up. This can be the master public key or ephemeral public key.
         details:
+          $ref: '#/components/schemas/Details'
           description: |
             (May be omitted) The data contained in this manifest. 
             Omitted if the server does not have a manifest for the public_key from the request.
             See Details Object below for a full description of its contents.
-          $ref: '#/components/schemas/ManifestDetails'
 
     Details:
       type: object

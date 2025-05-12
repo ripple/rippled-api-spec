@@ -8,7 +8,7 @@ components:
         - $ref: '../base.yaml#/components/schemas/BaseRequest'
 
     PingSuccessResponse:
-      - $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
+      $ref: '../base.yaml#/components/schemas/BaseSuccessResponse'
 
     PingErrorResponse:
       type: object

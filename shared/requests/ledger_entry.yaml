@@ -18,26 +18,24 @@ components:
               description: |
                 (Optional, Clio servers only) If set to true and the queried object has been deleted, return its complete data as it was prior to its deletion. 
                 If set to false or not provided, and the queried object has been deleted, return objectNotFound (current behavior).
-        - type: object
-          properties:
-            oneOf:
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/LedgerEntryByIdRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/AccountRootEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/AMMEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/CredentialEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/DirectoryNodeEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/OfferEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/OracleEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/RippleStateEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/CheckEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/EscrowEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/PayChannelEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/DepositPreauthEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/TicketEntryRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/NFTPageRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTIssuanceObjectRequest'
-              - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenObjectRequest'
+        - oneOf:
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/LedgerEntryByIdEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/AccountRootEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/AMMEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/CredentialEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/DirectoryNodeEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/OfferEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/OracleEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/RippleStateEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/CheckEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/EscrowEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/PayChannelEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/DepositPreauthEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/TicketEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/NFTPageEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTIssuanceObjectEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenObjectEntryRequest'
 
     LedgerEntrySuccessResponse:
       type: object
@@ -61,32 +59,10 @@ components:
           type: string
         node:
           oneOf:
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/AccountRoot'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Amendments'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/AMM'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Bridge'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Check'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Credential'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/DepositPreauth'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/DID'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/DirectoryNode'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Escrow'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/FeeSettings'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/LedgerHashes'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPToken'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenIssuance'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/NegativeUNL'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/NFTokenOffer'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/NFTokenPage'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Offer'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Oracle'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/PermissionedDomain'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/PayChannel'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/RippleState'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/SignerList'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/Ticket'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/XChainOwnedClaimID'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/XChainOwnedCreateAccountClaimID'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/AccountRootEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/AmendmentsEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/AMMEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryResponse'
 
     LedgerEntryErrorResponse:
       type: object
