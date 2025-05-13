@@ -70,6 +70,7 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/DirectoryNodeEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/EscrowNodeEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/FeeSettingsEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/LedgerHashesEntryResponse'
 
     LedgerEntryErrorResponse:
       type: object

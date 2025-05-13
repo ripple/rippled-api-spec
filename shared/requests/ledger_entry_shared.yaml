@@ -1128,3 +1128,20 @@ components:
               description: The incremental owner reserve for owning objects, as drops of XRP.
               x-custom-validation:
                 isNumericString: true
+
+    LedgerHashesEntryResponse:
+      required:
+        - Hashes
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Hashes:
+              description: An array of up to 256 ledger hashes. The contents depend on which sub-type of LedgerHashes object this is.
+              type: array
+              items:
+                type: string
+                format: hash256
+            LastLedgerSequence:
+              type: integer
+              description: The Ledger Index of the last entry in this object's Hashes array.
