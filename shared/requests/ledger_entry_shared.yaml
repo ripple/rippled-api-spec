@@ -321,6 +321,26 @@ components:
           x-custom-validation:
             isAccount: true
 
+    DelegateEntryRequest:
+      type: object
+      properties:
+        delegate:
+          $ref: '#/components/schemas/DelegateObject'
+
+    DelegateObject:
+      type: object
+      properties:
+        account:
+          type: string
+          description: The delegating account that owns the Delegate.
+          x-custom-validation:
+            isAccount: true
+        authorize:
+          type: string
+          description: The delegated account that is granted permissions by the delegating account.
+          x-custom-validation:
+            isAccount: true
+
     BaseLedgerEntry:
       $id: BaseLedgerEntry
       type: object
@@ -702,3 +722,48 @@ components:
             XChainClaimID:
               type: integer
               description: The value of the next XChainClaimID to be created.
+
+    DelegateEntryResponse:
+      required:
+        - Account
+        - Authorize
+        - Permissions
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Account:
+              description: The delegating account that owns the Delegate.
+              type: string
+              x-custom-validation:
+                isAccount: true
+            Authorize:
+              description: The delegated account that is granted permissions by the delegating account.
+              type: string
+              x-custom-validation:
+                isAccount: true
+            Permissions:
+              type: array
+              description: A list of permissions that the delegating account has granted to the delegated account.
+              items:
+                $ref: '#/components/schemas/Permission'
+            PreviousTxnID:
+              type: string
+              format: hash256
+              description: The identifying hash of the transaction that most recently modified this object.
+            PreviousTxnLgrSeq:
+              type: integer
+              description: The index of the ledger that contains the transaction that most recently modified this object.
+
+    Permission:
+      type: object
+      description: |
+        Represents a specific permission that is delegated to the delegated account by the delegating account. 
+      required:
+        - PermissionValue
+      properties:
+        PermissionValue:
+          type: string
+          format: uint32
+          description: |
+            The permission value, representing a transaction-type permission or a granular permission.

@@ -181,6 +181,11 @@ components:
         TxnSignature:
           type: string
           description: The signature that verifies this transaction as originating from the account it says it is from.
+        Delegate:
+          type: string
+          description: The delegated account that initiates and signs this transaction on behalf of the delegating account. If this field is present, the transaction must be signed by this delegated account. The Account field represents the delegating account, which is the actual account the transaction applies to. If the delegated account lacks the necessary permission, the transaction will fail.
+          x-custom-validation:
+            isAccount: true
 
     PseudoTransaction:
       $id: PseudoTransaction

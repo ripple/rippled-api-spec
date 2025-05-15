@@ -1,0 +1,66 @@
+components:
+  schemas:
+    DelegateSetTransaction:
+      $id: DelegateSetTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The DelegateSet transaction enables an account to delegate specific permissions to another account,
+        allowing the delegated account to send and sign transactions on behalf of the delegating account.
+      required:
+        - Authorize
+        - Permissions
+      properties:
+        Authorize:
+          type: string
+          description: |
+            (Required) The account to which permissions will be delegated.
+        Permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          minItems: 0
+          maxItems: 10
+          uniqueItems: true
+          description: |
+            (Required) A list of permissions to delegate.
+    Permission:
+      $id: Permission
+      type: object
+      description: |
+        Represents a specific permission that can be delegated to another account.
+      required:
+        - PermissionValue
+      properties:
+        PermissionValue:
+          type: string
+          format: uint32
+          description: |
+            (Required) The permission value, representing a transaction-type permission or a granular permission.
+
+    DelegateSetErrorCode:
+      $id: DelegateSetErrorCode
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for DelegateSet transactions.
+      enum:
+        - 141
+        - 139
+        - -252
+        - -273
+        - -299
+        - -96
+      x-enum-varnames:
+        - tecINSUFFICIENT_RESERVE
+        - tecNO_PERMISSION
+        - temARRAY_TOO_LARGE
+        - temDISABLED
+        - temMALFORMED
+        - terNO_ACCOUNT
+      x-enum-descriptions:
+        - The sender does not have enough XRP to meet the owner reserve. (A Delegate entry counts as one item towards the account's owner reserve.)
+        - The permission list includes a non-delegatable transaction type. (Transaction types such as AccountSet, SetRegularKey, SignerListSet, AccountDelete, DelegateSet, EnableAmendment, SetFee, and UNLModify cannot be delegated. Any newly added transaction should be assessed for delegatability and specified in transactions.macro.)
+        - The permission list exceeds the maximum number of permissions allowed, which is 10.
+        - The PermissionDelegation amendment is not enabled.
+        - The transaction was not validly specified. For example, the permission list contains duplicate values, or the Authorize field is the same as the Account field.
