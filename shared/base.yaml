@@ -186,6 +186,10 @@ components:
           description: The delegated account that initiates and signs this transaction on behalf of the delegating account. If this field is present, the transaction must be signed by this delegated account. The Account field represents the delegating account, which is the actual account the transaction applies to. If the delegated account lacks the necessary permission, the transaction will fail.
           x-custom-validation:
             isAccount: true
+      x-custom-validation:
+        isDifferent:
+          - field1: Account
+            field2: Delegate
 
     PseudoTransaction:
       $id: PseudoTransaction
