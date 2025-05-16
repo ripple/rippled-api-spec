@@ -36,6 +36,7 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/NFTPageEntryRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTIssuanceObjectEntryRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenObjectEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/DelegateEntryRequest'
 
     LedgerEntrySuccessResponse:
       type: object
@@ -63,6 +64,7 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/AmendmentsEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/AMMEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/DelegateEntryResponse'
 
     LedgerEntryErrorResponse:
       type: object

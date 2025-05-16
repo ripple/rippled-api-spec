@@ -61,6 +61,7 @@ components:
               - $ref: '../transactions/credential_accept.yaml#/components/schemas/CredentialAcceptTransaction'
               - $ref: '../transactions/credential_create.yaml#/components/schemas/CredentialCreateTransaction'
               - $ref: '../transactions/credential_delete.yaml#/components/schemas/CredentialDeleteTransaction'
+              - $ref: '../transactions/delegate_set.yaml#/components/schemas/DelegateSetTransaction'
               - $ref: '../transactions/deposit_preauth.yaml#/components/schemas/DepositPreauthTransaction'
               - $ref: '../transactions/did_delete.yaml#/components/schemas/DIDDeleteTransaction'
               - $ref: '../transactions/did_set.yaml#/components/schemas/DIDSetTransaction'

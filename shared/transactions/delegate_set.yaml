@@ -1,0 +1,210 @@
+components:
+  schemas:
+    DelegateSetTransaction:
+      $id: DelegateSetTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The DelegateSet transaction enables an account to delegate specific permissions to another account,
+        allowing the delegated account to send and sign transactions on behalf of the delegating account.
+      required:
+        - Authorize
+        - Permissions
+      properties:
+        Authorize:
+          type: string
+          description: |
+            (Required) The account to which permissions will be delegated.
+        Permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+          minItems: 0
+          maxItems: 10
+          uniqueItems: true
+          description: |
+            (Required) A list of permissions to delegate.
+  
+    Permission:
+      $id: Permission
+      type: object
+      description: |
+        Represents a specific permission that can be delegated to another account.
+      required:
+        - PermissionValue
+      properties:
+        PermissionValue:
+          oneOf:
+            - $ref: '#/components/schemas/TransactionTypePermission'
+            - $ref: '#/components/schemas/GranularPermission'
+          description: |
+            (Required) The permission value, representing a transaction-type permission or a granular permission.
+      x-generate-enum-in-model:
+        - PermissionValue
+    
+    TransactionTypePermission:
+      type: string
+      description: >
+        Enum representing transaction type permissions. The enum value is transaction type value plus one. The transaction types that are not allowed to be delegated are not included in this enum.
+      enum:
+        - AMMBid
+        - AMMClawback
+        - AMMCreate
+        - AMMDelete
+        - AMMDeposit
+        - AMMVote
+        - AMMWithdraw
+        - CredentialAccept
+        - CredentialCreate
+        - CredentialDelete        
+        - CheckCancel
+        - CheckCash
+        - CheckCreate
+        - Clawback
+        - DepositPreauth
+        - DIDDelete
+        - DIDSet
+        - EscrowCancel
+        - EscrowCreate
+        - EscrowFinish
+        - LedgerStateFix
+        - MPTokenAuthorize
+        - MPTokenIssuanceCreate
+        - MPTokenIssuanceDestroy
+        - MPTokenIssuanceSet
+        - NFTokenAcceptOffer
+        - NFTokenBurn
+        - NFTokenCancelOffer
+        - NFTokenCreateOffer
+        - NFTokenMint
+        - NFTokenModify
+        - OfferCancel
+        - OfferCreate
+        - OracleDelete
+        - OracleSet
+        - Payment
+        - PaymentChannelClaim
+        - PaymentChannelCreate
+        - PaymentChannelFund
+        - PermissionedDomainDelete
+        - PermissionedDomainSet
+        - TicketCreate
+        - TrustSet
+        - XChainAccountCreateCommit
+        - XChainAddAccountCreateAttestation
+        - XChainAddClaimAttestation
+        - XChainClaim
+        - XChainCommit
+        - XChainCreateBridge
+        - XChainCreateClaim
+        - XChainModifyBridge
+      x-enum-descriptions:
+        - "Grants the delegated account permission to send AMMBid transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send AMMClawback transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send AMMCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send AMMDelete transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send AMMDeposit transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send AMMVote transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send AMMWithdraw transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send CredentialAccept transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send CredentialCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send CredentialDelete transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send CheckCancel transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send CheckCash transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send CheckCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send Clawback transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send DepositPreauth transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send DIDDelete transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send DIDSet transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send EscrowCancel transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send EscrowCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send EscrowFinish transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send LedgerStateFix transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send MPTokenAuthorize transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send MPTokenIssuanceCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send MPTokenIssuanceDestroy transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send MPTokenIssuanceSet transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send NFTokenAcceptOffer transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send NFTokenBurn transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send NFTokenCancelOffer transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send NFTokenCreateOffer transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send NFTokenMint transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send NFTokenModify transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send OfferCancel transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send OfferCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send OracleDelete transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send OracleSet transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send Payment transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send PaymentChannelClaim transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send PaymentChannelCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send PaymentChannelFund transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send PermissionedDomainDelete transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send PermissionedDomainSet transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send TicketCreate transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send TrustSet transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainAccountCreateCommit transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainAddAccountCreateAttestation transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainAddClaimAttestation transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainClaim transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainCommit transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainCreateBridge transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainCreateClaimID transaction on behalf of the delegating account."
+        - "Grants the delegated account permission to send XChainModifyBridge transaction on behalf of the delegating account."
+        
+    GranularPermission:
+      $id: PermissionValue
+      type: string
+      description: Enum representing granular permission values.
+      enum:
+        - TrustlineAuthorize
+        - TrustlineFreeze
+        - TrustlineUnfreeze
+        - AccountDomainSet
+        - AccountEmailHashSet
+        - AccountMessageKeySet
+        - AccountTransferRateSet
+        - AccountTickSizeSet
+        - PaymentMint
+        - PaymentBurn
+        - MPTokenIssuanceLock
+        - MPTokenIssuanceUnlock
+      x-enum-descriptions:
+        - Grants the delegated account permission to authorize a trustline on behalf of the delegating account.
+        - Grants the delegated account permission to freeze a trustline on behalf of the delegating account.
+        - Grants the delegated account permission to unfreeze a trustline on behalf of the delegating account.
+        - Grants the delegated account permission to set Domain on behalf of the delegating account.
+        - Grants the delegated account permission to set EmailHashSet on behalf of the delegating account.
+        - Grants the delegated account permission to set MessageKey on behalf of the delegating account.
+        - Grants the delegated account permission to set TransferRate on behalf of the delegating account.
+        - Grants the delegated account permission to set TickSize on behalf of the delegating account.
+        - Grants the delegated account permission to mint payment on behalf of the delegating account. (Mint means sending a payment for a currency where the sending account is the issuer.)
+        - Grants the delegated account permission to burn payment on behalf of the delegating account. (Burn means sending a payment for a currency where the destination account is the issuer)
+        - Grants the delegated account permission to lock MPToken on behalf of the delegating account.
+        - Grants the delegated account permission to unlock MPToken on behalf of the delegating account.
+
+    DelegateSetErrorCode:
+      $id: DelegateSetErrorCode
+      type: integer
+      format: uint32
+      description: Enum representing possible error codes for DelegateSet transactions.
+      enum:
+        - 141
+        - 139
+        - -252
+        - -273
+        - -299
+        - -96
+      x-enum-varnames:
+        - tecINSUFFICIENT_RESERVE
+        - tecNO_PERMISSION
+        - temARRAY_TOO_LARGE
+        - temDISABLED
+        - temMALFORMED
+        - terNO_ACCOUNT
+      x-enum-descriptions:
+        - The sender does not have enough XRP to meet the owner reserve. (A Delegate entry counts as one item towards the account's owner reserve.)
+        - The permission list includes a non-delegatable transaction type. (Transaction types such as AccountSet, SetRegularKey, SignerListSet, AccountDelete, DelegateSet, EnableAmendment, SetFee, and UNLModify cannot be delegated. Any newly added transaction should be assessed for delegatability and specified in transactions.macro.)
+        - The permission list exceeds the maximum number of permissions allowed, which is 10.
+        - The PermissionDelegation amendment is not enabled.
+        - The transaction was not validly specified. For example, the permission list contains duplicate values, or the Authorize field is the same as the Account field.
