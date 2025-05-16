@@ -746,7 +746,7 @@ components:
               type: array
               description: A list of permissions that the delegating account has granted to the delegated account.
               items:
-                $ref: '#/components/schemas/Permission'
+                $ref: '../transactions/delegate_set.yaml#/components/schemas/Permission'
             PreviousTxnID:
               type: string
               format: hash256
@@ -754,16 +754,3 @@ components:
             PreviousTxnLgrSeq:
               type: integer
               description: The index of the ledger that contains the transaction that most recently modified this object.
-
-    Permission:
-      type: object
-      description: |
-        Represents a specific permission that is delegated to the delegated account by the delegating account. 
-      required:
-        - PermissionValue
-      properties:
-        PermissionValue:
-          type: string
-          format: uint32
-          description: |
-            The permission value, representing a transaction-type permission or a granular permission.
