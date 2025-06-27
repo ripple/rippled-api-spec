@@ -12,11 +12,17 @@ components:
         - Destination
       properties:
         Amount:
-          type: string
           description: |
-            Amount of XRP, in drops, to deduct from the sender's balance and escrow. Once escrowed, the XRP
-            can either go to the Destination address (after the FinishAfter time) or be returned to the
-            sender (after the CancelAfter time).
+            The amount to deduct from the sender's balance and and set aside in escrow. 
+            Once escrowed, this amount can either go to the Destination address (after any Finish times/conditions) 
+            or returned to the sender (after any cancellation times/conditions). 
+            Can represent XRP in drops, an IOU token, or MPT. Must always be a positive value.
+          oneOf:
+            - type: string
+              description: 'The amount of XRP (drops), represented as a string.'
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
         Destination:
           type: string
           description: |
