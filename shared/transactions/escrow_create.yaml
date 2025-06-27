@@ -55,3 +55,27 @@ components:
         requireFieldComparison:
           - smallerField: FinishAfter
             largerField: CancelAfter
+
+    EscrowCreateErrorCode:
+      $id: LedgerStateFixErrorCode
+      type: integer
+      format: uint32
+      description: Error codes for the LedgerStateFix transaction.
+      enum:
+        - 139
+        - 134
+        - 129
+        - 160
+        - 137
+      x-enum-varnames:
+        - tecNO_PERMISSION
+        - tecNO_AUTH
+        - tecUNFUNDED
+        - tecOBJECT_NOT_FOUND
+        - tecFROZEN
+      x-enum-descriptions:
+        - If the source account is the issuer of the token, the transaction fails with tecNO_PERMISSION.
+        - If the issuer requires authorization and the source is not authorized, the transaction fails with tecNO_AUTH.
+        - 'IOU Tokens: If the source lacks a trustline with the issuer, the transaction fails with tecUNFUNDED .'
+        - 'MPTs: If the source does not hold the MPT, the transaction fails with tecOBJECT_NOT_FOUND.'
+        - If the token is frozen (global/individual/deepfreeze) (IOU) or locked (MPT) for the source, the transaction fails with tecFROZEN.
