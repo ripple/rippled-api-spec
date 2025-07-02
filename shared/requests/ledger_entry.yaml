@@ -65,6 +65,7 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/AMMEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/DelegateEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/EscrowEntryResponse'
 
     LedgerEntryErrorResponse:
       type: object
