@@ -494,6 +494,7 @@ components:
         - 0x00010000
         - 0x00040000
         - 0x00020000
+        - 0x40000000
       x-enum-varnames:
         - lsfAllowTrustLineClawback
         - lsfDefaultRipple
@@ -509,6 +510,7 @@ components:
         - lsfPasswordSpent
         - lsfRequireAuth
         - lsfRequireDestTag
+        - lsfAllowTrustLineLocking
       x-enum-descriptions:
         - Enable Clawback for this account. (Requires the Clawback amendment.)
         - Enable rippling on this addresses's trust lines by default. Required for issuing addresses; discouraged for others.
@@ -524,6 +526,7 @@ components:
         - This account has used its free SetRegularKey transaction.
         - This account must individually approve other users for those users to hold this account's tokens.
         - Requires incoming payments to specify a Destination Tag.
+        - Issuer account grants permission for the issued tokens to be used in escrow.
 
     AmendmentsEntryResponse:
       allOf:
@@ -834,3 +837,8 @@ components:
               description: |
                 The fee to charge when users finish an escrow, initially set on the creation of an escrow contract and updated on subsequent finish transactions.
               format: UInt32
+            IssuerNode:
+              type: string
+              description: (Optional) The ledger index of the issuer's directory node associated with the Escrow. Used when the issuer is neither the source nor destination account.
+              x-custom-validation:
+                isNumericString: true
