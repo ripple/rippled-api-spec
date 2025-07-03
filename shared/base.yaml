@@ -261,11 +261,12 @@ components:
     Currency:
       $id: Currency
       description: |
-        The XRP Ledger has two kinds of money: XRP, and issued currencies. Both types have high precision, although their
+        The XRP Ledger has three kinds of assets: XRP, issued currencies/tokens, and multi purpose tokens. All types have high precision, although their
         formats are different.
       oneOf:
         - $ref: '#/components/schemas/XRP'
         - $ref: '#/components/schemas/IssuedCurrency'
+        - $ref: '#/components/schemas/MultiPurposeToken'
 
     XRP:
       $id: XRP
@@ -293,6 +294,15 @@ components:
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
           x-custom-validation:
             isAccount: true
+
+    MultiPurposeToken:
+      $id: MultiPurposeToken
+      type: object
+      properties:
+        mpt_issuance_id:
+          type: string
+          format: hash192
+          description:  The 192-bit identifier MPTokenIssuanceID that's associated with an MPTokenIssuance.
 
     XChainBridge:
       $id: XChainBridge
