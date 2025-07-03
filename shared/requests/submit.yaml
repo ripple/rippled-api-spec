@@ -121,6 +121,8 @@ components:
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
               LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
               SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+              VaultCreate: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+              VaultSet: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'

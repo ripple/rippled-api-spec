@@ -1,0 +1,77 @@
+components:
+  schemas:
+    VaultCreateTransaction:
+      $id: VaultCreateTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        The VaultCreate transaction creates an Vault object and adds it to the relevant
+        directory node of the creator account.
+
+        If the transaction is successful, the newly created vault is owned by the account (the creator
+        account) that executed the transaction.
+      required:
+        - Asset
+      properties:
+        Asset:
+          $ref: '../base.yaml#/components/schemas/Currency'
+          description: |
+            (Required) The definition for the asset in the vault. In JSON, this is an object with currency and
+            issuer fields (omit issuer for XRP).
+        MaximumAmount:
+          type: string
+          description: |
+            (Optional) The maximum asset amount held in the vault. If not set, or set to zero, the vault will not enforce a maximum.
+        MPTokenMetadata:
+          type: string
+          format: hex
+          minLength: 1
+          maxLength: 1024
+          description: |
+            (Optional) Arbitrary metadata about this vault, in hex format. The limit for this field is 1024 bytes.
+        DomainID:
+          type: string
+          format: hash256
+          description: |
+            (Optional) The ID of the Domain ledger object for vault authorization. Can only be set if the vault is not public.
+        WithdrawalPolicy:
+          type: integer
+          format: uint8
+          description: |
+            (Optional) Numeric identifier of the vault's withdrawal policy. The only accepted input is number 1, which
+            corresponds to "first come, first served" policy.
+        Data:
+          type: string
+          format: hex
+          minLength: 1
+          maxLength: 256
+          description: |
+            (Optional) Arbitrary data payload about this vault, in hex format. The limit for this field is 256 bytes. 
+        Flags:
+          $ref: '#/components/schemas/VaultCreateFlag'
+      x-custom-validation:
+        conditionalForbiddenOnFlag:
+          - requiresFlag: tfVaultPrivate
+            flagField: Flags
+            condition: false
+            field: DomainID
+            message: DomainID must not be set if tfVaultPrivate is not present.
+      x-generate-enum-in-model:
+        - VaultCreateFlag
+
+    VaultCreateFlag:
+      type: integer
+      format: uint32
+      description: Enum for VaultCreate Transaction Flags.
+      enum:
+        - 0x00010000
+        - 0x00020000
+      x-enum-varnames:
+        - tfVaultPrivate
+        - tfVaultShareNonTransferable
+      x-enum-descriptions:
+        - If set, indicates that depositors must be authorized. This enables vault owner to limit who can deposit into the vaule and hold vault shares.
+        - If set, indicates that vault shares cannot be transferred to other accounts.
+      x-generate-hex: true
+      x-generate-flag-interface: true
