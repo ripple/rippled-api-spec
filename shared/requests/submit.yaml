@@ -123,6 +123,7 @@ components:
               SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
               VaultCreate: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
               VaultSet: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+              VaultDeposit: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'

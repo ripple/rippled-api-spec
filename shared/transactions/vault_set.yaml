@@ -13,7 +13,7 @@ components:
         VaultID:
           type: string
           description: |
-            The Vault identifier.
+            The Vault identifier to alter the properties of.
         MaximumAmount:
           type: string
           description: |

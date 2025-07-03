@@ -1,0 +1,28 @@
+components:
+  schemas:
+    VaultDepositTransaction:
+      $id: VaultDepositTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Use this transaction to update a mutable property for a Vault object.
+      required:
+        - VaultID
+        - Amount
+      properties:
+        VaultID:
+          type: string
+          description: |
+            The Vault identifier to deposit an asset to.
+        Amount:
+          description: |
+            The amount of currency to deposit to the vault. The asset of the deposit must match the asset of the vault. The account
+            initiating this transaction will (in the same transaction) receive the amount of shares in the vault, matching the amount
+            of assets deposited.
+          oneOf:
+            - type: string
+              description: The amount of XRP (drops), represented as a string.
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
