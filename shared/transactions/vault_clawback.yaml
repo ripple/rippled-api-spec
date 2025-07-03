@@ -1,0 +1,32 @@
+components:
+  schemas:
+    VaultClawbackTransaction:
+      $id: VaultClawbackTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Use this transaction to clawback an asset from a Vault object. This transaction will atomically send a matching amount
+        of shares in the vault to the vault and assets to the asset issuer.
+      required:
+        - VaultID
+        - Holder
+      properties:
+        VaultID:
+          type: string
+          description: |
+            The Vault identifier to clawback from.
+        Holder:
+          type: string
+          description: |
+            Address of the account holding shares in the vault.
+        Amount:
+          description: |
+            (Optional) Amount to clawback from the vault. If not set, or set to zero, this transaction will clawback all
+            assets matching the amount of shares held by the Holder.
+          oneOf:
+            - type: string
+              description: The amount of XRP (drops), represented as a string.
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'

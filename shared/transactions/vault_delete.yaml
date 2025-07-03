@@ -1,0 +1,16 @@
+components:
+  schemas:
+    VaultDeleteTransaction:
+      $id: VaultDeleteTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Use this transaction to delete an empty Vault object.
+      required:
+        - VaultID
+      properties:
+        VaultID:
+          type: string
+          description: |
+            The Vault identifier to delete. 
