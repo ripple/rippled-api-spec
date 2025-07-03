@@ -168,4 +168,4 @@ components:
         - Permanently give up the ability to freeze individual trust lines or disable Global Freeze.
         - Require authorization for users to hold balances issued by this address.
         - Require a destination tag to send transactions to this account.
-        - This flag must be set to create an IOU based Escrow.
+        - Allows Issuers's issued IOU tokens to be used in Escrow.
