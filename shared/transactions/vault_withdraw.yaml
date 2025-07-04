@@ -30,3 +30,5 @@ components:
           type: string
           description: |
             (Optional) Address to receive the assets withdrawn from the vault. If the vault is private, this account must be authorized.
+          x-custom-validation:
+            isAccount: true
