@@ -110,7 +110,7 @@ paths:
                   - $ref: 'requests/gateway_balances_open_api.yaml#/components/schemas/GatewayBalancesResponse'
                   - $ref: 'requests/get_aggregate_price_open_api.yaml#/components/schemas/GetAggregatePriceResponse'
                   - $ref: 'requests/ledger_closed_open_api.yaml#/components/schemas/LedgerClosedResponse'
-                  - $ref: 'requests/ledger_current_open_api.yaml#/components/schemas/LedgerCurrentRequest'
+                  - $ref: 'requests/ledger_current_open_api.yaml#/components/schemas/LedgerCurrentResponse'
                   - $ref: 'requests/ledger_entry_open_api.yaml#/components/schemas/LedgerEntryResponse'
                   - $ref: 'requests/manifest_open_api.yaml#/components/schemas/ManifestResponse'
                   - $ref: 'requests/nft_buy_offers_open_api.yaml#/components/schemas/NFTBuyOffersResponse'
