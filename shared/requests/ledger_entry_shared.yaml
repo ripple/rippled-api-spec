@@ -341,6 +341,29 @@ components:
           x-custom-validation:
             isAccount: true
 
+    VaultRequest:
+      type: object
+      properties:
+        vault:
+          description: |
+            If a string, interpret as ledger entry ID of the Vault entry to retrieve. If an object, requires the sub-fields owner and seq to uniquely identify the vault.
+          oneOf:
+            - type: string
+              format: hash256
+            - $ref: '#/components/schemas/VaultObject'
+
+    VaultObject:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: The account that ownes the Vault.
+          x-custom-validation:
+            isAccount: true
+        seq:
+          type: integer
+          description: The Sequence Number of the transaction that created the Vault entry.
+
     BaseLedgerEntry:
       $id: BaseLedgerEntry
       type: object
@@ -754,3 +777,81 @@ components:
             PreviousTxnLgrSeq:
               type: integer
               description: The index of the ledger that contains the transaction that most recently modified this object.
+
+    VaultResponse:
+      required:
+        - Account
+        - Asset
+        - AssetsAvailable
+        - AssetsMaximum
+        - AssetsTotal
+        - LossUnrealized
+        - Owner
+        - PreviousTxnID
+        - PreviousTxnLgrSeq
+        - Sequence
+        - ShareMPTID
+        - WithdrawalPolicy
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Account:
+              description: The pseudo-account ID created to own MPTokenIssuance object associated with this vault.
+              type: string
+              x-custom-validation:
+                isAccount: true
+            Asset:
+              description: The definition of the asset that this vault holds.
+              $ref: '../base.yaml#/components/schemas/Currency'
+            AssetsAvailable:
+              type: string
+              description: Amount of assets currently available for withdrawal from the vault.
+              x-custom-validation:
+                isNumericString: true
+            AssetsMaximum:
+              type: string
+              description: The maximum asset amount which can be held in the vault.
+              x-custom-validation:
+                isNumericString: true
+            AssetsTotal:
+              type: string
+              description: Total amount of assets in the vault.
+              x-custom-validation:
+                isNumericString: true
+            LossUnrealized:
+              type: string
+              description: Unrealized loss associated with the vault.
+              x-custom-validation:
+                isNumericString: true
+            Owner:
+              description: The account that owns the vault.
+              type: string
+              x-custom-validation:
+                isAccount: true
+            PreviousTxnID:
+              type: string
+              format: hash256
+              description: The identifying hash of the transaction that most recently modified this object.
+            PreviousTxnLgrSeq:
+              type: integer
+              description: The index of the ledger that contains the transaction that most recently modified this object.
+            Sequence:
+              type: integer
+              description: The sequence number of the next valid transaction for this account.
+            ShareMPTID:
+              type: string
+              format: hash192
+              description: Multi purpose token ID of the MPTokenIssuance object holding this vault shares.
+            WithdrawalPolicy:
+              type: integer
+              description: Policy defining withdrawal conditions. Currently only valid value is 1, which corresponds to "first come, first served".
+              x-custom-validation:
+                greaterThan: 0
+                lessThan: 2
+            Data:
+              type: string
+              format: hex
+              minLength: 1
+              maxLength: 256
+              description: Arbitrary data payload associated with this vault.

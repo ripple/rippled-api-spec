@@ -37,6 +37,7 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTIssuanceObjectEntryRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenObjectEntryRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/DelegateEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/VaultRequest'
 
     LedgerEntrySuccessResponse:
       type: object
@@ -65,6 +66,7 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/AMMEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/DelegateEntryResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/VaultResponse'
 
     LedgerEntryErrorResponse:
       type: object

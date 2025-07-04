@@ -47,7 +47,7 @@ components:
           minLength: 1
           maxLength: 256
           description: |
-            (Optional) Arbitrary data payload about this vault, in hex format. The limit for this field is 256 bytes. 
+            (Optional) Arbitrary data payload associated with this vault, in hex format. The limit for this field is 256 bytes. 
         Flags:
           $ref: '#/components/schemas/VaultCreateFlag'
       x-custom-validation:
