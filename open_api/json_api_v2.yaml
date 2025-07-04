@@ -55,6 +55,7 @@ paths:
                   ripple_path_find: 'requests/ripple_path_find_open_api.yaml#/components/schemas/RipplePathFindRequest'
                   server_info: 'requests/server_info_open_api.yaml#/components/schemas/ServerInfoRequest'
                   submit: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequestV2'
+                  vault_info: 'requests/vault_info_open_api.yaml#/components/schemas/VaultInfoRequest'
                   # TODO: Add the rest of the JSON RPC requests here
               oneOf:
                 - $ref: 'requests/account_channels_open_api.yaml#/components/schemas/AccountChannelsRequest'
@@ -84,6 +85,7 @@ paths:
                 - $ref: 'requests/ripple_path_find_open_api.yaml#/components/schemas/RipplePathFindRequest'
                 - $ref: 'requests/server_info_open_api.yaml#/components/schemas/ServerInfoRequest'
                 - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitRequestV2'
+                - $ref: 'requests/vault_info_open_api.yaml#/components/schemas/VaultInfoRequest'
                 # TODO: Add the rest of the JSON RPC requests here
         required: true
       operationId: 'POST'
@@ -121,6 +123,7 @@ paths:
                   - $ref: 'requests/ripple_path_find_open_api.yaml#/components/schemas/RipplePathFindResponse'
                   - $ref: 'requests/server_info_open_api.yaml#/components/schemas/ServerInfoResponse'
                   - $ref: 'requests/submit_open_api.yaml#/components/schemas/SubmitResponseV2'
+                  - $ref: 'requests/vault_info_open_api.yaml#/components/schemas/VaultInfoResponse'
                   # TODO: Add the rest of the JSON RPC responses here
 
         # TODO: We want to be much more explicit with http error codes for a full implementation of this spec.

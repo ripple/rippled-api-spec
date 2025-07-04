@@ -287,7 +287,7 @@ components:
           format: hash256
           description: The ledger entry ID of an NFT Page to retrieve.
 
-    MPTIssuanceObjectEntryRequest:
+    MPTokenIssuanceRequest:
       type: object
       properties:
         mpt_issuance:
@@ -295,7 +295,7 @@ components:
           format: hash192
           description: The 192-bit MPTokenIssuanceID that's associated with the MPTokenIssuance, as hexadecimal.
 
-    MPTokenObjectEntryRequest:
+    MPTokenRequest:
       type: object
       properties:
         mptoken:
@@ -357,7 +357,7 @@ components:
       properties:
         owner:
           type: string
-          description: The account that ownes the Vault.
+          description: The account that owns the Vault.
           x-custom-validation:
             isAccount: true
         seq:
@@ -778,6 +778,113 @@ components:
               type: integer
               description: The index of the ledger that contains the transaction that most recently modified this object.
 
+    MPTokenResponse:
+      type: object
+      required:
+        - Account
+        - MPTokenIssuanceID
+        - MPTAmount
+        - PreviousTxnID
+        - PreviousTxnLgrSeq
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Account:
+              description: The account that holds the tokens associated with this object.
+              type: string
+              x-custom-validation:
+                isAccount: true
+            MPTokenIssuanceID:
+              type: string
+              format: hash192
+              description: Multi purpose token ID of the MPTokenIssuance object defining the tokens.
+            MPTAmount:
+              type: number
+              format: uint64
+              description: Balance of the tokens associated with this object.
+            LockedAmount:
+              type: number
+              format: uint64
+              description: Escrowed amount of the tokens associated with this object.
+            OwnerNode:
+              type: string
+              description: A hint indicating which page of the owner directory links to this object.
+              format: UInt64
+            PreviousTxnID:
+              type: string
+              format: hash256
+              description: The identifying hash of the transaction that most recently modified this object.
+            PreviousTxnLgrSeq:
+              type: integer
+              description: The index of the ledger that contains the transaction that most recently modified this object.
+
+    MPTokenIssuanceResponse:
+      required:
+        - Issuer
+        - OutstandingAmount
+        - PreviousTxnID
+        - PreviousTxnLgrSeq
+        - Sequence
+        - mpt_issuance_id
+      allOf:
+        - $ref: '#/components/schemas/BaseLedgerEntry'
+        - type: object
+          properties:
+            Issuer:
+              description: The account that owns this MPTokenIssuance object.
+              type: string
+              x-custom-validation:
+                isAccount: true
+            Sequence:
+              type: integer
+              description: Sequence number of the vault entry.
+            TransferFee:
+              type: number
+              format: uint16
+              description: The fee to be charged by the issuer for secondary sales of the Token, if such sales are allowed.
+            OwnerNode:
+              type: number
+              format: uint64
+              description: A hint indicating which page of the owner directory links to this object.
+            AssetScale:
+              type: number
+              format: uint8
+              description: Difference, in orders of magnitude, between a standard unit and a corresponding fractional unit.
+            MaximumAmount:
+              type: number
+              format: uint64
+              description: The maximum asset amount of this token that can ever be issued.
+            OutstandingAmount:
+              type: number
+              format: uint64
+              description: Balance of the tokens issued so far.
+            LockedAmount:
+              type: number
+              format: uint64
+              description: Total amount of escrowed tokens associated with this issuance.
+            MPTokenMetadata:
+              type: string
+              format: hex
+              minLength: 1
+              maxLength: 1024
+              description: Arbitrary metadata about this issuance, in hex format.
+            PreviousTxnID:
+              type: string
+              format: hash256
+              description: The identifying hash of the transaction that most recently modified this object.
+            PreviousTxnLgrSeq:
+              type: integer
+              description: The index of the ledger that contains the transaction that most recently modified this object.
+            DomainID:
+              type: string
+              format: hash256
+              description: The identifier of the permissioned domain object controlling access to this object.
+            mpt_issuance_id:
+              type: string
+              format: hash192
+              description: Multi purpose token ID of this issuance, derived from Issuer and Sequence.
+
     VaultResponse:
       required:
         - Account
@@ -811,7 +918,7 @@ components:
                 isNumericString: true
             AssetsMaximum:
               type: string
-              description: The maximum asset amount which can be held in the vault.
+              description: The maximum asset amount which can be held in the vault, or 0 if such maximum is not enforced.
               x-custom-validation:
                 isNumericString: true
             AssetsTotal:
@@ -829,6 +936,10 @@ components:
               type: string
               x-custom-validation:
                 isAccount: true
+            OwnerNode:
+              type: string
+              description: A hint indicating which page of the owner directory links to this object.
+              format: UInt64
             PreviousTxnID:
               type: string
               format: hash256
@@ -838,7 +949,7 @@ components:
               description: The index of the ledger that contains the transaction that most recently modified this object.
             Sequence:
               type: integer
-              description: The sequence number of the next valid transaction for this account.
+              description: Sequence number of the vault entry.
             ShareMPTID:
               type: string
               format: hash192

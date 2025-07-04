@@ -1,0 +1,79 @@
+components:
+  schemas:
+    VaultInfoRequest:
+      type: object
+      description: >
+        The vault_info method returns a Vault ledger entry from the XRP Ledger, together with its associated
+        MPTokenIssuance ledger entry holding the vault shares.
+      properties:
+        method:
+          type: string
+          enum:
+            - vault_info
+        params:
+          type: array
+          items:
+            $ref: '../../shared/requests/vault_info.yaml#/components/schemas/VaultInfoRequest'
+      required:
+        - method
+      example:
+        method: vault_info
+        params:
+          - ledger_index: validated
+            owner: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+            seq: 1302
+
+    VaultInfoSuccessResponseJSON:
+      allOf:
+        - $ref: '../../shared/base.yaml#/components/schemas/BaseSuccessResponse'
+        - $ref: '../../shared/requests/vault_info.yaml#/components/schemas/VaultInfoSuccessResponse'
+
+    VaultInfoResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          discriminator:
+            propertyName: status
+            mapping:
+              success: '#/components/schemas/VaultInfoSuccessResponseJSON'
+              error: '../../shared/requests/vault_info.yaml#/components/schemas/VaultInfoErrorResponse'
+          oneOf:
+            - $ref: '#/components/schemas/VaultInfoSuccessResponseJSON'
+            - $ref: '../../shared/requests/vault_info.yaml#/components/schemas/VaultInfoErrorResponse'
+      required:
+        - result
+      example:
+        result:
+          index: 13F1A95D7AAB7108D5CE7EEAF504B2894B8C674E6D68499076441C4837282BF8
+          LedgerIndex: 13F1A95D7AAB7108D5CE7EEAF504B2894B8C674E6D68499076441C4837282BF8
+          LedgerEntryType: Vault
+          Flags: 65536
+          OwnerCount: 1
+          Account: rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd
+          Asset:
+            currency: 039C99CD9AB0B70B32ECDA51EAAE471625608EA2
+            issuer: rp9E3FN3gNmvePGhYnf414T2TkUuoxu8vM
+          AssetsAvailable: '1300010'
+          AssetsMaximum: '0'
+          AssetsTotal: '5002000'
+          LossUnrealized: '0'
+          Owner: rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn
+          PreviousTxnID: 0D5FB50FA65C9FE1538FD7E398FFFE9D1908DFA4576D8D7A020040686F93C77D
+          PreviousTxnLgrSeq: 14091160
+          Sequence: 1302
+          ShareMPTID: A9E3A1C76615AB416961531D6E77BD01AA1B27D7609ED8B9
+          WithdrawalPolicy: 1
+          shares:
+            index: D82A1FF3B1960053424EAAB45A096FEAC792F6DA2918B49A231437477D9E3860
+            LedgerIndex: D82A1FF3B1960053424EAAB45A096FEAC792F6DA2918B49A231437477D9E3860
+            LedgerEntryType: MPTokenIssuance
+            Flags: 60
+            Issuer: rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd
+            Sequence: 1
+            PreviousTxnID: 0D5FB50FA65C9FE1538FD7E398FFFE9D1908DFA4576D8D7A020040686F93C77D
+            PreviousTxnLgrSeq: 14091160
+            OutstandingAmount: '5002000'
+            DomainID: 3525716F38B9646C4A613C103D0925C10145F98A511B7DE71EE7B81BD2B64744
+            mpt_issuance_id: A9E3A1C76615AB416961531D6E77BD01AA1B27D7609ED8B9
+          status: success

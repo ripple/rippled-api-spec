@@ -34,8 +34,8 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/DepositPreauthEntryRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/TicketEntryRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/NFTPageEntryRequest'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTIssuanceObjectEntryRequest'
-            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenObjectEntryRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenIssuanceRequest'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/DelegateEntryRequest'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/VaultRequest'
 
@@ -67,6 +67,8 @@ components:
             - $ref: './ledger_entry_shared.yaml#/components/schemas/BridgeEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/DelegateEntryResponse'
             - $ref: './ledger_entry_shared.yaml#/components/schemas/VaultResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenIssuanceResponse'
+            - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenResponse'
 
     LedgerEntryErrorResponse:
       type: object
