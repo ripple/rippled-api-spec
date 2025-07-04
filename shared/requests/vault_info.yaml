@@ -48,7 +48,7 @@ components:
             - type: object
               properties:
                 shares:
-                  - $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenIssuanceResponse'
+                  $ref: './ledger_entry_shared.yaml#/components/schemas/MPTokenIssuanceResponse'
 
     VaultInfoErrorResponse:
       type: object
