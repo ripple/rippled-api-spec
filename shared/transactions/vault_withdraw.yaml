@@ -26,6 +26,7 @@ components:
               x-custom-validation:
                 isNumericString: true
             - $ref: '../base.yaml#/components/schemas/TokenAmount'
+            - $ref: '../base.yaml#/components/schemas/MPTokenAmount'
         Destination:
           type: string
           description: |
