@@ -1,0 +1,70 @@
+components:
+  schemas:
+    VaultSetTransaction:
+      $id: VaultSetTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Use this transaction to update a mutable property for a Vault object.
+      required:
+        - VaultID
+      properties:
+        VaultID:
+          type: string
+          format: hash256
+          description: |
+            The Vault identifier to alter the properties of.
+        MaximumAmount:
+          type: string
+          description: |
+            (Optional) The maximum asset amount held in the vault. If not set, or set to zero, the vault will not enforce a maximum.
+        DomainID:
+          type: string
+          format: hash256
+          description: |
+            (Optional) The ID of the Domain ledger object for vault authorization. If set to zero, removes DomainID field from the vault.
+            Since only a private vault can have this field set, its removal will mean that only the vault owner will be able to use the vault.
+        Data:
+          type: string
+          format: hex
+          minLength: 1
+          maxLength: 512
+          description: |
+            (Optional) Arbitrary data payload about this vault, in hex format. The limit for this field is 256 bytes.
+
+    VaultSetErrorCode:
+      type: integer
+      format: uint32
+      description: Error codes for the VaultSet transaction.
+      enum:
+        - -299
+        - -298
+        - -295
+        - -276
+        - -273
+        - 139
+        - 140
+        - 160
+        - 195
+      x-enum-varnames:
+        - temMALFORMED
+        - temBAD_AMOUNT
+        - temBAD_FEE
+        - temINVALID_FLAG
+        - temDISABLED
+        - tecNO_PERMISSION
+        - tecNO_ENTRY
+        - tecOBJECT_NOT_FOUND
+        - tecLIMIT_EXCEEDED
+      x-enum-descriptions:
+        - Malformed transaction.
+        - Malformed; bad amount.
+        - Invalid fee, negative or not XRP.
+        - The transaction has an invalid flag.
+        - The transaction requires logic that is currently disabled.
+        - No permission to perform requested operation.
+        - No matching entry found.
+        - Insufficient reserve to complete requested operation.
+        - A requested object could not be located.
+        - Limit exceeded.

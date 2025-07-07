@@ -121,6 +121,12 @@ components:
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
               LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
               SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+              VaultCreate: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+              VaultSet: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+              VaultDeposit: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+              VaultWithdraw: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+              VaultClawback: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+              VaultDelete: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -175,6 +181,12 @@ components:
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
             - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
             - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+            - $ref: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+            - $ref: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+            - $ref: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+            - $ref: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+            - $ref: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+            - $ref: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
             # TODO: Add other transaction types here
 
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
@@ -244,6 +256,12 @@ components:
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
               LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
               SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+              VaultCreate: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+              VaultSet: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+              VaultDeposit: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+              VaultWithdraw: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+              VaultClawback: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+              VaultDelete: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
             - $ref: '../transactions/oracle_set.yaml#/components/schemas/OracleSetTransaction'
@@ -298,6 +316,12 @@ components:
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
             - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
             - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+            - $ref: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+            - $ref: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+            - $ref: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+            - $ref: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+            - $ref: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+            - $ref: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
             # TODO: Add other transaction types here
           description: 'Transaction definition in JSON format, optionally omitting any auto-fillable fields.'
       required:
@@ -427,6 +451,12 @@ components:
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
               LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
               SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+              VaultCreate: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+              VaultSet: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+              VaultDeposit: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+              VaultWithdraw: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+              VaultClawback: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+              VaultDelete: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
@@ -483,6 +513,12 @@ components:
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
             - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
             - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+            - $ref: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+            - $ref: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+            - $ref: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+            - $ref: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+            - $ref: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+            - $ref: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
             # TODO: Add other transaction types here
 
     SubmitSuccessResponseV2:
@@ -548,6 +584,12 @@ components:
               OracleDelete: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
               LedgerStateFix: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
               SignerListSet: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+              VaultCreate: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+              VaultSet: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+              VaultDeposit: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+              VaultWithdraw: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+              VaultClawback: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+              VaultDelete: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
               # TODO: Add other transaction types here
           oneOf:
             - $ref: '../transactions/payment.yaml#/components/schemas/PaymentTransaction'
@@ -604,6 +646,12 @@ components:
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteTransaction'
             - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixTransaction'
             - $ref: '../transactions/signer_list_set.yaml#/components/schemas/SignerListSetTransaction'
+            - $ref: '../transactions/vault_create.yaml#/components/schemas/VaultCreateTransaction'
+            - $ref: '../transactions/vault_set.yaml#/components/schemas/VaultSetTransaction'
+            - $ref: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositTransaction'
+            - $ref: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawTransaction'
+            - $ref: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackTransaction'
+            - $ref: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteTransaction'
             # TODO: Add other transaction types here
 
     SubmitErrorResponse:
@@ -643,6 +691,12 @@ components:
             - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundErrorCode'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteErrorCode'
             - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixErrorCode'
+            - $ref: '../transactions/vault_create.yaml#/components/schemas/VaultCreateErrorCode'
+            - $ref: '../transactions/vault_set.yaml#/components/schemas/VaultSetErrorCode'
+            - $ref: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositErrorCode'
+            - $ref: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawErrorCode'
+            - $ref: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackErrorCode'
+            - $ref: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee

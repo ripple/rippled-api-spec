@@ -1,0 +1,49 @@
+components:
+  schemas:
+    VaultDeleteTransaction:
+      $id: VaultDeleteTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Use this transaction to delete an empty Vault object.
+      required:
+        - VaultID
+      properties:
+        VaultID:
+          type: string
+          format: hash256
+          description: |
+            The Vault identifier to delete.
+
+    VaultDeleteErrorCode:
+      type: integer
+      format: uint32
+      description: Error codes for the VaultDelete transaction.
+      enum:
+        - -299
+        - -295
+        - -276
+        - -273
+        - 139
+        - 140
+        - 151
+        - 160
+      x-enum-varnames:
+        - temMALFORMED
+        - temBAD_FEE
+        - temINVALID_FLAG
+        - temDISABLED
+        - tecNO_PERMISSION
+        - tecNO_ENTRY
+        - tecHAS_OBLIGATIONS
+        - tecOBJECT_NOT_FOUND
+      x-enum-descriptions:
+        - Malformed transaction.
+        - Invalid fee, negative or not XRP.
+        - The transaction has an invalid flag.
+        - The transaction requires logic that is currently disabled.
+        - No permission to perform requested operation.
+        - No matching entry found.
+        - The account cannot be deleted since it has obligations.
+        - A requested object could not be located.

@@ -1,0 +1,80 @@
+components:
+  schemas:
+    VaultDepositTransaction:
+      $id: VaultDepositTransaction
+      allOf:
+        - $ref: '../base.yaml#/components/schemas/BaseTransaction'
+      type: object
+      description: |
+        Use this transaction to deposit an asset in a Vault object. This transaction will atomically send a matching amount
+        of shares in the vault to the the transaction issuer and assets to the vault. If the vault is private, the transaction issuer
+        must be authorized.
+      required:
+        - VaultID
+        - Amount
+      properties:
+        VaultID:
+          type: string
+          format: hash256
+          description: |
+            The Vault identifier to deposit an asset to.
+        Amount:
+          description: |
+            The amount of currency to deposit to the vault. The asset of the deposit must match the asset of the vault.
+          oneOf:
+            - type: string
+              description: The amount of XRP (drops), represented as a string.
+              x-custom-validation:
+                isNumericString: true
+            - $ref: '../base.yaml#/components/schemas/TokenAmount'
+            - $ref: '../base.yaml#/components/schemas/MPTokenAmount'
+
+    VaultDepositErrorCode:
+      type: integer
+      format: uint32
+      description: Error codes for the VaultDeposit transaction.
+      enum:
+        - -299
+        - -298
+        - -295
+        - -276
+        - -273
+        - 134
+        - 137
+        - 139
+        - 140
+        - 159
+        - 160
+        - 192
+        - 194
+        - 195
+      x-enum-varnames:
+        - temMALFORMED
+        - temBAD_AMOUNT
+        - temBAD_FEE
+        - temINVALID_FLAG
+        - temDISABLED
+        - tecNO_AUTH
+        - tecFROZEN
+        - tecNO_PERMISSION
+        - tecNO_ENTRY
+        - tecINSUFFICIENT_FUNDS
+        - tecOBJECT_NOT_FOUND
+        - tecLOCKED
+        - tecWRONG_ASSET
+        - tecLIMIT_EXCEEDED
+      x-enum-descriptions:
+        - Malformed transaction.
+        - Malformed; bad amount.
+        - Invalid fee, negative or not XRP.
+        - The transaction has an invalid flag.
+        - The transaction requires logic that is currently disabled.
+        - Not authorized to hold asset.
+        - Asset is frozen.
+        - No permission to perform requested operation.
+        - No matching entry found.
+        - Not enough funds available to complete requested transaction.
+        - A requested object could not be located.
+        - Fund is locked.
+        - Wrong asset given.
+        - Limit exceeded.

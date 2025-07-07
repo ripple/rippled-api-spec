@@ -241,31 +241,40 @@ components:
     TokenAmount:
       $id: TokenAmount
       type: object
-      description: Specifies an amount of a (fungible) token.
+      description: Specifies an amount of an issued currency token.
       properties:
-        currency:
-          type: string
-          description: 'Arbitrary currency code for the token. Cannot be XRP.'
-        value:
-          type: string
-          pattern: '^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'
-          description: 'Quoted decimal representation of the amount of the token. This can include scientific notation, such as 1.23e11 meaning 123,000,000,000. Both e and E may be used. This can be negative when displaying balances, but negative values are disallowed in other contexts such as specifying how much to send.'
-          x-custom-validation:
-            isNumericString: true
-        issuer:
-          type: string
-          description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
-          x-custom-validation:
-            isAccount: true
+        allOf:
+          $ref: '#/components/schemas/IssuedCurrency'
+          value:
+            type: string
+            pattern: '^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'
+            description: Quoted decimal representation of the amount of the token. This can include scientific notation, such as 1.23e11 meaning 123,000,000,000. Both e and E may be used. This can be negative when displaying balances, but negative values are disallowed in other contexts such as specifying how much to send.
+            x-custom-validation:
+              isNumericString: true
+
+    MPTokenAmount:
+      $id: MPTokenAmount
+      type: object
+      description: Specifies an amount of a multi purpose token.
+      properties:
+        allOf:
+          $ref: '#/components/schemas/MultiPurposeToken'
+          value:
+            type: string
+            pattern: '^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'
+            description: Quoted decimal representation of the amount of the token. This can include scientific notation, such as 1.23e11 meaning 123,000,000,000. Both e and E may be used. This can be negative when displaying balances, but negative values are disallowed in other contexts such as specifying how much to send.
+            x-custom-validation:
+              isNumericString: true
 
     Currency:
       $id: Currency
       description: |
-        The XRP Ledger has two kinds of money: XRP, and issued currencies. Both types have high precision, although their
+        The XRP Ledger has three kinds of assets: XRP, issued currencies/tokens, and multi purpose tokens. All types have high precision, although their
         formats are different.
       oneOf:
         - $ref: '#/components/schemas/XRP'
         - $ref: '#/components/schemas/IssuedCurrency'
+        - $ref: '#/components/schemas/MultiPurposeToken'
 
     XRP:
       $id: XRP
@@ -293,6 +302,15 @@ components:
           description: 'Generally, the account that issues this token. In special cases, this can refer to the account that holds the token instead (for example, in a Clawback transaction).'
           x-custom-validation:
             isAccount: true
+
+    MultiPurposeToken:
+      $id: MultiPurposeToken
+      type: object
+      properties:
+        mpt_issuance_id:
+          type: string
+          format: hash192
+          description: The 192-bit identifier MPTokenIssuanceID that's associated with an MPTokenIssuance.
 
     XChainBridge:
       $id: XChainBridge
