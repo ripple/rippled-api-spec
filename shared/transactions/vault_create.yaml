@@ -27,7 +27,7 @@ components:
           type: string
           format: hex
           minLength: 1
-          maxLength: 1024
+          maxLength: 2048
           description: |
             (Optional) Arbitrary metadata about this vault, in hex format. The limit for this field is 1024 bytes.
         DomainID:
@@ -45,9 +45,9 @@ components:
           type: string
           format: hex
           minLength: 1
-          maxLength: 256
+          maxLength: 512
           description: |
-            (Optional) Arbitrary data payload associated with this vault, in hex format. The limit for this field is 256 bytes. 
+            (Optional) Arbitrary data payload associated with this vault, in hex format. The limit for this field is 256 bytes.
         Flags:
           $ref: '#/components/schemas/VaultCreateFlag'
       x-custom-validation:

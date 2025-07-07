@@ -310,7 +310,7 @@ components:
         mpt_issuance_id:
           type: string
           format: hash192
-          description:  The 192-bit identifier MPTokenIssuanceID that's associated with an MPTokenIssuance.
+          description: The 192-bit identifier MPTokenIssuanceID that's associated with an MPTokenIssuance.
 
     XChainBridge:
       $id: XChainBridge

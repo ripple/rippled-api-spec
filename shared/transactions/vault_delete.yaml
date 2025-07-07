@@ -12,8 +12,9 @@ components:
       properties:
         VaultID:
           type: string
+          format: hash256
           description: |
-            The Vault identifier to delete. 
+            The Vault identifier to delete.
 
     VaultDeleteErrorCode:
       type: integer
