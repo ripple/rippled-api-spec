@@ -75,3 +75,59 @@ components:
         - If set, indicates that vault shares cannot be transferred to other accounts.
       x-generate-hex: true
       x-generate-flag-interface: true
+
+    VaultCreateErrorCode:
+      type: integer
+      format: uint32
+      description: Error codes for the VaultCreate transaction.
+      enum:
+        - -299
+        - -298
+        - -295
+        - -276
+        - -273
+        - -96
+        - -90
+        - -86
+        - 134
+        - 137
+        - 138
+        - 141
+        - 149
+        - 160
+        - 192
+        - 194
+      x-enum-varnames:
+        - temMALFORMED
+        - temBAD_AMOUNT
+        - temBAD_FEE
+        - temINVALID_FLAG
+        - temDISABLED
+        - terNO_ACCOUNT
+        - terNO_RIPPLE
+        - terADDRESS_COLLISION
+        - tecNO_AUTH
+        - tecFROZEN
+        - tecNO_TARGET
+        - tecINSUFFICIENT_RESERVE
+        - tecDUPLICATE
+        - tecOBJECT_NOT_FOUND
+        - tecLOCKED
+        - tecWRONG_ASSET
+      x-enum-descriptions:
+        - Malformed transaction.
+        - Malformed; bad amount.
+        - Invalid fee, negative or not XRP.
+        - The transaction has an invalid flag.
+        - The transaction requires logic that is currently disabled.
+        - The source account does not exist.
+        - Path does not permit rippling.
+        - Failed to allocate an unique account address.
+        - Not authorized to hold asset.
+        - Asset is frozen.
+        - Target account does not exist.
+        - Insufficient reserve to complete requested operation.
+        - Ledger object already exists.
+        - A requested object could not be located.
+        - Fund is locked.
+        - Wrong asset given.

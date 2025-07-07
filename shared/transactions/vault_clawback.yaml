@@ -30,3 +30,44 @@ components:
               x-custom-validation:
                 isNumericString: true
             - $ref: '../base.yaml#/components/schemas/TokenAmount'
+
+    VaultClawbackErrorCode:
+      type: integer
+      format: uint32
+      description: Error codes for the VaultClawback transaction.
+      enum:
+        - -299
+        - -298
+        - -295
+        - -276
+        - -273
+        - 134
+        - 139
+        - 140
+        - 159
+        - 160
+        - 194
+      x-enum-varnames:
+        - temMALFORMED
+        - temBAD_AMOUNT
+        - temBAD_FEE
+        - temINVALID_FLAG
+        - temDISABLED
+        - tecNO_AUTH
+        - tecNO_PERMISSION
+        - tecNO_ENTRY
+        - tecINSUFFICIENT_FUNDS
+        - tecOBJECT_NOT_FOUND
+        - tecWRONG_ASSET
+      x-enum-descriptions:
+        - Malformed transaction.
+        - Malformed; bad amount.
+        - Invalid fee, negative or not XRP.
+        - The transaction has an invalid flag.
+        - The transaction requires logic that is currently disabled.
+        - Not authorized to hold asset.
+        - No permission to perform requested operation.
+        - No matching entry found.
+        - Not enough funds available to complete requested transaction.
+        - A requested object could not be located.
+        - Wrong asset given.

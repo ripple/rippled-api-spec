@@ -691,6 +691,12 @@ components:
             - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundErrorCode'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteErrorCode'
             - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixErrorCode'
+            - $ref: '../transactions/vault_create.yaml#/components/schemas/VaultCreateErrorCode'
+            - $ref: '../transactions/vault_set.yaml#/components/schemas/VaultSetErrorCode'
+            - $ref: '../transactions/vault_deposit.yaml#/components/schemas/VaultDepositErrorCode'
+            - $ref: '../transactions/vault_withdraw.yaml#/components/schemas/VaultWithdrawErrorCode'
+            - $ref: '../transactions/vault_clawback.yaml#/components/schemas/VaultClawbackErrorCode'
+            - $ref: '../transactions/vault_delete.yaml#/components/schemas/VaultDeleteErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee

@@ -31,3 +31,39 @@ components:
           maxLength: 256
           description: |
             (Optional) Arbitrary data payload about this vault, in hex format. The limit for this field is 256 bytes. 
+
+    VaultSetErrorCode:
+      type: integer
+      format: uint32
+      description: Error codes for the VaultSet transaction.
+      enum:
+        - -299
+        - -298
+        - -295
+        - -276
+        - -273
+        - 139
+        - 140
+        - 160
+        - 195
+      x-enum-varnames:
+        - temMALFORMED
+        - temBAD_AMOUNT
+        - temBAD_FEE
+        - temINVALID_FLAG
+        - temDISABLED
+        - tecNO_PERMISSION
+        - tecNO_ENTRY
+        - tecOBJECT_NOT_FOUND
+        - tecLIMIT_EXCEEDED
+      x-enum-descriptions:
+        - Malformed transaction.
+        - Malformed; bad amount.
+        - Invalid fee, negative or not XRP.
+        - The transaction has an invalid flag.
+        - The transaction requires logic that is currently disabled.
+        - No permission to perform requested operation.
+        - No matching entry found.
+        - Insufficient reserve to complete requested operation.
+        - A requested object could not be located.
+        - Limit exceeded.
