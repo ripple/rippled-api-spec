@@ -643,6 +643,7 @@ components:
             - $ref: '../transactions/payment_channel_fund.yaml#/components/schemas/PaymentChannelFundErrorCode'
             - $ref: '../transactions/oracle_delete.yaml#/components/schemas/OracleDeleteErrorCode'
             - $ref: '../transactions/ledger_state_fix.yaml#/components/schemas/LedgerStateFixErrorCode'
+            - $ref: '../transactions/escrow_create.yaml#/components/schemas/EscrowCreateErrorCode'
             - enum:
                 - amendmentBlocked
                 - highFee

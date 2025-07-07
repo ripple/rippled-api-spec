@@ -134,7 +134,7 @@ components:
       type: integer
       format: uint32
       description: Enum for AccountSet Flags.
-      enum: [5, 16, 10, 8, 9, 4, 13, 12, 14, 15, 3, 7, 6, 2, 1]
+      enum: [5, 16, 10, 8, 9, 4, 13, 12, 14, 15, 3, 7, 6, 2, 1, 17]
       x-enum-varnames:
         - asfAccountTxnID
         - asfAllowTrustLineClawback
@@ -151,6 +151,7 @@ components:
         - asfNoFreeze
         - asfRequireAuth
         - asfRequireDest
+        - asfAllowTrustLineLocking
       x-enum-descriptions:
         - Track the ID of this account's most recent transaction. Required for AccountTxnID.
         - Allow account to claw back tokens it has issued. (Requires the Clawback amendment.)
@@ -167,3 +168,4 @@ components:
         - Permanently give up the ability to freeze individual trust lines or disable Global Freeze.
         - Require authorization for users to hold balances issued by this address.
         - Require a destination tag to send transactions to this account.
+        - Allows Issuers's issued IOU tokens to be used in Escrow.
